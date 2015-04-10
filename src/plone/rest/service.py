@@ -1,4 +1,3 @@
-from zope.interface import implements, Interface
 import json
 
 
@@ -12,5 +11,5 @@ class Service(object):
         return self, None
 
     def __call__(self):
-        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("Content-type", "application/json")
         return json.dumps(self.render())
