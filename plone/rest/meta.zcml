@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/meta"
+    i18n_domain="plone.behavior">
+
+    <directives namespace="http://namespaces.plone.org/plone">
+        
+        <directive
+            name="service"
+            schema=".zcml.IService"
+            handler=".zcml.serviceDirective"
+            />
+            
+    </directives>
+
+</configure>

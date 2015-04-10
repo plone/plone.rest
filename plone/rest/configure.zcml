@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone">
+
+  <include file="meta.zcml"/>
+  <subscriber
+     for="*
+          zope.app.publication.interfaces.IBeforeTraverseEvent"
+     handler=".events.mark_as_api_request"
+     />
+
+  <plone:service
+    method="put"
+    for="*"
+    factory=".demo.Demo"
+    cors_enabled="yes"
+    cors_origin="*"
+    />
+
+</configure>
