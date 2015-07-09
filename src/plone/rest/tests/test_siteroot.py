@@ -35,7 +35,13 @@ class TestSiteRoot(unittest.TestCase):
             headers={'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.status_code,
+            200,
+            'GET /Plone should return status code 200, not {}'.format(
+                response.status_code
+            )
+        )
         self.assertTrue(json.loads(response.text))
 
     def test_siteroot_post(self):
@@ -44,7 +50,13 @@ class TestSiteRoot(unittest.TestCase):
             headers={'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.status_code,
+            201,
+            'POST /Plone should return status code 201, not {}'.format(
+                response.status_code
+            )
+        )
         self.assertTrue(json.loads(response.text))
 
     def test_siteroot_delete(self):
