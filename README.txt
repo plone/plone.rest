@@ -1,3 +1,7 @@
+Plone Portal Root
+-----------------
+
+PUT/DELETE works, GET and POST do not work.
 
 GET::
 
@@ -39,3 +43,10 @@ DELETE::
   {
       "service": "delete"
   }
+
+
+Plone Content Object
+--------------------
+
+All calls return 404 HTML.
+
