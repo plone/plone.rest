@@ -12,11 +12,27 @@
      />
 
   <plone:service
+    method="GET"
+    for="*"
+    factory=".demo.Get"
+    />
+
+  <plone:service
+    method="POST"
+    for="*"
+    factory=".demo.Post"
+    />
+
+  <plone:service
     method="put"
     for="*"
-    factory=".demo.Demo"
-    cors_enabled="yes"
-    cors_origin="*"
+    factory=".demo.Put"
+    />
+
+  <plone:service
+    method="delete"
+    for="*"
+    factory=".demo.Delete"
     />
 
 </configure>

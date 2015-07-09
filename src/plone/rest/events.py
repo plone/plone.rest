@@ -1,14 +1,19 @@
 from plone.rest.interfaces import IAPIRequest
+from plone.rest.interfaces import IPUT
+from plone.rest.interfaces import IGET
+from plone.rest.interfaces import IPOST
+from plone.rest.interfaces import IDELETE
+from plone.rest.interfaces import IOPTIONS
+from plone.rest.interfaces import IPATCH
 from zope.interface import alsoProvides
-from plone.rest.interfaces import IPUT, IGET, IPOST, IDELETE, IOPTIONS, IPATCH
 
 
 def mark_as_api_request(context, event):
-    """Mark views with application/json as Content-Type with the IAPIRequest
+    """Mark a request with Content-Type 'application/json' with the IAPIRequest
        interface.
     """
     if event.request.getHeader('Content-Type') == 'application/json':
-        alsoProvides(event.request, IAPIRequest)  # pragma: no cover
+        alsoProvides(event.request, IAPIRequest)
         if event.request.get('REQUEST_METHOD') == 'PUT':
             alsoProvides(event.request, IPUT)
         if event.request.get('REQUEST_METHOD') == 'DELETE':
