@@ -24,15 +24,27 @@
     />
 
   <plone:service
-    method="put"
+    method="PUT"
     for="*"
     factory=".demo.Put"
     />
 
   <plone:service
-    method="delete"
+    method="DELETE"
     for="*"
     factory=".demo.Delete"
+    />
+
+  <plone:service
+    method="PATCH"
+    for="*"
+    factory=".demo.Patch"
+    />
+
+  <plone:service
+    method="OPTIONS"
+    for="*"
+    factory=".demo.Options"
     />
 
 </configure>

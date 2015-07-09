@@ -23,3 +23,15 @@ class Delete(Service):
 
     def render(self):
         return {'service': 'delete'}
+
+
+class Patch(Service):
+
+    def render(self):
+        return {'service': 'patch'}
+
+
+class Options(Service):
+
+    def render(self):
+        return {'service': 'options'}

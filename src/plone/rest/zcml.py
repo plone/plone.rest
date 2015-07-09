@@ -77,6 +77,8 @@ def serviceDirective(
         marker = interfaces.IPUT
     elif method.upper() == 'DELETE':
         marker = interfaces.IDELETE
+    elif method.upper() == 'PATCH':
+        marker = interfaces.IPATCH
     else:
         raise ConfigurationError(
             u"No implementation for %s method" % method

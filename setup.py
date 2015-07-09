@@ -17,7 +17,7 @@ long_description = (
 
 setup(name='plone.rest',
       version=version,
-      description="In order to create REST apis on zope",
+      description="Plone support for HTTP verbs.",
       long_description=long_description,
       classifiers=[
           "Environment :: Web Environment",
@@ -39,7 +39,9 @@ setup(name='plone.rest',
       zip_safe=False,
       extras_require=dict(
           test=[
-              'plone.app.testing',
+              'plone.app.testing[robot]>=4.2.2',
+              'plone.app.contenttypes[test]',
+              'plone.app.robotframework',
           ]
       ),
       install_requires=[
