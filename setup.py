@@ -42,6 +42,7 @@ setup(name='plone.rest',
               'plone.app.testing[robot]>=4.2.2',
               'plone.app.contenttypes[test]',
               'plone.app.robotframework',
+              'requests',
           ]
       ),
       install_requires=[
