@@ -8,9 +8,9 @@ def read(*rnames):
 version = '2.1.3'
 
 long_description = (
-    read('README.txt')
+    read('README.rst')
     + '\n' +
-    read('CHANGES.txt')
+    read('CHANGES.rst')
     + '\n'
     )
 
