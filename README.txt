@@ -1,8 +1,6 @@
 Plone Portal Root
 -----------------
 
-PUT/DELETE works, GET and POST do not work.
-
 GET::
 
   $ http --auth admin:admin GET localhost:8080/Plone Content-Type:application/json
