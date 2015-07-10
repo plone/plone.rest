@@ -10,6 +10,9 @@ class Service(object):
     def browserDefault(self, request):
         return self, None
 
+    def publishTraverse(self, request, name):
+        return self
+
     def __call__(self):
         self.request.response.setHeader("Content-type", "application/json")
         return json.dumps(self.render())
