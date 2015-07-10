@@ -52,7 +52,7 @@ class TestSiteRoot(unittest.TestCase):
         )
         self.assertEqual(
             response.status_code,
-            201,
+            200,
             'POST /Plone should return status code 201, not {}'.format(
                 response.status_code
             )
