@@ -18,10 +18,25 @@ import unittest2 as unittest
 import os
 import requests
 
+HEADER_KEYS = [
+    'allow',
+    'content-type',
+]
+
 
 def save_response_for_documentation(filename, response):
     f = open('../../docs/source/_json/%s' % filename, 'w')
-    f.write(response.text)
+    f.write('{} {}\n'.format(
+        response.request.method,
+        response.request.path_url
+    ))
+    f.write('\n')
+    f.write('HTTP {} {}\n'.format(response.status_code, response.reason))
+    for key, value in response.headers.items():
+        if key.lower() in HEADER_KEYS:
+            f.write('{}: {}\n'.format(key, value))
+    f.write('\n')
+    f.write(response.content)
     f.close()
 
 

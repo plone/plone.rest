@@ -1,1 +1,8 @@
-{"service": "put"}
+PUT /plone
+
+HTTP 200 OK
+content-type: application/json
+
+{
+  "service": "put"
+}
