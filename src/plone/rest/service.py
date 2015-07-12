@@ -14,5 +14,5 @@ class Service(object):
         return self
 
     def __call__(self):
-        self.request.response.setHeader("Content-type", "application/json")
+        self.request.response.setHeader("Content-Type", "application/json")
         return json.dumps(self.render(), indent=2, sort_keys=True)

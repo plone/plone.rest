@@ -55,7 +55,7 @@ class TestContent(unittest.TestCase):
     def test_document_get(self):
         response = requests.get(
             self.document.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -81,7 +81,7 @@ class TestContent(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.newsitem.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -97,7 +97,7 @@ class TestContent(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.event.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -112,7 +112,7 @@ class TestContent(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.link.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -137,7 +137,7 @@ class TestContent(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.file.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -157,7 +157,7 @@ class TestContent(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.image.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -181,7 +181,7 @@ class TestContent(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.folder.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -211,7 +211,7 @@ class TestContent(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.collection.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
