@@ -38,42 +38,7 @@ OPTIONS:
 Plone Content
 -------------
 
-Plone Folder:
-
-.. literalinclude:: _json/folder.json
-   :language: jsonld
-
 Plone Document:
 
 .. literalinclude:: _json/document.json
    :language: jsonld
-
-News Item:
-
-.. literalinclude:: _json/newsitem.json
-   :language: json-ld
-
-Event:
-
-.. literalinclude:: _json/event.json
-   :language: json-ld
-
-Image:
-
-.. literalinclude:: _json/image.json
-   :language: json-ld
-
-File:
-
-.. literalinclude:: _json/file.json
-   :language: json-ld
-
-Link:
-
-.. literalinclude:: _json/link.json
-   :language: json-ld
-
-Collection:
-
-.. literalinclude:: _json/collection.json
-   :language: json-ld
