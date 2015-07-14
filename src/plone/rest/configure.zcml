@@ -13,7 +13,7 @@
 
   <plone:service
     method="GET"
-    for="*"
+    for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Get"
     />
 
