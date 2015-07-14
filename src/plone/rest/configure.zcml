@@ -13,37 +13,37 @@
 
   <plone:service
     method="GET"
-    for="*"
+    for="Products.CMFCore.interfaces.IContentish"
     factory=".demo.Get"
     />
 
   <plone:service
     method="POST"
-    for="*"
+    for="Products.CMFCore.interfaces.IContentish"
     factory=".demo.Post"
     />
 
   <plone:service
     method="PUT"
-    for="*"
+    for="Products.CMFCore.interfaces.IContentish"
     factory=".demo.Put"
     />
 
   <plone:service
     method="DELETE"
-    for="*"
+    for="Products.CMFCore.interfaces.IContentish"
     factory=".demo.Delete"
     />
 
   <plone:service
     method="PATCH"
-    for="*"
+    for="Products.CMFCore.interfaces.IContentish"
     factory=".demo.Patch"
     />
 
   <plone:service
     method="OPTIONS"
-    for="*"
+    for="Products.CMFCore.interfaces.IContentish"
     factory=".demo.Options"
     />
 
