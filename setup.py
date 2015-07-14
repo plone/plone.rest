@@ -40,8 +40,8 @@ setup(name='plone.rest',
       extras_require=dict(
           test=[
               'plone.app.testing[robot]>=4.2.2',
-              'plone.app.contenttypes[test]',
               'plone.app.robotframework',
+              'plone.dexterity',
               'requests',
           ]
       ),
