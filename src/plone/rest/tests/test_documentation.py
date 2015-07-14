@@ -8,7 +8,6 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.textfield.value import RichTextValue
 from plone.namedfile.file import NamedBlobImage
 from plone.namedfile.file import NamedBlobFile
-from plone.testing.z2 import Browser
 from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.app.intid.interfaces import IIntIds
@@ -65,17 +64,13 @@ class TestTraversal(unittest.TestCase):
         )
         import transaction
         transaction.commit()
-        self.browser = Browser(self.app)
-        self.browser.handleErrors = False
-        self.browser.addHeader(
-            'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
-        )
 
     def test_documentation_document(self):
         response = requests.get(
             self.document.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={
+                'Accept': 'application/json'
+            },
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('document.json', response)
@@ -100,7 +95,7 @@ class TestTraversal(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.newsitem.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('newsitem.json', response)
@@ -115,7 +110,7 @@ class TestTraversal(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.event.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('event.json', response)
@@ -129,7 +124,7 @@ class TestTraversal(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.link.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('link.json', response)
@@ -153,7 +148,7 @@ class TestTraversal(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.file.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('file.json', response)
@@ -172,7 +167,7 @@ class TestTraversal(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.image.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('image.json', response)
@@ -195,7 +190,7 @@ class TestTraversal(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.folder.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('folder.json', response)
@@ -224,7 +219,7 @@ class TestTraversal(unittest.TestCase):
         transaction.commit()
         response = requests.get(
             self.portal.collection.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('collection.json', response)
@@ -232,7 +227,7 @@ class TestTraversal(unittest.TestCase):
     def test_documentation_siteroot_get(self):
         response = requests.get(
             self.portal.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('siteroot-get.json', response)
@@ -240,7 +235,7 @@ class TestTraversal(unittest.TestCase):
     def test_documentation_siteroot_post(self):
         response = requests.post(
             self.portal.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('siteroot-post.json', response)
@@ -248,7 +243,7 @@ class TestTraversal(unittest.TestCase):
     def test_documentation_siteroot_delete(self):
         response = requests.delete(
             self.portal.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('siteroot-delete.json', response)
@@ -256,7 +251,7 @@ class TestTraversal(unittest.TestCase):
     def test_documentation_siteroot_put(self):
         response = requests.put(
             self.portal.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('siteroot-put.json', response)
@@ -264,7 +259,7 @@ class TestTraversal(unittest.TestCase):
     def test_documentation_siteroot_patch(self):
         response = requests.patch(
             self.portal.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('siteroot-patch.json', response)
@@ -272,7 +267,7 @@ class TestTraversal(unittest.TestCase):
     def test_documentation_siteroot_options(self):
         response = requests.options(
             self.portal.absolute_url(),
-            headers={'Content-Type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         save_response_for_documentation('siteroot-options.json', response)

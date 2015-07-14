@@ -32,7 +32,7 @@ class TestSiteRoot(unittest.TestCase):
     def test_siteroot_get(self):
         response = requests.get(
             self.portal.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(
@@ -47,7 +47,7 @@ class TestSiteRoot(unittest.TestCase):
     def test_siteroot_post(self):
         response = requests.post(
             self.portal.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(
@@ -62,7 +62,7 @@ class TestSiteRoot(unittest.TestCase):
     def test_siteroot_delete(self):
         response = requests.delete(
             self.portal.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -71,7 +71,7 @@ class TestSiteRoot(unittest.TestCase):
     def test_siteroot_put(self):
         response = requests.put(
             self.portal.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -80,7 +80,7 @@ class TestSiteRoot(unittest.TestCase):
     def test_siteroot_patch(self):
         response = requests.patch(
             self.portal.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
@@ -89,7 +89,7 @@ class TestSiteRoot(unittest.TestCase):
     def test_siteroot_options(self):
         response = requests.options(
             self.portal.absolute_url(),
-            headers={'content-type': 'application/json'},
+            headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)

@@ -9,10 +9,10 @@ from zope.interface import alsoProvides
 
 
 def mark_as_api_request(context, event):
-    """Mark a request with Content-Type 'application/json' with the IAPIRequest
+    """Mark a request with Accept 'application/json' with the IAPIRequest
        interface.
     """
-    if event.request.getHeader('Content-Type') == 'application/json':
+    if event.request.getHeader('Accept') == 'application/json':
         alsoProvides(event.request, IAPIRequest)
         if event.request.get('REQUEST_METHOD') == 'PUT':
             alsoProvides(event.request, IPUT)
