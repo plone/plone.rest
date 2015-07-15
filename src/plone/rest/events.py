@@ -9,21 +9,26 @@ from plone.rest.interfaces import IPATCH
 from zope.interface import alsoProvides
 
 
-def mark_as_api_request(context, event):
+def mark_as_api_request(request):
+    alsoProvides(request, IAPIRequest)
+    if request.get('REQUEST_METHOD') == 'PUT':
+        alsoProvides(request, IPUT)
+    if request.get('REQUEST_METHOD') == 'DELETE':
+        alsoProvides(request, IDELETE)
+    if request.get('REQUEST_METHOD') == 'GET':
+        alsoProvides(request, IGET)
+    if request.get('REQUEST_METHOD') == 'POST':
+        alsoProvides(request, IPOST)
+    if request.get('REQUEST_METHOD') == 'OPTIONS':
+        alsoProvides(request, IOPTIONS)
+    if request.get('REQUEST_METHOD') == 'PATCH':
+        alsoProvides(request, IPATCH)
+
+
+def btph_api_request(context, event):
     """Mark a request with Accept 'application/json' with the IAPIRequest
        interface.
     """
     if event.request.getHeader('Accept') == 'application/json':
-        alsoProvides(event.request, IAPIRequest)
-        if event.request.get('REQUEST_METHOD') == 'PUT':
-            alsoProvides(event.request, IPUT)
-        if event.request.get('REQUEST_METHOD') == 'DELETE':
-            alsoProvides(event.request, IDELETE)
-        if event.request.get('REQUEST_METHOD') == 'GET':
-            alsoProvides(event.request, IGET)
-        if event.request.get('REQUEST_METHOD') == 'POST':
-            alsoProvides(event.request, IPOST)
-        if event.request.get('REQUEST_METHOD') == 'OPTIONS':
-            alsoProvides(event.request, IOPTIONS)
-        if event.request.get('REQUEST_METHOD') == 'PATCH':
-            alsoProvides(event.request, IPATCH)
+        mark_as_api_request(event.request)
+
