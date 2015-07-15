@@ -84,20 +84,6 @@ def serviceDirective(
             u"No implementation for %s method" % method
         )
 
-    # Instantiate the real factory if it's the schema-aware type. We do
-    # this here so that the for_ interface may take this into account.
-    # if factory is not None and ISchemaAwareFactory.providedBy(factory):
-    #     factory = factory(provides)
-
-    # registration = ServiceRegistration(
-    #     title=title,
-    #     description=description,
-    #     interface=provides,
-    #     marker=marker,
-    #     factory=factory)
-
-    # adapter_factory = ServiceAdapterFactory(registration)
-
     adapter(
         _context,
         factory=(factory,),

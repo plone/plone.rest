@@ -18,6 +18,12 @@
     />
 
   <plone:service
+    method="GET"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".demo.Get"
+    />
+
+  <plone:service
     method="POST"
     for="*"
     factory=".demo.Post"
