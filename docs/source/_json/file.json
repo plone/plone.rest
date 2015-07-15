@@ -1,8 +1,0 @@
-GET /plone/file
-
-HTTP 200 OK
-content-type: application/json
-
-{
-  "service": "get"
-}

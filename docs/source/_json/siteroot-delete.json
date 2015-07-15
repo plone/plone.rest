@@ -1,8 +1,0 @@
-DELETE /plone
-
-HTTP 200 OK
-content-type: application/json
-
-{
-  "service": "delete"
-}
