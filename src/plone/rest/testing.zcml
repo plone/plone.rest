@@ -4,11 +4,45 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone">
 
+  <!-- Dexterity -->
+
   <plone:service
     method="GET"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Get"
     />
+
+  <plone:service
+    method="POST"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.Post"
+    />
+
+  <plone:service
+    method="PUT"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.Put"
+    />
+
+  <plone:service
+    method="DELETE"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.Delete"
+    />
+
+  <plone:service
+    method="PATCH"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.Patch"
+    />
+
+  <plone:service
+    method="OPTIONS"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.Options"
+    />
+
+  <!-- Plone Site Root -->
 
   <plone:service
     method="GET"
@@ -18,31 +52,31 @@
 
   <plone:service
     method="POST"
-    for="*"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Post"
     />
 
   <plone:service
     method="PUT"
-    for="*"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Put"
     />
 
   <plone:service
     method="DELETE"
-    for="*"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Delete"
     />
 
   <plone:service
     method="PATCH"
-    for="*"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Patch"
     />
 
   <plone:service
     method="OPTIONS"
-    for="*"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Options"
     />
 
