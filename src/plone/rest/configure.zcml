@@ -6,9 +6,9 @@
 
   <include file="meta.zcml"/>
   <subscriber
-     for="*
-          zope.app.publication.interfaces.IBeforeTraverseEvent"
-     handler=".events.mark_as_api_request"
-     />
+    for="*
+         zope.app.publication.interfaces.IBeforeTraverseEvent"
+    handler=".events.mark_as_api_request"
+    />
 
 </configure>
