@@ -27,10 +27,11 @@ class PloneRestLayer(PloneSandboxLayer):
             context=configurationContext
         )
 
-    def setUpPlone(self):
+    def setUpPloneSite(self, portal):
         fti = DexterityFTI('Document')
-        types_tool = getToolByName(self.portal, "portal_types")
+        types_tool = getToolByName(portal, "portal_types")
         types_tool._setObject('Document', fti)
+
 
 PLONE_REST_FIXTURE = PloneRestLayer()
 PLONE_REST_INTEGRATION_TESTING = IntegrationTesting(
