@@ -1,0 +1,49 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone">
+
+  <plone:service
+    method="GET"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.Get"
+    />
+
+  <plone:service
+    method="GET"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".demo.Get"
+    />
+
+  <plone:service
+    method="POST"
+    for="*"
+    factory=".demo.Post"
+    />
+
+  <plone:service
+    method="PUT"
+    for="*"
+    factory=".demo.Put"
+    />
+
+  <plone:service
+    method="DELETE"
+    for="*"
+    factory=".demo.Delete"
+    />
+
+  <plone:service
+    method="PATCH"
+    for="*"
+    factory=".demo.Patch"
+    />
+
+  <plone:service
+    method="OPTIONS"
+    for="*"
+    factory=".demo.Options"
+    />
+
+</configure>

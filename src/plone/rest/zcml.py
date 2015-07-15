@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.configuration.exceptions import ConfigurationError
 from zope.configuration.fields import GlobalObject, GlobalInterface
 from zope.interface import Interface

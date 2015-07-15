@@ -1,4 +1,5 @@
-from plone.rest.service import Service
+# -*- coding: utf-8 -*-
+from plone.rest import Service
 
 
 class Get(Service):

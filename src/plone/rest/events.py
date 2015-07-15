@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import IPUT
 from plone.rest.interfaces import IGET
