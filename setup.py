@@ -41,7 +41,7 @@ setup(name='plone.rest',
           test=[
               'plone.app.testing[robot]>=4.2.2',
               'plone.app.robotframework',
-              'plone.dexterity',
+              'plone.app.contenttypes[test]',
               'requests',
           ]
       ),
