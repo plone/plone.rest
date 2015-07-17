@@ -68,21 +68,21 @@ See events.py for more details. If there are verbs missing, feel free to open an
 
 GET::
 
-  $ http --auth admin:admin GET localhost:8080/Plone Content-Type:application/json
+  $ http --auth admin:admin GET localhost:8080/Plone Accept:application/json
 
 POST::
 
-  $ http --auth admin:admin POST localhost:8080/Plone Content-Type:application/json
+  $ http --auth admin:admin POST localhost:8080/Plone Accept:application/json
 
 
 PUT::
 
-  $ http --auth admin:admin PUT localhost:8080/Plone Content-Type:application/json
+  $ http --auth admin:admin PUT localhost:8080/Plone Accept:application/json
 
 
 DELETE::
 
-  http --auth admin:admin DELETE localhost:8080/Plone Content-Type:application/json
+  http --auth admin:admin DELETE localhost:8080/Plone Accept:application/json
 
 
 Plone Portal Root
