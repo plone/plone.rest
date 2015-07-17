@@ -30,7 +30,8 @@ class PloneRestLayer(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         fti = DexterityFTI('Document')
         types_tool = getToolByName(portal, "portal_types")
-        types_tool._setObject('Document', fti)
+        if 'Document' not in types_tool.objectIds():
+            types_tool._setObject('Document', fti)
 
 
 PLONE_REST_FIXTURE = PloneRestLayer()

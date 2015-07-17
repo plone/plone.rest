@@ -11,4 +11,6 @@
     handler=".events.btph_api_request"
     />
 
+  <include file="patches.zcml" />
+
 </configure>

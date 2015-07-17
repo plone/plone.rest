@@ -47,6 +47,7 @@ setup(name='plone.rest',
       ),
       install_requires=[
           'setuptools',
+          'collective.monkeypatcher',
           'zope.component',
           'zope.interface',
           'zope.publisher',
