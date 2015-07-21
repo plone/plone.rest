@@ -31,4 +31,3 @@ def btph_api_request(context, event):
     """
     if event.request.getHeader('Accept') == 'application/json':
         mark_as_api_request(event.request)
-
