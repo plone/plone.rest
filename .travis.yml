@@ -5,7 +5,11 @@ cache:
   directories:
     - $HOME/buildout-cache
 env:
+  - PLONE_VERSION=4.3.x
   - PLONE_VERSION=5.0.x
+matrix:
+  allow_failures:
+    - env: PLONE_VERSION=4.3.x
 before_install:
   - mkdir -p $HOME/buildout-cache/{eggs,downloads}
   - virtualenv .
@@ -15,6 +19,7 @@ install:
   - bin/buildout -N -t 3 -c travis.cfg
 script:
   - bin/code-analysis
+  - bin/test
   - bin/test-coverage
 after_success:
   - pip install -q coveralls
