@@ -9,7 +9,6 @@ def PloneSite__before_publishing_traverse__(self, arg1, arg2=None):
     """Pre-traversal hook that stops traversal to prevent the default view
        to be appended. Appending the default view will break REST calls.
     """
-    print("PATCH PLONESITE")
     REQUEST = arg2 or arg1
 
     if IAPIRequest.providedBy(REQUEST):
@@ -27,7 +26,6 @@ def DexterityContent__before_publishing_traverse__(self, arg1, arg2=None):
         """Pre-traversal hook that stops traversal to prevent the default view
            to be appended. Appending the default view will break REST calls.
         """
-        print("PATCH DEXTERITY")
         REQUEST = arg2 or arg1
 
         from plone.rest.interfaces import IAPIRequest
