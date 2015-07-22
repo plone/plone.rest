@@ -42,44 +42,6 @@
     factory=".demo.Options"
     />
 
-  <!-- Archetypes -->
-
-  <plone:service
-    method="GET"
-    for="Products.Archetypes.interfaces.IBaseContent"
-    factory=".demo.Get"
-    />
-
-  <plone:service
-    method="POST"
-    for="Products.Archetypes.interfaces.IBaseContent"
-    factory=".demo.Post"
-    />
-
-  <plone:service
-    method="PUT"
-    for="Products.Archetypes.interfaces.IBaseContent"
-    factory=".demo.Put"
-    />
-
-  <plone:service
-    method="DELETE"
-    for="Products.Archetypes.interfaces.IBaseContent"
-    factory=".demo.Delete"
-    />
-
-  <plone:service
-    method="PATCH"
-    for="Products.Archetypes.interfaces.IBaseContent"
-    factory=".demo.Patch"
-    />
-
-  <plone:service
-    method="OPTIONS"
-    for="Products.Archetypes.interfaces.IBaseContent"
-    factory=".demo.Options"
-    />
-
   <!-- Plone Site Root -->
 
   <plone:service
