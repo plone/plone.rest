@@ -205,10 +205,9 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.portal.file.file = RelationValue(file_id)
         import transaction
         transaction.commit()
-        # XXX: We are cheating here, @@json should not be necessary! Remove as
-        # soon as this has been fixed.
+
         response = requests.get(
-            self.portal.file.absolute_url() + '/@@json',
+            self.portal.file.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
@@ -231,10 +230,9 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         )
         import transaction
         transaction.commit()
-        # XXX: We are cheating here, @@json should not be necessary! Remove as
-        # soon as this has been fixed.
+
         response = requests.get(
-            self.portal.image.absolute_url() + '/@@json',
+            self.portal.image.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
