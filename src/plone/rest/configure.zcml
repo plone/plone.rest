@@ -12,5 +12,5 @@
     />
 
   <include file="patches.zcml" />
-
+  <include file="testing.zcml" />
 </configure>
