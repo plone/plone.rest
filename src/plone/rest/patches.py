@@ -48,7 +48,8 @@ def DexterityContent__before_publishing_traverse__(self, arg1, arg2=None):
             try:
                 notify(BeforeTraverseEvent(self, REQUEST))
             except ComponentLookupError:
-                # allow ZMI access, even if the portal's site manager is missing
+                # allow ZMI access, even if the portal's site manager is
+                # missing
                 pass
             return
         super(DexterityContent, self).__before_publishing_traverse__(
@@ -67,7 +68,8 @@ def ArchetypesContent__before_publishing_traverse__(self, arg1, arg2=None):
             try:
                 notify(BeforeTraverseEvent(self, REQUEST))
             except ComponentLookupError:
-                # allow ZMI access, even if the portal's site manager is missing
+                # allow ZMI access, even if the portal's site manager is
+                # missing
                 pass
             return
 
