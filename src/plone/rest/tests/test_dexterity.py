@@ -99,7 +99,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
     def test_dexterity_folder_get(self):
         self.portal.invokeFactory('Folder', id='folder')
         response = requests.get(
-            self.folder.absolute_url(),
+            self.portal.folder.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )

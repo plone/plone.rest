@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing import PLONE_FIXTURE
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
-from plone.dexterity.fti import DexterityFTI
 from plone.testing import z2
-from Products.CMFCore.utils import getToolByName
 
 from zope.configuration import xmlconfig
 
 
 class PloneRestLayer(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE,)
+    defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         import plone.rest
@@ -26,12 +24,6 @@ class PloneRestLayer(PloneSandboxLayer):
             plone.rest,
             context=configurationContext
         )
-
-    def setUpPloneSite(self, portal):
-        fti = DexterityFTI('Document')
-        types_tool = getToolByName(portal, "portal_types")
-        if 'Document' not in types_tool.objectIds():
-            types_tool._setObject('Document', fti)
 
 
 PLONE_REST_FIXTURE = PloneRestLayer()

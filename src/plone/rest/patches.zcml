@@ -18,12 +18,4 @@
     original="__before_publishing_traverse__"
     replacement=".patches.DexterityContent__before_publishing_traverse__"
     />
-
-  <monkey:patch
-    description=""
-    class="Products.Archetypes.BaseContent.BaseContentMixin"
-    original="__before_publishing_traverse__"
-    replacement=".patches.ArchetypesContent__before_publishing_traverse__"
-    />
-
 </configure>
