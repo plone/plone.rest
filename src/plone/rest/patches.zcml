@@ -18,4 +18,12 @@
     original="__before_publishing_traverse__"
     replacement=".patches.DexterityContent__before_publishing_traverse__"
     />
+
+  <monkey:patch
+    description=""
+    class="plone.dexterity.content.Container"
+    original="__before_publishing_traverse__"
+    replacement=".patches.DexterityContent__before_publishing_traverse__"
+    />
+
 </configure>
