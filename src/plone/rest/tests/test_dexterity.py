@@ -32,7 +32,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            {u'service': u'get'},
+            {u'portal_id': u'plone'},
             response.json()
         )
 

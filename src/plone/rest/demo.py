@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from plone.rest import Service
+from zope.component.hooks import getSite
 
 
 class Get(Service):
 
     def render(self):
-        return {'service': 'get'}
+        portal = getSite()
+        return {'portal_id': portal.id}
 
 
 class Post(Service):
