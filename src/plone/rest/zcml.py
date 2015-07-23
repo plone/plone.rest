@@ -5,10 +5,11 @@ from zope.interface import Interface
 from zope.schema import TextLine, Bool
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from plone.rest import interfaces
+from plone.rest.cors import get_cors_preflight_view
 
 from zope.component.zcml import adapter
 from zope.security.zcml import Permission
-from zope.security.checker import CheckerPublic, Checker, defineChecker
+from zope.security.checker import CheckerPublic
 
 
 class IService(Interface):
