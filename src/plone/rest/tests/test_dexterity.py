@@ -32,7 +32,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            {u'service': u'get'},
+            {u'portal_id': u'plone'},
             response.json()
         )
 
@@ -93,5 +93,18 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             {u'service': u'options'},
+            response.json()
+        )
+
+    def test_dexterity_folder_get(self):
+        self.portal.invokeFactory('Folder', id='folder')
+        response = requests.get(
+            self.folder.absolute_url(),
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {u'portal_id': u'plone'},
             response.json()
         )

@@ -34,7 +34,7 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
             )
         )
         self.assertEqual(
-            {u'service': u'get'},
+            {u'portal_id': u'plone'},
             response.json()
         )
 
