@@ -25,24 +25,26 @@ Those verbs can be registered for Dexterity content objects and the Plone site r
 Registering RESTful Service Endpoints
 -------------------------------------
 
-plone.rest allows you to register HTTP verbs for Plone content with ZCML::
+plone.rest allows you to register HTTP verbs for Plone content with ZCML.
+
+This is how you would register a PATCH request on Dexterity content::
 
   <plone:service
-    method="GET"
+    method="PATCH"
     for="plone.dexterity.interfaces.IDexterityContent"
-    factory=".service.Get"
+    factory=".service.PATCH"
     />
 
 You have to specify the HTTP verb (GET, POST, PUT, DELETE, HEAD, OPTIONS), the interface for the content objects and the factory class that actually returns the content.
 
-The factory class needs to inherit from the plone.rest 'Service' class and needs to implement a render method that returns a list or a dict::
+The factory class needs to inherit from the plone.rest 'Service' class and to implement a render method that returns a list or a dict::
 
   from plone.rest import Service
 
-  class Get(Service):
+  class Patch(Service):
 
       def render(self):
-          return {'message': 'GET: Hello World!'}
+          return {'message': 'PATCH: Hello World!'}
 
 
 The return value (list or dict) will be automatically transformed into JSON.
@@ -53,7 +55,7 @@ Content Negotiation
 
 To access the service endpoint we just created we have to send a GET request to a Dexterity object by setting the 'Accept' header to 'application/json'::
 
-  GET /Plone/doc1 HTTP/1.1
+  PATCH /Plone/doc1 HTTP/1.1
   Host: localhost:8080
   Accept: application/json
 
@@ -63,16 +65,16 @@ The server then will respond with '200 OK'::
   Content-Type: application/json
 
   {
-    'message': 'GET: Hello World!'
+    'message': 'PATCH: Hello World!'
   }
 
 You can try this out on the command line::
 
-  $ http --auth admin:admin GET localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin PATCH localhost:8080/Plone/doc1 Accept:application/json
 
-..note: You have to install httpie (pip install httpie) to make this example work.
+.. note:: You have to install httpie (pip install httpie) to make this example work.
 
-Here is a list of all supported HTTP verbs.
+Here is a list of examples for all HTTP verbs.
 
 GET::
 
