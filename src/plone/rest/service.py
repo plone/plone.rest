@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import json
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+
+import json
 
 
 class Service(DefaultPublishTraverse):
@@ -14,7 +15,6 @@ class Service(DefaultPublishTraverse):
 
     def publishTraverse(self, request, name):
         return super(Service, self).publishTraverse(request, name)
-    #     return self
 
     def __call__(self):
         self.request.response.setHeader("Content-Type", "application/json")

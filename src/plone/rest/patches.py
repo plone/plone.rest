@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.events import mark_as_api_request
 from plone.dexterity.content import DexterityContent
