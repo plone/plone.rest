@@ -1,3 +1,14 @@
+.. image:: https://secure.travis-ci.org/plone/plone.rest.png?branch=master
+  :target: http://travis-ci.org/plone/plone.rest
+
+.. image:: https://coveralls.io/repos/plone/plone.rest/badge.png?branch=master
+  :target: https://coveralls.io/r/plone/plone.rest
+
+.. image:: https://landscape.io/github/plone/plone.rest/master/landscape.svg?style=plastic
+  :target: https://landscape.io/github/plone/plone.rest/master
+  :alt: Code Health
+
+
 ==========
 Plone REST
 ==========
