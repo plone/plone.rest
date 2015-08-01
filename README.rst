@@ -1,10 +1,38 @@
-==============================================================================
+.. image:: https://secure.travis-ci.org/plone/plone.rest.png?branch=master
+  :target: http://travis-ci.org/plone/plone.rest
+
+.. image:: https://coveralls.io/repos/plone/plone.rest/badge.png?branch=master
+  :target: https://coveralls.io/r/plone/plone.rest
+
+.. image:: https://landscape.io/github/plone/plone.rest/master/landscape.svg?style=plastic
+  :target: https://landscape.io/github/plone/plone.rest/master
+  :alt: Code Health
+
+
+==========
 Plone REST
-==============================================================================
+==========
 
-plone.rest allows you to use HTTP verbs such as GET, POST, PUT, DELETE, etc. in Plone.
+Purpose
+-------
 
-REST stands for `Representational State Transfer`_. It is a software architectural principle to create loosely coupled web APIs. plone.rest just provides the basic infrastructure that allows us to build RESTful endpoints on top of it. If you are looking for a full RESTful Plone API, please have a look at `plone.restapi`_.
+plone.rest allows you to use HTTP verbs such as GET, POST, PUT, DELETE, etc. in `Plone <https://www.plone.org>`_.
+
+REST stands for `Representational State Transfer <http://en.wikipedia.org/wiki/Representational_state_transfer>`_.
+It is a software architectural principle to create loosely coupled web APIs.
+
+plone.rest provides the basic infrastructure that allows us to build RESTful endpoints in Plone.
+
+The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases. A number of these specific end points are already in active use.
+
+
+Audience
+--------
+
+plone.rest is for experienced web developers who want to build their own endpoints on top of Plone.
+
+If you want to **use** a ready-made full RESTful Plone API, you should use `plone.restapi <https://github.com/plone/plone.restapi>`_.
+That package uses, and depends upon, this one.
 
 
 Features
@@ -27,12 +55,14 @@ Registering RESTful Service Endpoints
 
 plone.rest allows you to register HTTP verbs for Plone content with ZCML.
 
-This is how you would register a PATCH request on Dexterity content::
+This is how you would register a PATCH request on Dexterity content:
+
+.. code-block:: xml
 
   <plone:service
     method="PATCH"
     for="plone.dexterity.interfaces.IDexterityContent"
-    factory=".service.PATCH"
+    factory=".service.Patch"
     />
 
 You have to specify the HTTP verb (GET, POST, PUT, DELETE, HEAD, OPTIONS), the interface for the content objects and the factory class that actually returns the content.
@@ -68,13 +98,15 @@ The server then will respond with '200 OK'::
     'message': 'PATCH: Hello World!'
   }
 
-You can try this out on the command line::
+You can try this out on the command line:
 
-  $ http --auth admin:admin PATCH localhost:8080/Plone/doc1 Accept:application/json
+.. code-block:: console
+
+    $ http --auth admin:admin PATCH localhost:8080/Plone/doc1 Accept:application/json
 
 .. note:: You have to install httpie (pip install httpie) to make this example work.
 
-Here is a list of examples for all HTTP verbs.
+Here is a list of examples for all supported HTTP verbs:
 
 GET::
 
@@ -129,7 +161,7 @@ Support
 
 This package is maintained by Timo Stollenwerk <tisto@plone.org> and Ramon Navarro Bosch <ramon.nb@gmail.com>.
 
-If you are having issues, please `let us know`_.
+If you are having issues, please `let us know <https://github.com/plone/plone.rest/issues>`_.
 
 
 License
@@ -137,8 +169,3 @@ License
 
 The project is licensed under the GPLv2.
 
-.. _`Representational State Transfer`: http://en.wikipedia.org/wiki/Representational_state_transfer
-
-.. _`plone.restapi`: https://github.com/plone/plone.rest
-
-.. _`let us know`: https://github.com/plone/plone.rest/issues
