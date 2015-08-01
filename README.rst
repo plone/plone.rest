@@ -51,7 +51,7 @@ This is how you would register a PATCH request on Dexterity content:
   <plone:service
     method="PATCH"
     for="plone.dexterity.interfaces.IDexterityContent"
-    factory=".service.PATCH"
+    factory=".service.Patch"
     />
 
 You have to specify the HTTP verb (GET, POST, PUT, DELETE, HEAD, OPTIONS), the interface for the content objects and the factory class that actually returns the content.
