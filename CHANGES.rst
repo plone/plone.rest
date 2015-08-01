@@ -5,4 +5,4 @@ Changelog
 ------------------
 
 - Initial release.
-  [bloodbare,timo]
+  [bloodbare, timo]
