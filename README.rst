@@ -10,7 +10,7 @@ plone.rest allows you to use HTTP verbs such as GET, POST, PUT, DELETE, etc. in 
 REST stands for `Representational State Transfer <http://en.wikipedia.org/wiki/Representational_state_transfer>`_.
 It is a software architectural principle to create loosely coupled web APIs.
 
-plone.rest provides the basic infrastructure that allows us to build RESTful endpoints on top of it.
+plone.rest provides the basic infrastructure that allows us to build RESTful endpoints in Plone.
 
 The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases. A number of these specific end points are already in active use.
 
@@ -36,8 +36,7 @@ plone.rest currently supports the following HTTP verbs:
 * PATCH
 * OPTIONS
 
-Those verbs can be registered for Dexterity content objects and the Plone site root.
-The only format that is currently supported via HTTP content negotiation is 'application/json'.
+Those verbs can be registered for Dexterity content objects and the Plone site root. The only format that is currently supported via HTTP content negotiation is 'application/json'.
 
 
 Registering RESTful Service Endpoints
@@ -96,7 +95,7 @@ You can try this out on the command line:
 
 .. note:: You have to install httpie (pip install httpie) to make this example work.
 
-Here is a list of examples for all HTTP verbs.
+Here is a list of examples for all supported HTTP verbs:
 
 GET::
 
