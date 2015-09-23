@@ -122,15 +122,15 @@ PUT::
 
 DELETE::
 
-  http --auth admin:admin DELETE localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin DELETE localhost:8080/Plone/doc1 Accept:application/json
 
 PATCH::
 
-  http --auth admin:admin PATCH localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin PATCH localhost:8080/Plone/doc1 Accept:application/json
 
 OPTIONS::
 
-  http --auth admin:admin OPTIONS localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin OPTIONS localhost:8080/Plone/doc1 Accept:application/json
 
 
 Installation
