@@ -66,10 +66,23 @@ def wrap_cors(fn, cors_origins):
         request.response.setHeader('Access-Control-Allow-Origin', cors_origins)
         request.response.setHeader(
             'Access-Control-Allow-Methods',
+<<<<<<< 4d85c6b8d93d5d201a83f1ea5fa986ce92deb167
             'POST,GET,DELETE,PUT,OPTIONS')
         request.response.setHeader(
             'Access-Control-Allow-Headers',
             'Origin, Content-Type, Accept, Authorization, x-firephp-version')
+=======
+            'POST,GET,DELETE,PUT,OPTIONS'
+        )
+        # request.response.setHeader(
+        #     'Access-Control-Allow-Headers',
+        #     'Origin, Content-Type, Accept, Authorization'
+        # )
+        request.response.setHeader(
+            'Access-Control-Allow-Headers',
+            'Origin, Content-Type, Accept, Authorization,x-firephp-version'
+        )
+>>>>>>> Fix pep8 violations.
         request.response.setHeader('Access-Control-Allow-Credentials', 'true')
         request.response.setHeader('Access-Control-Max-Age', '1728000')
         return result
@@ -84,10 +97,19 @@ def options_view(cors_origins):
         request.response.setHeader('Access-Control-Allow-Origin', cors_origins)
         request.response.setHeader(
             'Access-Control-Allow-Methods',
+<<<<<<< 4d85c6b8d93d5d201a83f1ea5fa986ce92deb167
             'POST,GET,DELETE,PUT,OPTIONS')
         request.response.setHeader(
             'Access-Control-Allow-Headers',
             'Origin, Content-Type, Accept, Authorization, x-firephp-version')
+=======
+            'POST,GET,DELETE,PUT,OPTIONS'
+        )
+        request.response.setHeader(
+            'Access-Control-Allow-Headers',
+            'Origin, Content-Type, Accept, Authorization,x-firephp-version'
+        )
+>>>>>>> Fix pep8 violations.
         request.response.setHeader('Access-Control-Allow-Credentials', 'true')
         request.response.setHeader('Access-Control-Max-Age', '1728000')
 

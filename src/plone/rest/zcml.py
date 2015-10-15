@@ -2,7 +2,7 @@
 from zope.configuration.exceptions import ConfigurationError
 from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
-from zope.schema import TextLine, Bool
+from zope.schema import TextLine
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from plone.rest import interfaces
 <<<<<<< c9c03375f2f6957a0b416aedbfb9f417b50b8139
