@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from zope.configuration.exceptions import ConfigurationError
-from zope.configuration.fields import GlobalObject, GlobalInterface
+from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
 from zope.schema import TextLine, Bool
 from zope.publisher.interfaces.browser import IBrowserPublisher
@@ -37,12 +37,6 @@ class IService(Interface):
         description=u"If this is not given, the behavior is assumed to " +
                     u"provide a marker interface")
 
-    layer = GlobalInterface(
-        title=u"A marker interface to be applied by the behavior",
-        description=u"If provides is given and factory is not given, then "
-                    u"this is optional",
-        required=False)
-
     cors_enabled = Bool(
         title=u"The name of the view that should be the default."
               u"[get|post|put|delete]",
@@ -73,7 +67,6 @@ def serviceDirective(
         method,
         factory,
         for_,
-        layer=None,
         cors_enabled=False,
         cors_origin=None,
         permission=CheckerPublic
