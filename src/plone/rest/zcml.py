@@ -33,9 +33,8 @@ class IService(Interface):
         )
 
     factory = GlobalObject(
-        title=u"The factory for this behavior",
-        description=u"If this is not given, the behavior is assumed to " +
-                    u"provide a marker interface")
+        title=u"The factory for this service",
+        description=u"The factory is usually subclass of the Service class.")
 
     cors_enabled = Bool(
         title=u"The name of the view that should be the default."
