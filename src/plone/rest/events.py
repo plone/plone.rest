@@ -9,25 +9,26 @@ from plone.rest.interfaces import IPATCH
 from zope.interface import alsoProvides
 
 
-def mark_as_api_request(request):
-    alsoProvides(request, IAPIRequest)
-    if request.get('REQUEST_METHOD') == 'PUT':
-        alsoProvides(request, IPUT)
-    if request.get('REQUEST_METHOD') == 'DELETE':
-        alsoProvides(request, IDELETE)
-    if request.get('REQUEST_METHOD') == 'GET':
-        alsoProvides(request, IGET)
-    if request.get('REQUEST_METHOD') == 'POST':
-        alsoProvides(request, IPOST)
-    if request.get('REQUEST_METHOD') == 'OPTIONS':
-        alsoProvides(request, IOPTIONS)
-    if request.get('REQUEST_METHOD') == 'PATCH':
-        alsoProvides(request, IPATCH)
-
-
-def btph_api_request(context, event):
+def mark_as_api_request(event):
     """Mark a request with Accept 'application/json' with the IAPIRequest
        interface.
     """
-    if event.request.getHeader('Accept') == 'application/json':
-        mark_as_api_request(event.request)
+    request = event.request
+    if request.getHeader('Accept') == 'application/json':
+        alsoProvides(request, IAPIRequest)
+        if request.get('REQUEST_METHOD') == 'PUT':
+            alsoProvides(request, IPUT)
+        if request.get('REQUEST_METHOD') == 'DELETE':
+            alsoProvides(request, IDELETE)
+        if request.get('REQUEST_METHOD') == 'GET':
+            alsoProvides(request, IGET)
+        if request.get('REQUEST_METHOD') == 'POST':
+            alsoProvides(request, IPOST)
+        if request.get('REQUEST_METHOD') == 'OPTIONS':
+            alsoProvides(request, IOPTIONS)
+        if request.get('REQUEST_METHOD') == 'PATCH':
+            alsoProvides(request, IPATCH)
+
+        # Flag as non-WebDAV request in order to avoid special treatment
+        # in ZPublisher.BaseRequest.traverse().
+        event.request.maybe_webdav_client = 0

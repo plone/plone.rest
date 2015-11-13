@@ -104,6 +104,78 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             response.json()
         )
 
+    def test_dexterity_named_get(self):
+        response = requests.get(
+            self.document.absolute_url() + '/namedservice',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {u'service': u'named get'},
+            response.json()
+        )
+
+    def test_dexterity_named_post(self):
+        response = requests.post(
+            self.document.absolute_url() + '/namedservice',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {u'service': u'named post'},
+            response.json()
+        )
+
+    def test_dexterity_named_put(self):
+        response = requests.put(
+            self.document.absolute_url() + '/namedservice',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {u'service': u'named put'},
+            response.json()
+        )
+
+    def test_dexterity_named_patch(self):
+        response = requests.patch(
+            self.document.absolute_url() + '/namedservice',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {u'service': u'named patch'},
+            response.json()
+        )
+
+    def test_dexterity_named_delete(self):
+        response = requests.delete(
+            self.document.absolute_url() + '/namedservice',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {u'service': u'named delete'},
+            response.json()
+        )
+
+    def test_dexterity_named_options(self):
+        response = requests.options(
+            self.document.absolute_url() + '/namedservice',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {u'service': u'named options'},
+            response.json()
+        )
+
     def test_dexterity_folder_get(self):
         self.portal.invokeFactory('Folder', id='folder')
         transaction.commit()

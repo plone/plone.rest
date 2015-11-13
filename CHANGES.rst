@@ -4,6 +4,10 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
+- Add support for named services which allows registering services like
+  ``GET /Plone/search`` or ``GET /Plone/doc1/versions/1`` using a 'name' attribute.
+  [jone, lukasgraf, buchi]
+
 - Remove "layer" from service directive for now,
   because it is not yet implemented properly.
   [jone]

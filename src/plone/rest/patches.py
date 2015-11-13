@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from plone.rest.interfaces import IAPIRequest
-from plone.rest.events import mark_as_api_request
 from plone.dexterity.content import DexterityContent
 from Products.CMFPlone.Portal import PloneSite
 from zope.component.interfaces import ComponentLookupError
@@ -17,10 +16,6 @@ def PloneSite__before_publishing_traverse__(self, arg1, arg2=None):
     goon = True
 
     if IAPIRequest.providedBy(REQUEST):
-        goon = False
-
-    if goon and REQUEST.getHeader('Accept') == 'application/json':
-        mark_as_api_request(REQUEST)
         goon = False
 
     if not goon:

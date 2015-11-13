@@ -133,6 +133,28 @@ OPTIONS::
   $ http --auth admin:admin OPTIONS localhost:8080/Plone/doc1 Accept:application/json
 
 
+Named Services
+--------------
+
+Named services can be registered by providing a 'name' attribute in the service directive:
+
+.. code-block:: xml
+
+  <plone:service
+    method="GET"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".service.Search"
+    name="search"
+    />
+
+This registers a service endpoint accessible at the site root using the
+following request::
+
+  GET /Plone/search HTTP/1.1
+  Host: localhost:8080
+  Accept: application/json
+
+
 Installation
 ------------
 
