@@ -111,3 +111,8 @@ class TestErrorHandling(unittest.TestCase):
             'HTTPError',
             response.json()['type']
         )
+
+        self.assertEqual(
+            {u'type': u'HTTPError',
+             u'message': u'HTTP Error 500: InternalServerError'},
+            response.json())
