@@ -36,6 +36,15 @@ class IService(Interface):
         title=u"The factory for this service",
         description=u"The factory is usually subclass of the Service class.")
 
+    name = TextLine(
+        title=u"The name of the service.",
+        description=u"""When no name is defined, the service is available at
+        the object's absolute URL. When defining a name, the service is
+        available at the object's absolute URL appended with a slash and the
+        service name.""",
+        required=False,
+        default=u'')
+
     cors_enabled = Bool(
         title=u"The name of the view that should be the default."
               u"[get|post|put|delete]",
@@ -66,6 +75,7 @@ def serviceDirective(
         method,
         factory,
         for_,
+        name=u'',
         cors_enabled=False,
         cors_origin=None,
         permission=CheckerPublic
@@ -106,12 +116,14 @@ def serviceDirective(
             _context,
             factory=(get_cors_preflight_view),
             provides=IBrowserPublisher,
-            for_=(for_, interfaces.IOPTIONS)
+            for_=(for_, interfaces.IOPTIONS),
+            name=name,
         )
 
     adapter(
         _context,
         factory=(factory,),
         provides=IBrowserPublisher,
-        for_=(for_, marker)
+        for_=(for_, marker),
+        name=name,
     )

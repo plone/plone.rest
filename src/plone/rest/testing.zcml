@@ -80,4 +80,48 @@
     factory=".demo.Options"
     />
 
+  <!-- Dexterity named services -->
+
+  <plone:service
+    method="GET"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedGet"
+    name="namedservice"
+    />
+
+  <plone:service
+    method="POST"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedPost"
+    name="namedservice"
+    />
+
+  <plone:service
+    method="PUT"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedPut"
+    name="namedservice"
+    />
+
+  <plone:service
+    method="DELETE"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedDelete"
+    name="namedservice"
+    />
+
+  <plone:service
+    method="PATCH"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedPatch"
+    name="namedservice"
+    />
+
+  <plone:service
+    method="OPTIONS"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedOptions"
+    name="namedservice"
+    />
+
 </configure>

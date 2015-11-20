@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.Five import BrowserView
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 import json
 
 
-class Service(DefaultPublishTraverse):
+class Service(DefaultPublishTraverse, BrowserView):
 
     def __init__(self, context, request):
         self.context = context

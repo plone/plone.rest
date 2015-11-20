@@ -6,9 +6,8 @@
 
   <include file="meta.zcml"/>
   <subscriber
-    for="*
-         zope.app.publication.interfaces.IBeforeTraverseEvent"
-    handler=".events.btph_api_request"
+    for="ZPublisher.interfaces.IPubStart"
+    handler=".events.mark_as_api_request"
     />
 
   <include file="patches.zcml" />

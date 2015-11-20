@@ -38,3 +38,39 @@ class Options(Service):
 
     def render(self):
         return {'service': 'options'}
+
+
+class NamedGet(Service):
+
+    def render(self):
+        return {'service': 'named get'}
+
+
+class NamedPost(Service):
+
+    def render(self):
+        return {'service': 'named post'}
+
+
+class NamedPut(Service):
+
+    def render(self):
+        return {'service': 'named put'}
+
+
+class NamedDelete(Service):
+
+    def render(self):
+        return {'service': 'named delete'}
+
+
+class NamedPatch(Service):
+
+    def render(self):
+        return {'service': 'named patch'}
+
+
+class NamedOptions(Service):
+
+    def render(self):
+        return {'service': 'named options'}
