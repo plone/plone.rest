@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
@@ -118,3 +119,35 @@ class TestErrorHandling(unittest.TestCase):
             {u'type': u'HTTPError',
              u'message': u'HTTP Error 500: InternalServerError'},
             response.json())
+
+    def test_500_traceback_only_for_manager_users(self):
+        provideAdapter(
+            InternalServerErrorView,
+            adapts=(Interface, IBrowserRequest),
+            provides=Interface,
+            name='internal_server_error'
+        )
+        import transaction
+        transaction.commit()
+
+        # Normal user
+        response = requests.get(
+            self.portal_url + '/internal_server_error',
+            headers={'Accept': 'application/json'},
+            auth=(TEST_USER_ID, TEST_USER_PASSWORD)
+        )
+        self.assertNotIn(u'traceback', response.json())
+
+        # Manager user
+        response = requests.get(
+            self.portal_url + '/internal_server_error',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertIn(u'traceback', response.json())
+
+        traceback = response.json()[u'traceback']
+        self.assertIsInstance(traceback, list)
+        self.assertRegexpMatches(
+            traceback[0],
+            r'^File "[^"]*", line \d*, in publish')
