@@ -27,7 +27,6 @@ class InternalServerErrorView(BrowserView):
             {},
             None
         )
-        raise HTTPError
 
 
 class TestErrorHandling(unittest.TestCase):
