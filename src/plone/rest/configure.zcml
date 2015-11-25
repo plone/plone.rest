@@ -12,4 +12,10 @@
 
   <include file="patches.zcml" />
 
+  <adapter
+      factory=".errors.ErrorHandling"
+      name="index.html"
+      provides="zope.interface.Interface"
+      />
+
 </configure>

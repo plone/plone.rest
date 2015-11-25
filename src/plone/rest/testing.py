@@ -4,6 +4,7 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
 from plone.testing import z2
+from Products.Five.browser import BrowserView
 
 from zope.configuration import xmlconfig
 
@@ -35,3 +36,17 @@ PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_REST_FIXTURE, z2.ZSERVER_FIXTURE),
     name="PloneRestLayer:Functional"
 )
+
+
+class InternalServerErrorView(BrowserView):
+
+    def __call__(self):
+        from urllib2 import HTTPError
+        raise HTTPError(
+            'http://nohost/plone/internal_server_error',
+            500,
+            'InternalServerError',
+            {},
+            None
+        )
+        raise HTTPError
