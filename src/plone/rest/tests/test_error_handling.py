@@ -5,28 +5,11 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
-from Products.Five.browser import BrowserView
-from zope.component import provideAdapter
-from zope.interface import Interface
-from zope.publisher.interfaces.browser import IBrowserRequest
 
 import json
 import requests
 import transaction
 import unittest
-
-
-class InternalServerErrorView(BrowserView):
-
-    def __call__(self):  # pragma: no cover
-        from urllib2 import HTTPError
-        raise HTTPError(
-            'http://nohost/plone/internal_server_error',
-            500,
-            'InternalServerError',
-            {},
-            None
-        )
 
 
 class TestErrorHandling(unittest.TestCase):
@@ -87,17 +70,8 @@ class TestErrorHandling(unittest.TestCase):
         )
 
     def test_500_internal_server_error(self):
-        provideAdapter(
-            InternalServerErrorView,
-            adapts=(Interface, IBrowserRequest),
-            provides=Interface,
-            name='internal_server_error'
-        )
-        import transaction
-        transaction.commit()
-
         response = requests.get(
-            self.portal_url + '/internal_server_error',
+            self.portal_url + '/500-internal-server-error',
             headers={'Accept': 'application/json'}
         )
 
@@ -120,18 +94,9 @@ class TestErrorHandling(unittest.TestCase):
             response.json())
 
     def test_500_traceback_only_for_manager_users(self):
-        provideAdapter(
-            InternalServerErrorView,
-            adapts=(Interface, IBrowserRequest),
-            provides=Interface,
-            name='internal_server_error'
-        )
-        import transaction
-        transaction.commit()
-
         # Normal user
         response = requests.get(
-            self.portal_url + '/internal_server_error',
+            self.portal_url + '/500-internal-server-error',
             headers={'Accept': 'application/json'},
             auth=(TEST_USER_ID, TEST_USER_PASSWORD)
         )
@@ -139,7 +104,7 @@ class TestErrorHandling(unittest.TestCase):
 
         # Manager user
         response = requests.get(
-            self.portal_url + '/internal_server_error',
+            self.portal_url + '/500-internal-server-error',
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
