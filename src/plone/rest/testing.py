@@ -43,10 +43,9 @@ class InternalServerErrorView(BrowserView):
     def __call__(self):
         from urllib2 import HTTPError
         raise HTTPError(
-            'http://nohost/plone/internal_server_error',
+            'http://nohost/plone/500-internal-server-error',
             500,
             'InternalServerError',
             {},
             None
         )
-        raise HTTPError
