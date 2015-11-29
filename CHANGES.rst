@@ -4,6 +4,10 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
+- Simplify patch of DynamicType pre-traversal hook and actually make it work
+  with Archetypes.
+  [buchi]
+
 - Render errors as JSON.
   [jone]
 
