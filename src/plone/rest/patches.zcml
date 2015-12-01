@@ -6,24 +6,11 @@
   <include package="collective.monkeypatcher" />
 
   <monkey:patch
-    description=""
-    class="Products.CMFPlone.Portal.PloneSite"
+    description="Disables DynamicType traversal hook for REST requests."
+    class="Products.CMFCore.DynamicType.DynamicType"
     original="__before_publishing_traverse__"
-    replacement=".patches.PloneSite__before_publishing_traverse__"
-    />
-
-  <monkey:patch
-    description=""
-    class="plone.dexterity.content.DexterityContent"
-    original="__before_publishing_traverse__"
-    replacement=".patches.DexterityContent__before_publishing_traverse__"
-    />
-
-  <monkey:patch
-    description=""
-    class="plone.dexterity.content.Container"
-    original="__before_publishing_traverse__"
-    replacement=".patches.DexterityContent__before_publishing_traverse__"
+    replacement=".patches.__before_publishing_traverse__"
+    preserveOriginal="true"
     />
 
 </configure>
