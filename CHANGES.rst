@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a2 (unreleased)
+1.0a2 (2015-12-10)
 ------------------
 
 - Simplify patch of DynamicType pre-traversal hook and actually make it work
