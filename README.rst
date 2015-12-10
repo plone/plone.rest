@@ -8,6 +8,22 @@
   :target: https://landscape.io/github/plone/plone.rest/master
   :alt: Code Health
 
+.. image:: https://img.shields.io/pypi/dm/plone.rest.svg
+    :target: https://pypi.python.org/pypi/plone.rest/
+    :alt: Downloads
+
+.. image:: https://img.shields.io/pypi/v/plone.rest.svg
+    :target: https://pypi.python.org/pypi/plone.rest/
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/status/plone.rest.svg
+    :target: https://pypi.python.org/pypi/plone.rest/
+    :alt: Egg Status
+
+.. image:: https://img.shields.io/pypi/l/plone.rest.svg
+    :target: https://pypi.python.org/pypi/plone.rest/
+    :alt: License
+
 
 ==========
 Plone REST
