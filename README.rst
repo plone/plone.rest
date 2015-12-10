@@ -55,12 +55,14 @@ Features
 --------
 
 * Registering RESTful service endpoints for the following HTTP verbs:
+
   * GET
   * POST
   * PUT
   * DELETE
   * PATCH
   * OPTIONS
+
 * Support for Dexterity and Archetypes-based content objects
 * Content negotiation ('application/json' is currently the only format supported).
 * Named services allows to register service endpoints for custom URLs
