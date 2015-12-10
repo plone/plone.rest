@@ -125,6 +125,7 @@
     />
 
   <!-- Error Page -->
+
   <browser:page
     for="*"
     name="500-internal-server-error"
