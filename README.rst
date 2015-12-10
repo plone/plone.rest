@@ -23,13 +23,13 @@ It is a software architectural principle to create loosely coupled web APIs.
 
 plone.rest provides the basic infrastructure that allows us to build RESTful endpoints in Plone.
 
-The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases. A number of these specific end points are already in active use.
+The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases. A number of these specific endpoints are already in active use.
 
 
 Audience
 --------
 
-plone.rest is for experienced web developers who want to build their own endpoints on top of Plone.
+plone.rest is for experienced web developers who want to build their own HTTP/REST endpoints on top of Plone.
 
 If you want to **use** a ready-made full RESTful Plone API, you should use `plone.restapi <https://github.com/plone/plone.restapi>`_.
 That package uses, and depends upon, this one.
@@ -38,16 +38,16 @@ That package uses, and depends upon, this one.
 Features
 --------
 
-plone.rest currently supports the following HTTP verbs:
-
-* GET
-* POST
-* PUT
-* DELETE
-* PATCH
-* OPTIONS
-
-Those verbs can be registered for Dexterity content objects and the Plone site root. The only format that is currently supported via HTTP content negotiation is 'application/json'.
+* Registering RESTful service endpoints for the following HTTP verbs:
+  * GET
+  * POST
+  * PUT
+  * DELETE
+  * PATCH
+  * OPTIONS
+* Support for Dexterity and Archetypes-based content objects
+* Content negotiation ('application/json' is currently the only format supported).
+* Named services allows to register service endpoints for custom URLs
 
 
 Registering RESTful Service Endpoints
