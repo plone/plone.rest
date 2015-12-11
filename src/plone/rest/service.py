@@ -20,7 +20,7 @@ class Service(DefaultPublishTraverse, BrowserView):
 
     def __call__(self):
         self.request.response.setHeader("Content-Type", "application/json")
-        result = self.render() 
+        result = self.render()
         if isinstance(result, filestream_iterator):
             return result
         return json.dumps(result,indent=2, sort_keys=True)
