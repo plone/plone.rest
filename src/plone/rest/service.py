@@ -23,4 +23,4 @@ class Service(DefaultPublishTraverse, BrowserView):
         result = self.render()
         if isinstance(result, filestream_iterator):
             return result
-        return json.dumps(result,indent=2, sort_keys=True)
+        return json.dumps(result, indent=2, sort_keys=True)
