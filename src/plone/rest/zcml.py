@@ -22,7 +22,7 @@ class IService(Interface):
         description=u"""
         This name refers to view that should be the view used by
         default (if no view name is supplied explicitly).""",
-        )
+    )
 
     for_ = GlobalObject(
         title=u"The interface this view is the default for.",
@@ -30,7 +30,7 @@ class IService(Interface):
         registered. All objects implementing this interface can make use of
         this view. If this attribute is not specified, the view is available
         for all objects.""",
-        )
+    )
 
     factory = GlobalObject(
         title=u"The factory for this service",
@@ -52,7 +52,7 @@ class IService(Interface):
         This name refers to view that should be the view used by
         default (if no view name is supplied explicitly).""",
         required=False
-        )
+    )
 
     cors_origin = TextLine(
         title=u"The name of the view that should be the default." +
@@ -61,13 +61,13 @@ class IService(Interface):
         This name refers to view that should be the view used by
         default (if no view name is supplied explicitly).""",
         required=False
-        )
+    )
 
     permission = Permission(
         title=u"Permission",
         description=u"The permission needed to use the view.",
         required=False
-        )
+    )
 
 
 def serviceDirective(
@@ -79,7 +79,7 @@ def serviceDirective(
         cors_enabled=False,
         cors_origin=None,
         permission=CheckerPublic
-        ):
+):
 
     if method.upper() == 'GET':
         marker = interfaces.IGET

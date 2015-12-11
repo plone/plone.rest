@@ -83,12 +83,12 @@ class FilestreamIterator(Service):
         import os
         from ZPublisher.Iterators import filestream_iterator
         self.request.response.setHeader(
-                'content-type', 
-                'application/octet-stream'
+            'content-type',
+            'application/octet-stream'
         )
         self.request.response.setHeader(
-                'content-length', 
-                os.path.getsize(__file__)
+            'content-length',
+            os.path.getsize(__file__)
         )
         return filestream_iterator(os.path.join(
             os.path.dirname(__file__), 'demo.py'))
