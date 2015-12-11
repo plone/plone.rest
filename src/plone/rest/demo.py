@@ -76,12 +76,19 @@ class NamedOptions(Service):
     def render(self):
         return {'service': 'named options'}
 
+
 class FilestreamIterator(Service):
 
     def render(self):
         import os
         from ZPublisher.Iterators import filestream_iterator
-        self.request.response.setHeader('content-type', 'application/octet-stream')
-        self.request.response.setHeader('content-length', os.path.getsize(__file__))
+        self.request.response.setHeader(
+                'content-type', 
+                'application/octet-stream'
+        )
+        self.request.response.setHeader(
+                'content-length', 
+                os.path.getsize(__file__)
+        )
         return filestream_iterator(os.path.join(
             os.path.dirname(__file__), 'demo.py'))
