@@ -124,6 +124,13 @@
     name="namedservice"
     />
 
+  <plone:service
+    method="GET"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.FilestreamIterator"
+    name="filestreamiterator"
+    />
+
   <!-- Error Page -->
 
   <browser:page
