@@ -31,4 +31,3 @@ class TestFilestreamIterator(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         # demo.py returning itself as content
         self.assertTrue('-*- coding' in response.content)
-

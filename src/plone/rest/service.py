@@ -2,7 +2,6 @@
 from Products.Five import BrowserView
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from ZPublisher.Iterators import IStreamIterator
-from ZPublisher.Iterators import filestream_iterator
 
 import json
 
