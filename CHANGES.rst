@@ -8,7 +8,6 @@ Changelog
   instead of JSON-ifable data only.
   [ajung]
 
-
 1.0a2 (2015-12-10)
 ------------------
 
