@@ -6,6 +6,7 @@ from zope.schema import TextLine, Bool
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from plone.rest import interfaces
 from plone.rest.cors import get_cors_preflight_view
+from plone.rest.traverse import NAME_PREFIX
 
 from zope.component.zcml import adapter
 from zope.security.zcml import Permission
@@ -117,7 +118,7 @@ def serviceDirective(
             factory=(get_cors_preflight_view),
             provides=IBrowserPublisher,
             for_=(for_, interfaces.IOPTIONS),
-            name=name,
+            name=NAME_PREFIX + name,
         )
 
     adapter(
@@ -125,5 +126,5 @@ def serviceDirective(
         factory=(factory,),
         provides=IBrowserPublisher,
         for_=(for_, marker),
-        name=name,
+        name=NAME_PREFIX + name,
     )
