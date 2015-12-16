@@ -1,6 +1,7 @@
+graft src/plone/rest
+graft docs
 include *.rst
-
-recursive-include docs *
-recursive-include plone *
-
-global-exclude *pyc
+exclude *.cfg
+exclude *.yml
+exclude bootstrap-buildout.py
+global-exclude *.pyc
