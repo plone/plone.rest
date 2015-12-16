@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a3 (unreleased)
+1.0a3 (2015-12-16)
 ------------------
 
 - Release fix. 1.0a2 was a brown-bag release. This fixes https://github.com/plone/plone.rest/issues/34.
