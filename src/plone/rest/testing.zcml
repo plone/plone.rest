@@ -126,11 +126,11 @@
 
   <!-- Error Page -->
 
-  <browser:page
+  <plone:service
+    method="GET"
     for="*"
     name="500-internal-server-error"
-    class=".testing.InternalServerErrorView"
-    permission="zope2.View"
+    factory=".testing.InternalServerErrorService"
     />
 
 </configure>
