@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.Five import BrowserView
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+from ZPublisher.Iterators import IStreamIterator
 
 import json
 
@@ -19,4 +20,7 @@ class Service(DefaultPublishTraverse, BrowserView):
 
     def __call__(self):
         self.request.response.setHeader("Content-Type", "application/json")
-        return json.dumps(self.render(), indent=2, sort_keys=True)
+        result = self.render()
+        if IStreamIterator.providedBy(result):
+            return result
+        return json.dumps(result, indent=2, sort_keys=True)

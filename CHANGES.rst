@@ -4,8 +4,9 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- API methods can return a ZPublisher.Iterators.filestream_iterator
+  instead of JSON-ifable data only.
+  [ajung]
 
 1.0a3 (2015-12-16)
 ------------------
