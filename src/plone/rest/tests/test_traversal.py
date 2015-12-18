@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ZPublisher import BeforeTraverse
 from ZPublisher.pubevents import PubStart
 from base64 import b64encode
 from plone.app.testing import SITE_OWNER_NAME
@@ -64,3 +65,17 @@ class TestTraversal(unittest.TestCase):
         self.portal.setDefaultPage('doc1')
         obj = self.traverse(accept='text/html')
         self.assertEquals('document_view', obj.__name__)
+
+    def test_json_request_on_object_with_multihook(self):
+        doc1 = self.portal[self.portal.invokeFactory('Document', id='doc1')]
+
+        # Register a function to be called before traversal
+        def btr_test(container, request):
+            request._btr_test_called = 1
+        doc1.btr_test = btr_test
+        nc = BeforeTraverse.NameCaller('btr_test')
+        BeforeTraverse.registerBeforeTraverse(doc1, nc, 'Document/btr_test')
+
+        obj = self.traverse(path='/plone/doc1')
+        self.assertTrue(isinstance(obj, Service), 'Not a service')
+        self.assertEquals(1, self.request._btr_test_called)

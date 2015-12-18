@@ -44,6 +44,7 @@ class RESTWrapper(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
+        self._bpth_called = False
 
     def __getattr__(self, name):
         # Delegate attribute access to the wrapped object
@@ -53,6 +54,14 @@ class RESTWrapper(object):
     def __getitem__(self, name):
         # Delegate key access to the wrapped object
         return self.context[name]
+
+    # MultiHook requries this to be a class attribute
+    def __before_publishing_traverse__(self, arg1, arg2=None):
+        bpth = getattr(self.context, '__before_publishing_traverse__', False)
+        if bpth:
+            if not self._bpth_called:
+                self._bpth_called = True
+                bpth(arg1, arg2)
 
     def publishTraverse(self, request, name):
         # Try to get an object using default traversal
