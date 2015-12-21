@@ -4,7 +4,10 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Refactor traversal of REST requests by using a traversal adapter on the site
+  root instead of a traversal adapter for each REST service. This prevents
+  REST services from being overriden by other traversal adapters.
+  [buchi]
 
 
 1.0a3 (2015-12-16)

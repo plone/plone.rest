@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
-from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
+from plone.app.testing import IntegrationTesting
+from plone.app.testing import PloneSandboxLayer
+from plone.rest.service import Service
 from plone.testing import z2
-from Products.Five.browser import BrowserView
 
 from zope.configuration import xmlconfig
 
@@ -38,7 +38,7 @@ PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
 )
 
 
-class InternalServerErrorView(BrowserView):
+class InternalServerErrorService(Service):
 
     def __call__(self):
         from urllib2 import HTTPError

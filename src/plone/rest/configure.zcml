@@ -12,6 +12,8 @@
 
   <include file="patches.zcml" />
 
+  <adapter factory=".traverse.RESTTraverse" />
+
   <adapter
       factory=".errors.ErrorHandling"
       name="index.html"
