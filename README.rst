@@ -64,7 +64,7 @@ Features
   * OPTIONS
 
 * Support for Dexterity and Archetypes-based content objects
-* Content negotiation ('application/json' is currently the only format supported).
+* Content negotiation: Services can be registered for arbitrary media types (e.g. 'application/json').
 * Named services allows to register service endpoints for custom URLs
 
 
@@ -79,11 +79,14 @@ This is how you would register a PATCH request on Dexterity content:
 
   <plone:service
     method="PATCH"
+    accept="application/json"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".service.Patch"
     />
 
-You have to specify the HTTP verb (GET, POST, PUT, DELETE, HEAD, OPTIONS), the interface for the content objects and the factory class that actually returns the content.
+You have to specify the HTTP verb (GET, POST, PUT, DELETE, HEAD, OPTIONS), the
+media type used for content negotiation, the interface for the content objects
+and the factory class that actually returns the content.
 
 The factory class needs to inherit from the plone.rest 'Service' class and to implement a render method that returns a list or a dict::
 
@@ -160,6 +163,7 @@ Named services can be registered by providing a 'name' attribute in the service 
 
   <plone:service
     method="GET"
+    accept="application/json"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".service.Search"
     name="search"

@@ -4,6 +4,11 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
+- Add support for content negotiation. REST services are no longer hardwired
+  to 'application/json' Accept headers. Instead the media type can be
+  configured with the service directive.
+  [buchi]
+
 - Refactor traversal of REST requests by using a traversal adapter on the site
   root instead of a traversal adapter for each REST service. This prevents
   REST services from being overriden by other traversal adapters.

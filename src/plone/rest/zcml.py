@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
+from plone.rest import interfaces
+from plone.rest.cors import get_cors_preflight_view
+from plone.rest.negotiation import parse_accept_header
+from plone.rest.negotiation import register_service
+from zope.component.zcml import adapter
 from zope.configuration.exceptions import ConfigurationError
 from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
-from zope.schema import TextLine, Bool
 from zope.publisher.interfaces.browser import IBrowserPublisher
-from plone.rest import interfaces
-from plone.rest.cors import get_cors_preflight_view
-from plone.rest.traverse import NAME_PREFIX
-
-from zope.component.zcml import adapter
-from zope.security.zcml import Permission
+from zope.schema import TextLine, Bool
 from zope.security.checker import CheckerPublic
+from zope.security.zcml import Permission
 
 
 class IService(Interface):
@@ -24,6 +24,14 @@ class IService(Interface):
         This name refers to view that should be the view used by
         default (if no view name is supplied explicitly).""",
         )
+
+    accept = TextLine(
+        title=u"Acceptable media types",
+        description=u"""Specifies the media type used for content negotiation.
+        The service is limited to the given media type and only called if the
+        request contains an "Accept" header with the given media type. Multiple
+        media types can be given by separating them with a comma.""",
+        default=u"application/json")
 
     for_ = GlobalObject(
         title=u"The interface this view is the default for.",
@@ -74,6 +82,7 @@ class IService(Interface):
 def serviceDirective(
         _context,
         method,
+        accept,
         factory,
         for_,
         name=u'',
@@ -109,22 +118,27 @@ def serviceDirective(
 
     # defineChecker(factory, Checker(required))
 
-    if cors_enabled:
-        # Check if there is already an adapter for options
+    media_types = parse_accept_header(accept)
+    for media_type in media_types:
+        service_id = register_service(method.upper(), media_type)
+        view_name = service_id + name
 
-        # Register
+        if cors_enabled:
+            # Check if there is already an adapter for options
+
+            # Register
+            adapter(
+                _context,
+                factory=(get_cors_preflight_view),
+                provides=IBrowserPublisher,
+                for_=(for_, interfaces.IOPTIONS),
+                name=view_name,
+            )
+
         adapter(
             _context,
-            factory=(get_cors_preflight_view),
+            factory=(factory,),
             provides=IBrowserPublisher,
-            for_=(for_, interfaces.IOPTIONS),
-            name=NAME_PREFIX + name,
+            for_=(for_, marker),
+            name=view_name,
         )
-
-    adapter(
-        _context,
-        factory=(factory,),
-        provides=IBrowserPublisher,
-        for_=(for_, marker),
-        name=NAME_PREFIX + name,
-    )
