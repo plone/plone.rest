@@ -133,4 +133,24 @@
     factory=".testing.InternalServerErrorService"
     />
 
+  <!-- CORS -->
+
+
+  <plone:service
+    method="POST"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedOptions"
+    name="corsexample"
+    cors_origin="foobar"
+    />
+
+  <plone:service
+    method="GET"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedOptions"
+    name="corsexample"
+    cors_expose_all_headers="no"
+    />
+
+
 </configure>

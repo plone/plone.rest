@@ -38,6 +38,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             {u'portal_id': u'plone'},
@@ -86,6 +87,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             {u'service': u'delete'},

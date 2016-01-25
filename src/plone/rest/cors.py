@@ -4,213 +4,116 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 import fnmatch
 import functools
+from plone.rest.service import Service
 
 
-CORS_PARAMETERS = ('cors_headers', 'cors_enabled', 'cors_origins',
-                   'cors_credentials', 'cors_max_age',
-                   'cors_expose_all_headers')
+class Options(Service):
+
+    def render(self):
+        return None
 
 
-def preflight(request):
+def preflight(request, cors_config_dict):
     response = request.response
-    origin = request.headers.get('Origin')
-    supported_headers = service.cors_supported_headers_for()
+    origin = request.getHeader('Origin', None)
     if not origin:
-        request.errors.add('header', 'Origin',
-                           'this header is mandatory')
-    requested_method = request.headers.get('Access-Control-Request-Method')
+        request.response.setStatus(404, 'Origin this header is mandatory')
+    requested_method = request.getHeader('Access-Control-Request-Method', None)
     if not requested_method:
-        request.errors.add('header', 'Access-Control-Request-Method',
-                           'this header is mandatory')
+        request.response.setStatus(404, 'Access-Control-Request-Method' +
+                                        'this header is mandatory')
 
     if not (requested_method and origin):
         return
 
     requested_headers = (
-        request.headers.get('Access-Control-Request-Headers', ()))
+        request.getHeader('Access-Control-Request-Headers', ()))
 
     if requested_headers:
         requested_headers = map(str.strip, requested_headers.split(', '))
 
-    if requested_method not in service.cors_supported_methods:
-        request.errors.add('header', 'Access-Control-Request-Method',
-                           'Method not allowed')
+    requested_method = requested_method.upper()
+    if requested_method not in cors_config_dict.keys():
+        request.response.setStatus(404, 'Access-Control-Request-Method' +
+                                        'Method not allowed')
 
-    if not service.cors_expose_all_headers:
+    supported_headers = cors_config_dict[requested_method]['headers']
+    if not cors_config_dict[requested_method]['expose_all_headers'] and requested_headers and supported_headers:
         for h in requested_headers:
             if not h.lower() in [s.lower() for s in supported_headers]:
-                request.errors.add(
-                    'header',
-                    'Access-Control-Request-Headers',
+                request.response.setStatus(
+                    404,
+                    'Access-Control-Request-Headers' +
                     'Header "%s" not allowed' % h)
+
+    supported_headers = [] if supported_headers is None else supported_headers
+    requested_headers = [] if requested_headers is None else requested_headers
 
     supported_headers = set(supported_headers) | set(requested_headers)
 
-    response.headers['Access-Control-Allow-Headers'] = (
+    response.setHeader(
+        'Access-Control-Allow-Headers',
         ','.join(supported_headers))
 
-    response.headers['Access-Control-Allow-Methods'] = (
-        ','.join(service.cors_supported_methods))
+    response.setHeader(
+        'Access-Control-Allow-Methods',
+        ','.join(cors_config_dict.keys()))
 
-    max_age = service.cors_max_age_for(requested_method)
+    max_age = cors_config_dict[requested_method]['max_age']
     if max_age is not None:
-        response.headers['Access-Control-Max-Age'] = str(max_age)
+        response.setHeader('Access-Control-Max-Age', str(max_age))
 
     return None
 
-def wrap_cors(fn, cors_origins):
+
+def options_view_wrap(fn, cors_config_dict, cors_config):
+    def function_wrapped(context, request):
+        apply_cors_post_request(cors_config, request, request.response)
+        result = fn(context, request)
+        preflight(request, cors_config_dict)
+        return result
+    return function_wrapped
+
+
+def options_view(cors_config_dict):
 
     def function_wrapped(context, request):
+        preflight(request, cors_config_dict)
+        return Options(context, request)
 
+    return function_wrapped
+
+
+def wrap_cors(fn, cors_config):
+    def function_wrapped(context, request):
         result = fn(context, request)
-        request.response.setHeader('Access-Control-Allow-Origin', cors_origins)
-        request.response.setHeader(
-            'Access-Control-Allow-Methods',
-<<<<<<< 4d85c6b8d93d5d201a83f1ea5fa986ce92deb167
-            'POST,GET,DELETE,PUT,OPTIONS')
-        request.response.setHeader(
-            'Access-Control-Allow-Headers',
-            'Origin, Content-Type, Accept, Authorization, x-firephp-version')
-=======
-            'POST,GET,DELETE,PUT,OPTIONS'
-        )
-        # request.response.setHeader(
-        #     'Access-Control-Allow-Headers',
-        #     'Origin, Content-Type, Accept, Authorization'
-        # )
-        request.response.setHeader(
-            'Access-Control-Allow-Headers',
-            'Origin, Content-Type, Accept, Authorization,x-firephp-version'
-        )
->>>>>>> Fix pep8 violations.
-        request.response.setHeader('Access-Control-Allow-Credentials', 'true')
-        request.response.setHeader('Access-Control-Max-Age', '1728000')
+        apply_cors_post_request(cors_config, request, request.response)
         return result
 
     return function_wrapped
 
 
-def options_view(cors_origins):
-
-    def function_wrapped(context, request):
-
-        request.response.setHeader('Access-Control-Allow-Origin', cors_origins)
-        request.response.setHeader(
-            'Access-Control-Allow-Methods',
-<<<<<<< 4d85c6b8d93d5d201a83f1ea5fa986ce92deb167
-            'POST,GET,DELETE,PUT,OPTIONS')
-        request.response.setHeader(
-            'Access-Control-Allow-Headers',
-            'Origin, Content-Type, Accept, Authorization, x-firephp-version')
-=======
-            'POST,GET,DELETE,PUT,OPTIONS'
-        )
-        request.response.setHeader(
-            'Access-Control-Allow-Headers',
-            'Origin, Content-Type, Accept, Authorization,x-firephp-version'
-        )
->>>>>>> Fix pep8 violations.
-        request.response.setHeader('Access-Control-Allow-Credentials', 'true')
-        request.response.setHeader('Access-Control-Max-Age', '1728000')
-
-    return function_wrapped
-
-
-def get_cors_preflight_view(service):
-    """Return a view for the OPTION method.
-
-    Checks that the User-Agent is authorized to do a request to the server, and
-    to this particular service, and add the various checks that are specified
-    in http://www.w3.org/TR/cors/#resource-processing-model.
-    """
-
-    def _preflight_view(request):
-        response = request.response
-        origin = request.headers.get('Origin')
-        supported_headers = service.cors_supported_headers_for()
-
-        if not origin:
-            request.errors.add('header', 'Origin',
-                               'this header is mandatory')
-
-        requested_method = request.headers.get('Access-Control-Request-Method')
-        if not requested_method:
-            request.errors.add('header', 'Access-Control-Request-Method',
-                               'this header is mandatory')
-
-        if not (requested_method and origin):
-            return
-
-        requested_headers = (
-            request.headers.get('Access-Control-Request-Headers', ()))
-
-        if requested_headers:
-            requested_headers = map(str.strip, requested_headers.split(', '))
-
-        if requested_method not in service.cors_supported_methods:
-            request.errors.add('header', 'Access-Control-Request-Method',
-                               'Method not allowed')
-
-        if not service.cors_expose_all_headers:
-            for h in requested_headers:
-                if not h.lower() in [s.lower() for s in supported_headers]:
-                    request.errors.add(
-                        'header',
-                        'Access-Control-Request-Headers',
-                        'Header "%s" not allowed' % h)
-
-        supported_headers = set(supported_headers) | set(requested_headers)
-
-        response.headers['Access-Control-Allow-Headers'] = (
-            ','.join(supported_headers))
-
-        response.headers['Access-Control-Allow-Methods'] = (
-            ','.join(service.cors_supported_methods))
-
-        max_age = service.cors_max_age_for(requested_method)
-        if max_age is not None:
-            response.headers['Access-Control-Max-Age'] = str(max_age)
-
-        return None
-    return _preflight_view
-
-
-def _get_method(request):
-    """Return what's supposed to be the method for CORS operations.
-    (e.g if the verb is options, look at the A-C-Request-Method header,
-    otherwise return the HTTP verb).
-    """
-    if request.method == 'OPTIONS':
-        method = request.headers.get('Access-Control-Request-Method',
-                                     request.method)
-    else:
-        method = request.method
-    return method
-
-
-def ensure_origin(service, request, response=None):
+def ensure_origin(cors_config, request, response=None):
     """Ensure that the origin header is set and allowed."""
     response = response or request.response
 
     # Don't check this twice.
-    if not request.info.get('cors_checked', False):
-        method = _get_method(request)
+    if not hasattr(request, '_v_cors_checked'):
 
-        origin = request.headers.get('Origin')
+        origin = request.getHeader('Origin')
         if origin:
             if not any([fnmatch.fnmatchcase(origin, o)
-                        for o in service.cors_origins_for(method)]):
-                request.errors.add('header', 'Origin',
-                                   '%s not allowed' % origin)
-            elif request.headers.get(
+                        for o in cors_config['origin']]):
+                request.response.setStatus(404, 'Origin %s not allowed' % origin)
+            elif request.getHeader(
                     'Access-Control-Allow-Credentials', False):
-                response.headers['Access-Control-Allow-Origin'] = origin
+                response.setHeaders('Access-Control-Allow-Origin', origin)
             else:
-                if any([o == "*" for o in service.cors_origins_for(method)]):
-                    response.headers['Access-Control-Allow-Origin'] = '*'
+                if any([o == "*" for o in cors_config['origin']]):
+                    response.setHeader('Access-Control-Allow-Origin', '*')
                 else:
-                    response.headers['Access-Control-Allow-Origin'] = origin
-        request.info['cors_checked'] = True
+                    response.setHeaders('Access-Control-Allow-Origin', origin)
+        request._v_cors_checked = True
     return response
 
 
@@ -218,24 +121,25 @@ def get_cors_validator(service):
     return functools.partial(ensure_origin, service)
 
 
-def apply_cors_post_request(service, request, response):
+def apply_cors_post_request(cors_config, request, response):
     """Handles CORS-related post-request things.
 
     Add some response headers, such as the Expose-Headers and the
     Allow-Credentials ones.
     """
-    response = ensure_origin(service, request, response)
-    method = _get_method(request)
+    response = ensure_origin(cors_config, request, response)
 
-    if (service.cors_support_credentials_for(method) and
-            'Access-Control-Allow-Credentials' not in response.headers):
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
+    # TODO Support Allow Credentials
+    # if (service.cors_support_credentials_for(method) and
+    #         'Access-Control-Allow-Credentials' not in response.headers):
+    #     response.headers['Access-Control-Allow-Credentials'] = 'true'
 
     if request.method != 'OPTIONS':
         # Which headers are exposed?
-        supported_headers = service.cors_supported_headers_for(request.method)
+        supported_headers = cors_config['headers']
         if supported_headers:
-            response.headers['Access-Control-Expose-Headers'] = (
+            response.setHeader(
+                'Access-Control-Expose-Headers',
                 ', '.join(supported_headers))
 
     return response
