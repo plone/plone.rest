@@ -82,6 +82,11 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            '*',
+            response.headers['Access-Control-Allow-Origin']
+        )
+
 
     def test_cors_no_headers(self):
 

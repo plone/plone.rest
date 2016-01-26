@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 from zope.configuration.exceptions import ConfigurationError
 from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
@@ -6,7 +7,7 @@ from zope.schema import TextLine, Bool, Text
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from plone.rest import interfaces
 from plone.rest.traverse import NAME_PREFIX
-from plone.rest.cors import options_view, options_view_wrap
+from plone.rest.cors import options_view, options_view_wrap, wrap_cors
 from zope.security.checker import CheckerPublic, Checker, defineChecker
 from zope.security.checker import getCheckerForInstancesOf, undefineChecker
 
@@ -156,7 +157,6 @@ def serviceDirective(
         # In case there is already another method registered with cors
         # (on same context configuration group)
         if (for_, name) in DICT_CORS_SERVICES:
-
             for action in _context.actions:
                 if action[0] == ('adapter',
                                  (for_, interfaces.IOPTIONS),
@@ -196,10 +196,12 @@ def serviceDirective(
             )
 
             # The real factory
-
+            new_factory = wrap_cors(
+                factory,
+                DICT_CORS_SERVICES[(for_, name)])
             adapter(
                 _context,
-                factory=(factory,),
+                factory=(new_factory,),
                 provides=IBrowserPublisher,
                 for_=(for_, marker),
                 name=NAME_PREFIX + name
