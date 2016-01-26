@@ -34,7 +34,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
                 'Access-Control-Request-Method': 'POST'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTrue('Access-Control-Allow-Methods' in response.headers)
         self.assertEqual(
