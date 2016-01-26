@@ -7,8 +7,6 @@ from zope.component import queryMultiAdapter
 from zope.interface import implements
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
-NAME_PREFIX = u'rest_'
-
 
 class RESTTraverse(DefaultPublishTraverse):
     adapts(IPloneSiteRoot, IAPIRequest)
@@ -19,12 +17,12 @@ class RESTTraverse(DefaultPublishTraverse):
         except KeyError:
             # No object, maybe a named rest service
             service = queryMultiAdapter((self.context, request),
-                                        name=NAME_PREFIX + name)
+                                        name=request._rest_service_id + name)
             if service is None:
                 raise
             return service
 
-        if name.startswith(NAME_PREFIX):
+        if name.startswith(request._rest_service_id):
             return obj
 
         # Wrap object to ensure we handle further traversal
@@ -33,7 +31,7 @@ class RESTTraverse(DefaultPublishTraverse):
     def browserDefault(self, request):
         # Called when we have reached the end of the path
         # In our case this means an unamed service
-        return self.context, (NAME_PREFIX,)
+        return self.context, (request._rest_service_id,)
 
 
 class RESTWrapper(object):
@@ -74,7 +72,7 @@ class RESTWrapper(object):
         except (KeyError, AttributeError):
             # No object, maybe a named rest service
             service = queryMultiAdapter((self.context, request),
-                                        name=NAME_PREFIX + name)
+                                        name=request._rest_service_id + name)
             if service is None:
                 raise
             return service
@@ -85,4 +83,4 @@ class RESTWrapper(object):
     def browserDefault(self, request):
         # Called when we have reached the end of the path
         # In our case this means an unamed service
-        return self.context, (NAME_PREFIX,)
+        return self.context, (request._rest_service_id,)
