@@ -29,13 +29,14 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         response = requests.options(
             self.document.absolute_url(),
             headers={
-                'Accept': 'application/json',
+                'Accept': '*/*',
                 'Origin': 'plone.org',
                 'Access-Control-Request-Method': 'POST'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-
+        
         self.assertEqual(response.status_code, 200)
+        self.assertTrue('Access-Control-Allow-Methods' in response.headers)
         self.assertEqual(
             'GET,PATCH,PUT,POST,OPTIONS,DELETE',
             response.headers['Access-Control-Allow-Methods']
