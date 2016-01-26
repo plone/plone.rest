@@ -96,7 +96,10 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
     def test_siteroot_options(self):
         response = requests.options(
             self.portal.absolute_url(),
-            headers={'Accept': 'application/json'},
+            headers={
+                'Accept': 'application/json',
+                'Access-Control-Request-Method': 'OPTIONS',
+                'Origin': 'foobar'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)

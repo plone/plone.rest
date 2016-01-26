@@ -22,6 +22,7 @@ class TestNamedServiceEndpoints(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('Document', id='doc1')
         self.document = self.portal['doc1']
+
         transaction.commit()
 
     def test_dexterity_named_get(self):
@@ -87,9 +88,13 @@ class TestNamedServiceEndpoints(unittest.TestCase):
     def test_dexterity_named_options(self):
         response = requests.options(
             self.document.absolute_url() + '/namedservice',
-            headers={'Accept': 'application/json'},
+            headers={
+                'Accept': 'application/json',
+                'Access-Control-Request-Method': 'OPTIONS',
+                'Origin': 'foobar'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             {u'service': u'named options'},

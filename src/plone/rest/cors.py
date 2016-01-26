@@ -18,6 +18,7 @@ def preflight(request, cors_config_dict):
     origin = request.getHeader('Origin', None)
     if not origin:
         request.response.setStatus(404, 'Origin this header is mandatory')
+
     requested_method = request.getHeader('Access-Control-Request-Method', None)
     if not requested_method:
         request.response.setStatus(404, 'Access-Control-Request-Method' +
@@ -38,7 +39,8 @@ def preflight(request, cors_config_dict):
                                         'Method not allowed')
 
     supported_headers = cors_config_dict[requested_method]['headers']
-    if not cors_config_dict[requested_method]['expose_all_headers'] and requested_headers and supported_headers:
+    if not cors_config_dict[requested_method]['expose_all_headers'] and \
+            requested_headers and supported_headers:
         for h in requested_headers:
             if not h.lower() in [s.lower() for s in supported_headers]:
                 request.response.setStatus(
@@ -66,53 +68,86 @@ def preflight(request, cors_config_dict):
     return None
 
 
-def options_view_wrap(fn, cors_config_dict, cors_config):
+def options_view_wrap(fn, cors_config_dict):
+    """ Its a defined OPTION view that needs CORS for other methods
+    """
     def function_wrapped(context, request):
-        apply_cors_post_request(cors_config, request, request.response)
-        result = fn(context, request)
+
         preflight(request, cors_config_dict)
+        result = fn(context, request)
+        apply_cors_post_request(
+            cors_config_dict,
+            request,
+            request.response)
         return result
     return function_wrapped
 
 
 def options_view(cors_config_dict):
-
+    """ Its a dummy OPTION view for CORS on other methods
+    """
     def function_wrapped(context, request):
+
         preflight(request, cors_config_dict)
-        return Options(context, request)
-
-    return function_wrapped
-
-
-def wrap_cors(fn, cors_config):
-    def function_wrapped(context, request):
-        result = fn(context, request)
-        apply_cors_post_request(cors_config, request, request.response)
+        result = Options(context, request)
+        apply_cors_post_request(
+            cors_config_dict,
+            request,
+            request.response)
         return result
 
     return function_wrapped
 
 
-def ensure_origin(cors_config, request, response=None):
+def wrap_cors(fn, cors_config_dict):
+    """ Its a wrapper for a method that needs CORS
+    """
+    def function_wrapped(context, request):
+
+        result = fn(context, request)
+        apply_cors_post_request(
+            cors_config_dict,
+            request,
+            request.response)
+        return result
+    return function_wrapped
+
+
+def _get_method(request):
+    """Return what's supposed to be the method for CORS operations.
+    (e.g if the verb is options, look at the A-C-Request-Method header,
+    otherwise return the HTTP verb).
+    """
+    request_method = request.get('REQUEST_METHOD').upper()
+    if request_method == 'OPTIONS':
+        request_method = request.getHeader('Access-Control-Request-Method',
+                                           request_method)
+    return request_method
+
+
+def ensure_origin(cors_config_dict, request, response=None):
     """Ensure that the origin header is set and allowed."""
     response = response or request.response
 
     # Don't check this twice.
     if not hasattr(request, '_v_cors_checked'):
-
+        method = _get_method(request)
         origin = request.getHeader('Origin')
+
         if origin:
             if not any([fnmatch.fnmatchcase(origin, o)
-                        for o in cors_config['origin']]):
-                request.response.setStatus(404, 'Origin %s not allowed' % origin)
+                        for o in cors_config_dict[method]['origin']]):
+                request.response.setStatus(
+                    404,
+                    'Origin %s not allowed' % origin)
             elif request.getHeader(
                     'Access-Control-Allow-Credentials', False):
-                response.setHeaders('Access-Control-Allow-Origin', origin)
+                response.setHeader('Access-Control-Allow-Origin', origin)
             else:
-                if any([o == "*" for o in cors_config['origin']]):
+                if any([o == "*" for o in cors_config_dict[method]['origin']]):
                     response.setHeader('Access-Control-Allow-Origin', '*')
                 else:
-                    response.setHeaders('Access-Control-Allow-Origin', origin)
+                    response.setHeader('Access-Control-Allow-Origin', origin)
         request._v_cors_checked = True
     return response
 
@@ -121,22 +156,19 @@ def get_cors_validator(service):
     return functools.partial(ensure_origin, service)
 
 
-def apply_cors_post_request(cors_config, request, response):
+def apply_cors_post_request(cors_config_dict, request, response):
     """Handles CORS-related post-request things.
 
     Add some response headers, such as the Expose-Headers and the
     Allow-Credentials ones.
     """
-    response = ensure_origin(cors_config, request, response)
+    response = ensure_origin(cors_config_dict, request, response)
+    method = _get_method(request)
 
-    # TODO Support Allow Credentials
-    # if (service.cors_support_credentials_for(method) and
-    #         'Access-Control-Allow-Credentials' not in response.headers):
-    #     response.headers['Access-Control-Allow-Credentials'] = 'true'
-
-    if request.method != 'OPTIONS':
+    if method != 'OPTIONS':
         # Which headers are exposed?
-        supported_headers = cors_config['headers']
+
+        supported_headers = cors_config_dict[method]['headers']
         if supported_headers:
             response.setHeader(
                 'Access-Control-Expose-Headers',
