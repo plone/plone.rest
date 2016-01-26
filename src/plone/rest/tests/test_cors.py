@@ -87,7 +87,6 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             response.headers['Access-Control-Allow-Origin']
         )
 
-
     def test_cors_no_headers(self):
 
         response = requests.options(
