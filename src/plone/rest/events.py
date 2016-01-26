@@ -13,6 +13,9 @@ def mark_as_api_request(event):
     """Mark a request with Accept 'application/json' with the IAPIRequest
        interface.
     """
+    # In cors calls there is accept header so we need to force
+    if event.request.get('REQUEST_METHOD') == 'OPTIONS':
+        alsoProvides(event.request, IOPTIONS)
     request = event.request
     if request.getHeader('Accept') == 'application/json':
         alsoProvides(request, IAPIRequest)

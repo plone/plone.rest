@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from Products.Five import BrowserView
+import zope.publisher.browser
 
 import json
 
 
-class Service(BrowserView):
+class Service(zope.publisher.browser.BrowserPage):
 
     def __call__(self):
         self.request.response.setHeader("Content-Type", "application/json")
