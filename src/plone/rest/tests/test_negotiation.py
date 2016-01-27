@@ -53,19 +53,20 @@ class TestAcceptHeaderParser(unittest.TestCase):
 class TestServiceRegistry(unittest.TestCase):
 
     def test_register_media_type(self):
-        self.assertEqual('rest_application_json',
+        self.assertEqual(u'GET_application_json_',
                          register_service('GET', ('application', 'json')))
-        self.assertEqual('rest_application_json',
+        self.assertEqual(u'GET_application_json_',
                          lookup_service_id('GET', 'application/json'))
 
     def test_register_wildcard_subtype(self):
-        self.assertEqual('rest_text_*',
+        self.assertEqual(u'PATCH_text_*_',
                          register_service('PATCH', ('text', '*')))
-        self.assertEqual('rest_text_*', lookup_service_id('PATCH', 'text/xml'))
+        self.assertEqual(u'PATCH_text_*_',
+                         lookup_service_id('PATCH', 'text/xml'))
 
     def test_register_wilcard_type(self):
-        self.assertEqual('rest_*_*', register_service('PATCH', ('*', '*')))
-        self.assertEqual('rest_*_*', lookup_service_id('PATCH', 'foo/bar'))
+        self.assertEqual(u'PATCH_*_*_', register_service('PATCH', ('*', '*')))
+        self.assertEqual(u'PATCH_*_*_', lookup_service_id('PATCH', 'foo/bar'))
 
     def test_service_id_for_multiple_media_types_is_none(self):
         register_service('GET', 'application/json')

@@ -4,6 +4,14 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
+- Add support for browser layers. REST services can now be registered to a
+  specific browser layer using the 'layer' attribute.
+  [buchi]
+
+- Remove request method specific marker interfaces (IGET, IPOST, etc.) because
+  they're  no longer required for service lookup.
+  [buchi]
+
 - Add support for content negotiation. REST services are no longer hardwired
   to 'application/json' Accept headers. Instead the media type can be
   configured with the service directive.
