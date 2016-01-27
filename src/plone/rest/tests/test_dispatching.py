@@ -70,10 +70,10 @@ class TestDispatchingSiteRoot(DispatchingTestCase):
     def test_site_root_without_creds(self):
         expectations = [
             ('/', 'GET', NO_CREDS, 200),
-            ('/', 'POST', NO_CREDS, 200),
-            ('/', 'PUT', NO_CREDS, 200),
-            ('/', 'PATCH', NO_CREDS, 200),
-            ('/', 'DELETE', NO_CREDS, 200),
+            ('/', 'POST', NO_CREDS, 401),
+            ('/', 'PUT', NO_CREDS, 401),
+            ('/', 'PATCH', NO_CREDS, 401),
+            ('/', 'DELETE', NO_CREDS, 401),
             ('/', 'OPTIONS', NO_CREDS, 200),
         ]
         self.validate(expectations)
@@ -81,10 +81,10 @@ class TestDispatchingSiteRoot(DispatchingTestCase):
     def test_site_root_invalid_creds(self):
         expectations = [
             ('/', 'GET', INVALID_CREDS, 200),
-            ('/', 'POST', INVALID_CREDS, 200),
-            ('/', 'PUT', INVALID_CREDS, 200),
-            ('/', 'PATCH', INVALID_CREDS, 200),
-            ('/', 'DELETE', INVALID_CREDS, 200),
+            ('/', 'POST', INVALID_CREDS, 401),
+            ('/', 'PUT', INVALID_CREDS, 401),
+            ('/', 'PATCH', INVALID_CREDS, 401),
+            ('/', 'DELETE', INVALID_CREDS, 401),
             ('/', 'OPTIONS', INVALID_CREDS, 200),
         ]
         self.validate(expectations)
@@ -186,10 +186,10 @@ class TestDispatchingDexterity(DispatchingTestCase):
     def test_public_dx_folder_without_creds(self):
         expectations = [
             ('/public', 'GET', NO_CREDS, 200),
-            ('/public', 'POST', NO_CREDS, 200),
-            ('/public', 'PUT', NO_CREDS, 200),
-            ('/public', 'PATCH', NO_CREDS, 200),
-            ('/public', 'DELETE', NO_CREDS, 200),
+            ('/public', 'POST', NO_CREDS, 401),
+            ('/public', 'PUT', NO_CREDS, 401),
+            ('/public', 'PATCH', NO_CREDS, 401),
+            ('/public', 'DELETE', NO_CREDS, 401),
             ('/public', 'OPTIONS', NO_CREDS, 200),
         ]
         self.validate(expectations)
@@ -197,10 +197,10 @@ class TestDispatchingDexterity(DispatchingTestCase):
     def test_public_dx_folder_invalid_creds(self):
         expectations = [
             ('/public', 'GET', INVALID_CREDS, 200),
-            ('/public', 'POST', INVALID_CREDS, 200),
-            ('/public', 'PUT', INVALID_CREDS, 200),
-            ('/public', 'PATCH', INVALID_CREDS, 200),
-            ('/public', 'DELETE', INVALID_CREDS, 200),
+            ('/public', 'POST', INVALID_CREDS, 401),
+            ('/public', 'PUT', INVALID_CREDS, 401),
+            ('/public', 'PATCH', INVALID_CREDS, 401),
+            ('/public', 'DELETE', INVALID_CREDS, 401),
             ('/public', 'OPTIONS', INVALID_CREDS, 200),
         ]
         self.validate(expectations)
