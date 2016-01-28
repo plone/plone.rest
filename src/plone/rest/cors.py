@@ -9,6 +9,8 @@ from plone.rest.service import Service
 
 class Options(Service):
 
+    __roles__ = ('Anonymous')
+
     def render(self):
         return None
 
