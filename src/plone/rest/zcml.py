@@ -7,6 +7,7 @@ from zope.schema import TextLine, Bool, Text
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from plone.rest import interfaces
 from plone.rest.traverse import NAME_PREFIX
+from plone.rest.negotiation import register_service
 from plone.rest.cors import options_view, options_view_wrap, wrap_cors
 from zope.security.checker import CheckerPublic, Checker, defineChecker
 from zope.security.checker import getCheckerForInstancesOf, undefineChecker
@@ -16,6 +17,7 @@ from zope.security.zcml import Permission
 
 # We need to maintain a temp struct on memory to configure properly
 DICT_CORS_SERVICES = {}
+
 
 
 class IService(Interface):
@@ -41,6 +43,12 @@ class IService(Interface):
     factory = GlobalObject(
         title=u"The factory for this service",
         description=u"The factory is usually subclass of the Service class.")
+
+    accept = TextLine(
+        title=u"Accept header",
+        description=u"""Accept header to trigger the service""",
+        required=False,
+        default=u"application/json")
 
     name = TextLine(
         title=u"The name of the service.",
@@ -73,6 +81,12 @@ class IService(Interface):
         required=False
         )
 
+    cors_auth = Bool(
+        title=u"Accept authentication on cors",
+        description=u"Accept Authentication headers on cors",
+        required=False
+        )
+
     cors_expose_all_headers = Bool(
         title=u"Expose all the headers",
         description=u""" If set to True, all the headers will be exposed and considered valid
@@ -100,6 +114,7 @@ def serviceDirective(
         method,
         factory,
         for_,
+        accept=u'application/json',
         cors_max_age=None,
         cors_headers=None,
         name=u'',
@@ -137,10 +152,15 @@ def serviceDirective(
     for n in ('browserDefault', '__call__', 'publishTraverse'):
         required[n] = permission
 
-    if getCheckerForInstancesOf(factory) and permission != CheckerPublic:
+    if getCheckerForInstancesOf(factory):
         # in case already exist remove old checker
         undefineChecker(factory)
-        defineChecker(factory, Checker(required))
+    defineChecker(factory, Checker(required))
+
+    accept_list = map(str.strip, str(accept).split(','))
+    for a in accept_list:
+        register_service(method, a)
+
 
     if cors_enabled:
         # Check if there is already an adapter for options

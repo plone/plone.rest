@@ -7,6 +7,7 @@ from plone.rest.interfaces import IDELETE
 from plone.rest.interfaces import IOPTIONS
 from plone.rest.interfaces import IPATCH
 from zope.interface import alsoProvides
+from plone.rest.negotiation import lookup_service_id
 
 
 def mark_as_api_request(event):
@@ -15,8 +16,10 @@ def mark_as_api_request(event):
     """
     # In cors calls there is accept header so we need to force
     method = event.request.get('REQUEST_METHOD')
+    accept = event.request.getHeader('Accept')
     request = event.request
-    if request.getHeader('Accept') == 'application/json' or request.getHeader('Origin', None):
+    if lookup_service_id(method, accept) or request.getHeader('Origin', None):
+        # We always accept calls with origin as API REST
         alsoProvides(request, IAPIRequest)
         if method == 'PUT':
             alsoProvides(request, IPUT)
