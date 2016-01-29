@@ -122,6 +122,8 @@ def serviceDirective(
         marker = interfaces.IDELETE
     elif method == 'PATCH':
         marker = interfaces.IPATCH
+    elif method == 'HEAD':
+        marker = interfaces.IHEAD
     else:
         raise ConfigurationError(
             u"No implementation for %s method" % method

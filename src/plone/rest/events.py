@@ -15,14 +15,8 @@ def mark_as_api_request(event):
     """
     # In cors calls there is accept header so we need to force
     method = event.request.get('REQUEST_METHOD')
-    if method == 'OPTIONS' and event.request.getHeader('Origin', None):
-        alsoProvides(event.request, IAPIRequest)
-        alsoProvides(event.request, IOPTIONS)
-        # May have problems with webdav
-        # All OPTIONS calls are going to be considered API/REST
-        event.request.maybe_webdav_client = 0
     request = event.request
-    if request.getHeader('Accept') == 'application/json':
+    if request.getHeader('Accept') == 'application/json' or request.getHeader('Origin', None):
         alsoProvides(request, IAPIRequest)
         if method == 'PUT':
             alsoProvides(request, IPUT)
@@ -36,6 +30,8 @@ def mark_as_api_request(event):
             alsoProvides(request, IOPTIONS)
         if method == 'PATCH':
             alsoProvides(request, IPATCH)
+        if method == 'HEAD':
+            alsoProvides(request, IHEAD)
 
         # Flag as non-WebDAV request in order to avoid special treatment
         # in ZPublisher.BaseRequest.traverse().
