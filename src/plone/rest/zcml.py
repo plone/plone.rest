@@ -92,6 +92,7 @@ class IService(Interface):
         description=u""" If set to True, all the headers will be exposed and considered valid
         ones (Default: True). If set to False, all the headers need be
         explicitly mentioned with the cors_headers parameter.""",
+        default=True,
         required=False
         )
 
@@ -115,6 +116,7 @@ def serviceDirective(
         factory,
         for_,
         accept=u'application/json',
+        cors_auth=True,
         cors_max_age=None,
         cors_headers=None,
         name=u'',
@@ -173,7 +175,8 @@ def serviceDirective(
             'headers': cors_headers,
             'expose_all_headers': cors_expose_all_headers,
             'max_age': cors_max_age,
-            'methods': [method.upper()]
+            'methods': [method.upper()],
+            'auth': cors_auth
         }
 
         # In case there is already another method registered with cors

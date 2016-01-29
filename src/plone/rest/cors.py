@@ -169,8 +169,8 @@ def apply_cors_post_request(cors_config_dict, request, response):
 
     if method != 'OPTIONS':
         # Which headers are exposed?
-        # TODO add attribute to support credentials
-        response.setHeader('Access-Control-Allow-Credentials', 'true')
+        if cors_config_dict[method]['auth']:
+            response.setHeader('Access-Control-Allow-Credentials', 'true')
         supported_headers = cors_config_dict[method]['headers']
         if supported_headers:
             response.setHeader(

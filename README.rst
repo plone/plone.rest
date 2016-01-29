@@ -151,6 +151,24 @@ OPTIONS::
   $ http --auth admin:admin OPTIONS localhost:8080/Plone/doc1 Accept:application/json
 
 
+If you want to use any other accept header you can define on the service, actual implementation will make all requests with that verb and accept header be treated as APIRequests::
+
+  <plone:service
+    method="POST"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedGet"
+    name="negotiation_no_wildcard"
+    accept="text/html,application/json"/>
+
+  <plone:service
+    method="GET"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedGet"
+    name="negotiation_open_wildcard"
+    accept="*/*"/>
+
+ALERT: Right now when you define an accept header for the service it will be applied to all services with the same method.
+
 Named Services
 --------------
 
@@ -172,6 +190,55 @@ following request::
   Host: localhost:8080
   Accept: application/json
 
+CORS
+----
+
+By default CORS to all hosts is enabled to API REST calls. You can define them on the Service definition
+
+.. code-block:: xml
+
+  <plone:service
+    method="POST"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".factory.Factory"
+    name="corsexample"
+    cors_origin="foobar"
+    cors_max_age="33400"
+    cors_expose_all_headers="yes"
+    cors_auth="yes"
+    cors_headers="X-MYHEADER"
+    cors_enabled="yes"
+    />
+
+cors_origin::
+
+  The list of origins for CORS. You can use wildcards here if needed, e.g. 'list', 'of', '*.domain'
+  Default : '*'
+
+cors_enabled::
+
+  To use if you especially want to disable CORS support for a particular service / method.
+  Default: 'yes'
+
+cors_headers::
+
+  The list of headers supported for the services
+  Default: None
+
+cors_auth::
+
+  Accept Authentication headers on CORS
+  Default: 'yes'
+
+cors_expose_all_headers::
+
+  If set to True, all the headers will be exposed and considered valid ones (Default: True). If set to False, all the headers need be explicitly mentioned with the cors_headers parameter.
+  Default: 'yes'
+
+cors_max_age::
+
+  Indicates how long the results of a preflight request can be cached in a preflight result cache
+  Default: None
 
 Installation
 ------------
@@ -208,4 +275,3 @@ License
 -------
 
 The project is licensed under the GPLv2.
-

@@ -152,5 +152,33 @@
     cors_expose_all_headers="no"
     />
 
+  <!-- Content negotiation -->
+
+  <plone:service
+    method="GET"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedGet"
+    name="negotiation_wildcard"
+    accept="*/*"
+    cors_expose_all_headers="no"
+    />
+
+  <plone:service
+    method="GET"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedGet"
+    name="negotiation_one_wildcard"
+    accept="image/*"
+    cors_expose_all_headers="no"
+    />
+
+  <plone:service
+    method="PUT"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    factory=".demo.NamedGet"
+    name="negotiation_no_wildcard"
+    accept="text/html,application/json"
+    cors_expose_all_headers="no"
+    />
 
 </configure>

@@ -24,6 +24,9 @@ def lookup_service_id(method, accept):
     if fnmatch.filter(types, media_type):
         return True
     else:
+        for typem in types:
+            if fnmatch.filter([media_type], typem):
+                return True
         return False
 
 
@@ -31,5 +34,6 @@ def register_service(method, media_type):
     """Register a service for the given request method and media type and
        return it's service id.
     """
-    types = _services.setdefault(method, [])
-    types.append(media_type)
+    types = _services.setdefault(method, set([]))
+    # TODO optimization check if there is any other media type that already is covered
+    types.add(media_type)
