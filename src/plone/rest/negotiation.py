@@ -17,17 +17,11 @@ def lookup_service_id(method, accept):
     """Checks if a service exist for that accept header
     """
     media_types = parse_accept_header(accept)
-    if len(media_types) != 1:
-        return False
-    media_type = media_types[0]
     types = _services.get(method, {})
-    if fnmatch.filter(types, media_type):
-        return True
-    else:
-        for typem in types:
-            if fnmatch.filter([media_type], typem):
-                return True
-        return False
+    for t in types:
+        if fnmatch.filter(media_types, t):
+            return True
+    return False
 
 
 def register_service(method, media_type):
