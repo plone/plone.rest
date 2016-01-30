@@ -50,7 +50,7 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
             headers={'Accept': 'image/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        
+
         self.assertEqual(response.status_code, 200)
 
     def test_negotiation_no_wildcard(self):
