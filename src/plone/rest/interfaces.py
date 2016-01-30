@@ -31,9 +31,11 @@ class IPATCH(Interface):
     """ Patch method
     """
 
+
 class IHEAD(Interface):
     """ Head method
     """
+
 
 class IAPIRequest(Interface):
     """Marker for API requests.

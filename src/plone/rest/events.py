@@ -6,6 +6,7 @@ from plone.rest.interfaces import IPOST
 from plone.rest.interfaces import IDELETE
 from plone.rest.interfaces import IOPTIONS
 from plone.rest.interfaces import IPATCH
+from plone.rest.interfaces import IHEAD
 from zope.interface import alsoProvides
 from plone.rest.negotiation import lookup_service_id
 
@@ -18,7 +19,7 @@ def mark_as_api_request(event):
     method = event.request.get('REQUEST_METHOD')
     accept = event.request.getHeader('Accept')
     request = event.request
-    
+
     if lookup_service_id(method, accept) or request.getHeader('Origin', None):
         # We always accept calls with origin as API REST
         alsoProvides(request, IAPIRequest)

@@ -35,5 +35,6 @@ def register_service(method, media_type):
        return it's service id.
     """
     types = _services.setdefault(method, set([]))
-    # TODO optimization check if there is any other media type that already is covered
+    # TODO optimization check if there is any other media type that already
+    # is covered
     types.add(media_type)

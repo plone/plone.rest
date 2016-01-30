@@ -26,7 +26,7 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
         transaction.commit()
 
     def test_negotiation_wildcard(self):
-        response = requests.get(
+        response = requests.patch(
             self.document.absolute_url() + '/negotiation_wildcard',
             headers={'Accept': 'myown/content'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
@@ -38,25 +38,21 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
         )
 
     def test_negotiation_one_wildcard(self):
-        response = requests.get(
+        response = requests.head(
             self.document.absolute_url() + '/negotiation_one_wildcard',
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        # TODO this should be set to 404 but actual implementation does not allow-hosts
-        # Different acceptance headers for each service, only for each method
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'named get'},
-            response.json()
-        )
+        self.assertEqual(response.status_code, 404)
 
-        response = requests.get(
+        response = requests.head(
             self.document.absolute_url() + '/negotiation_one_wildcard',
             headers={'Accept': 'image/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
+        import pdb; pdb.set_trace()
+        
         self.assertEqual(
             {u'service': u'named get'},
             response.json()
@@ -79,11 +75,7 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
             headers={'Accept': 'text/html'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'named get'},
-            response.json()
-        )
+        self.assertEqual(response.status_code, 404)
 
         response = requests.put(
             self.document.absolute_url() + '/negotiation_no_wildcard',

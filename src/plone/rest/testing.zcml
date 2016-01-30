@@ -155,7 +155,7 @@
   <!-- Content negotiation -->
 
   <plone:service
-    method="GET"
+    method="PATCH"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedGet"
     name="negotiation_wildcard"
@@ -164,7 +164,7 @@
     />
 
   <plone:service
-    method="GET"
+    method="HEAD"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedGet"
     name="negotiation_one_wildcard"
@@ -177,7 +177,7 @@
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedGet"
     name="negotiation_no_wildcard"
-    accept="text/html,application/json"
+    accept="text/xhtml,application/json"
     cors_expose_all_headers="no"
     />
 
