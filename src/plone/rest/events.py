@@ -20,7 +20,8 @@ def mark_as_api_request(event):
     accept = event.request.getHeader('Accept')
     request = event.request
 
-    if lookup_service_id(method, accept) or request.getHeader('Origin', None):
+    if lookup_service_id(method, accept) or \
+            (method == 'OPTIONS' and request.getHeader('Origin', None)):
         # We always accept calls with origin as API REST
         alsoProvides(request, IAPIRequest)
         if method == 'PUT':
