@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from plone.rest import interfaces
 from plone.rest.cors import get_cors_preflight_view
 from plone.rest.negotiation import parse_accept_header
 from plone.rest.negotiation import register_service
 from zope.component.zcml import adapter
-from zope.configuration.exceptions import ConfigurationError
+from zope.configuration.fields import GlobalInterface
 from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserPublisher
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.schema import TextLine, Bool
 from zope.security.checker import CheckerPublic
 from zope.security.zcml import Permission
@@ -54,6 +54,15 @@ class IService(Interface):
         required=False,
         default=u'')
 
+    layer = GlobalInterface(
+        title=u"The browser layer for which this service is registered.",
+        description=u"""Useful for overriding existing services or for making
+                        services available only if a specific add-on has been
+                        installed.""",
+        required=False,
+        default=IDefaultBrowserLayer,
+        )
+
     cors_enabled = Bool(
         title=u"The name of the view that should be the default."
               u"[get|post|put|delete]",
@@ -85,28 +94,12 @@ def serviceDirective(
         accept,
         factory,
         for_,
+        layer=IDefaultBrowserLayer,
         name=u'',
         cors_enabled=False,
         cors_origin=None,
         permission=CheckerPublic
         ):
-
-    if method.upper() == 'GET':
-        marker = interfaces.IGET
-    elif method.upper() == 'POST':
-        marker = interfaces.IPOST
-    elif method.upper() == 'OPTIONS':
-        marker = interfaces.IOPTIONS
-    elif method.upper() == 'PUT':
-        marker = interfaces.IPUT
-    elif method.upper() == 'DELETE':
-        marker = interfaces.IDELETE
-    elif method.upper() == 'PATCH':
-        marker = interfaces.IPATCH
-    else:
-        raise ConfigurationError(
-            u"No implementation for %s method" % method
-        )
 
     required = {}
 
@@ -123,22 +116,24 @@ def serviceDirective(
         service_id = register_service(method.upper(), media_type)
         view_name = service_id + name
 
+        adapter(
+            _context,
+            factory=(factory,),
+            provides=IBrowserPublisher,
+            for_=(for_, layer),
+            name=view_name,
+        )
+
         if cors_enabled:
             # Check if there is already an adapter for options
 
+            service_id = register_service(u'OPTIONS', media_type)
+            view_name = u'{}_{}'.format(service_id, name)
             # Register
             adapter(
                 _context,
                 factory=(get_cors_preflight_view),
                 provides=IBrowserPublisher,
-                for_=(for_, interfaces.IOPTIONS),
+                for_=(for_, layer),
                 name=view_name,
             )
-
-        adapter(
-            _context,
-            factory=(factory,),
-            provides=IBrowserPublisher,
-            for_=(for_, marker),
-            name=view_name,
-        )

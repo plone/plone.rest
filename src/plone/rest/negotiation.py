@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-NAME_PREFIX = u'rest'
-
 # Service registry
 # A mapping of method -> type name -> subtype name -> service id
 _services = {}
@@ -44,7 +42,7 @@ def register_service(method, media_type):
     """Register a service for the given request method and media type and
        return it's service id.
     """
-    service_id = u'{}_{}_{}'.format(NAME_PREFIX, media_type[0], media_type[1])
+    service_id = u'{}_{}_{}_'.format(method, media_type[0], media_type[1])
     types = _services.setdefault(method, {})
     subtypes = types.setdefault(media_type[0], {})
     subtypes[media_type[1]] = service_id

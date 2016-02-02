@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 from plone.rest.interfaces import IAPIRequest
-from plone.rest.interfaces import IDELETE
-from plone.rest.interfaces import IGET
-from plone.rest.interfaces import IOPTIONS
-from plone.rest.interfaces import IPATCH
-from plone.rest.interfaces import IPOST
-from plone.rest.interfaces import IPUT
 from plone.rest.negotiation import lookup_service_id
 from zope.interface import alsoProvides
 
@@ -22,19 +16,6 @@ def mark_as_api_request(event):
     if service_id is not None:
         alsoProvides(request, IAPIRequest)
         request._rest_service_id = service_id
-
-        if method == 'DELETE':
-            alsoProvides(request, IDELETE)
-        elif method == 'GET':
-            alsoProvides(request, IGET)
-        elif method == 'OPTIONS':
-            alsoProvides(request, IOPTIONS)
-        elif method == 'PATCH':
-            alsoProvides(request, IPATCH)
-        elif method == 'POST':
-            alsoProvides(request, IPOST)
-        elif method == 'PUT':
-            alsoProvides(request, IPUT)
 
         # Flag as non-WebDAV request in order to avoid special treatment
         # in ZPublisher.BaseRequest.traverse().
