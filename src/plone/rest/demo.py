@@ -1,43 +1,59 @@
 # -*- coding: utf-8 -*-
 from plone.rest import Service
-from zope.component.hooks import getSite
 
 
 class Get(Service):
 
     def render(self):
-        portal = getSite()
-        return {'portal_id': portal.id}
+        return {
+            'method': 'GET',
+            'id': self.context.id
+        }
 
 
 class Post(Service):
 
     def render(self):
-        return {'service': 'post'}
+        return {
+            'method': 'POST',
+            'id': self.context.id
+        }
 
 
 class Put(Service):
 
     def render(self):
-        return {'service': 'put'}
+        return {
+            'method': 'PUT',
+            'id': self.context.id
+        }
 
 
 class Delete(Service):
 
     def render(self):
-        return {'service': 'delete'}
+        return {
+            'method': 'DELETE',
+            'id': self.context.id
+        }
 
 
 class Patch(Service):
 
     def render(self):
-        return {'service': 'patch'}
+        return {
+            'method': 'PATCH',
+            'id': self.context.id
+        }
 
 
 class Options(Service):
 
     def render(self):
-        return {'service': 'options'}
+        return {
+            'method': 'OPTIONS',
+            'id': self.context.id
+        }
 
 
 class NamedGet(Service):
