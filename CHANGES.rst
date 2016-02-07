@@ -4,6 +4,9 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
+- Refactor Dexterity tests to make sure services return the correct object.
+  [timo]
+
 - Add support for browser layers. REST services can now be registered to a
   specific browser layer using the 'layer' attribute.
   [buchi]
