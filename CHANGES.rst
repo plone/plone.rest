@@ -9,7 +9,7 @@ Changelog
   [buchi]
 
 - Remove request method specific marker interfaces (IGET, IPOST, etc.) because
-  they're  no longer required for service lookup.
+  they're no longer required for service lookup.
   [buchi]
 
 - Add support for content negotiation. REST services are no longer hardwired
@@ -27,6 +27,7 @@ Changelog
 ------------------
 
 - Release fix. 1.0a2 was a brown-bag release. This fixes https://github.com/plone/plone.rest/issues/34.
+  [timo]
 
 
 1.0a2 (2015-12-10)
