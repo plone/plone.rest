@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a4 (unreleased)
+1.0a4 (2016-02-07)
 ------------------
 
 - Refactor Dexterity tests to make sure services return the correct object.
