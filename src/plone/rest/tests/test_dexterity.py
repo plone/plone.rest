@@ -32,77 +32,65 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.document = self.portal['doc1']
         transaction.commit()
 
-    def test_dexterity_get(self):
+    def test_dexterity_document_get(self):
         response = requests.get(
             self.document.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'doc1', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
-    def test_dexterity_post(self):
+    def test_dexterity_document_post(self):
         response = requests.post(
             self.document.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'post'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'doc1', response.json().get('id'))
+        self.assertEqual(u'POST', response.json().get('method'))
 
-    def test_dexterity_put(self):
+    def test_dexterity_document_put(self):
         response = requests.put(
             self.document.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'put'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'doc1', response.json().get('id'))
+        self.assertEqual(u'PUT', response.json().get('method'))
 
-    def test_dexterity_patch(self):
+    def test_dexterity_document_patch(self):
         response = requests.patch(
             self.document.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'patch'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'doc1', response.json().get('id'))
+        self.assertEqual(u'PATCH', response.json().get('method'))
 
-    def test_dexterity_delete(self):
+    def test_dexterity_document_delete(self):
         response = requests.delete(
             self.document.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'delete'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'doc1', response.json().get('id'))
+        self.assertEqual(u'DELETE', response.json().get('method'))
 
-    def test_dexterity_options(self):
+    def test_dexterity_document_options(self):
         response = requests.options(
             self.document.absolute_url(),
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'options'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'doc1', response.json().get('id'))
+        self.assertEqual(u'OPTIONS', response.json().get('method'))
 
     def test_dexterity_folder_get(self):
         self.portal.invokeFactory('Folder', id='folder')
@@ -114,11 +102,9 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'folder', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
     def test_dexterity_news_item_get(self):
         self.portal.invokeFactory('News Item', id='newsitem')
@@ -144,11 +130,9 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'newsitem', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
     def test_dexterity_event_get(self):
         self.portal.invokeFactory('Event', id='event')
@@ -163,11 +147,10 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'event', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
     def test_dexterity_link_get(self):
         self.portal.invokeFactory('Link', id='link')
@@ -182,11 +165,9 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'link', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
     def test_dexterity_file_get(self):
         self.portal.invokeFactory('File', id='file')
@@ -212,11 +193,9 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'file', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
     def test_dexterity_image_get(self):
         self.portal.invokeFactory('Image', id='image')
@@ -237,11 +216,9 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'image', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
     def test_dexterity_collection_get(self):
         self.portal.invokeFactory('Collection', id='collection')
@@ -266,8 +243,6 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u'collection', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))

@@ -33,10 +33,8 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
                 response.status_code
             )
         )
-        self.assertEqual(
-            {u'portal_id': u'plone'},
-            response.json()
-        )
+        self.assertEqual(u'plone', response.json().get('id'))
+        self.assertEqual(u'GET', response.json().get('method'))
 
     def test_siteroot_post(self):
         response = requests.post(
@@ -51,11 +49,8 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
                 response.status_code
             )
         )
-        self.assertTrue(response.json())
-        self.assertEqual(
-            {u'service': u'post'},
-            response.json()
-        )
+        self.assertEqual(u'plone', response.json().get('id'))
+        self.assertEqual(u'POST', response.json().get('method'))
 
     def test_siteroot_delete(self):
         response = requests.delete(
@@ -64,10 +59,8 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'delete'},
-            response.json()
-        )
+        self.assertEqual(u'plone', response.json().get('id'))
+        self.assertEqual(u'DELETE', response.json().get('method'))
 
     def test_siteroot_put(self):
         response = requests.put(
@@ -75,11 +68,10 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
+
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'put'},
-            response.json()
-        )
+        self.assertEqual(u'plone', response.json().get('id'))
+        self.assertEqual(u'PUT', response.json().get('method'))
 
     def test_siteroot_patch(self):
         response = requests.patch(
@@ -87,11 +79,10 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
+
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'patch'},
-            response.json()
-        )
+        self.assertEqual(u'plone', response.json().get('id'))
+        self.assertEqual(u'PATCH', response.json().get('method'))
 
     def test_siteroot_options(self):
         response = requests.options(
@@ -100,7 +91,5 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            {u'service': u'options'},
-            response.json()
-        )
+        self.assertEqual(u'plone', response.json().get('id'))
+        self.assertEqual(u'OPTIONS', response.json().get('method'))
