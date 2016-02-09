@@ -4,6 +4,9 @@ Changelog
 1.0a5 (unreleased)
 ------------------
 
+- Add regression tests for service dispatching.
+  [lgraf]
+
 - Restrict traversal of REST requests to content objects. This allows us to
   override existing views with a named service (e.g. /search).
   [buchi]
