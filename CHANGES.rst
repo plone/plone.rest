@@ -4,7 +4,9 @@ Changelog
 1.0a5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Restrict traversal of REST requests to content objects. This allows us to
+  override existing views with a named service (e.g. /search).
+  [buchi]
 
 
 1.0a4 (2016-02-07)
