@@ -124,6 +124,13 @@
     name="namedservice"
     />
 
+  <plone:service
+    method="GET"
+    for="*"
+    factory=".demo.NamedGet"
+    name="search"
+    />
+
   <!-- Error Page -->
 
   <plone:service

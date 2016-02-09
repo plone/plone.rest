@@ -2,11 +2,13 @@
 from ZPublisher import BeforeTraverse
 from ZPublisher.pubevents import PubStart
 from base64 import b64encode
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from zope.event import notify
+from zope.interface import alsoProvides
 
 import unittest
 
@@ -79,3 +81,21 @@ class TestTraversal(unittest.TestCase):
         obj = self.traverse(path='/plone/doc1')
         self.assertTrue(isinstance(obj, Service), 'Not a service')
         self.assertEquals(1, self.request._btr_test_called)
+
+    def test_json_request_on_existing_view_returns_named_service(self):
+        obj = self.traverse('/plone/search')
+        self.assertTrue(isinstance(obj, Service), 'Not a service')
+
+        folder = self.portal[self.portal.invokeFactory('Folder', id='folder1')]
+        alsoProvides(folder, INavigationRoot)
+        obj = self.traverse('/plone/folder1/search')
+        self.assertTrue(isinstance(obj, Service), 'Not a service')
+
+    def test_html_request_on_existing_view_returns_view(self):
+        obj = self.traverse(path='/plone/search', accept='text/html')
+        self.assertFalse(isinstance(obj, Service), 'Got a service')
+
+        folder = self.portal[self.portal.invokeFactory('Folder', id='folder1')]
+        alsoProvides(folder, INavigationRoot)
+        obj = self.traverse(path='/plone/folder1/search', accept='text/html')
+        self.assertFalse(isinstance(obj, Service), 'Got a service')

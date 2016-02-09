@@ -2,10 +2,12 @@
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
+from plone.rest.interfaces import IService
 from zope.component import adapts
 from zope.component import queryMultiAdapter
 from zope.interface import implements
 from zope.publisher.interfaces.browser import IBrowserPublisher
+from Products.CMFCore.interfaces import IContentish
 
 
 class RESTTraverse(DefaultPublishTraverse):
@@ -14,6 +16,9 @@ class RESTTraverse(DefaultPublishTraverse):
     def publishTraverse(self, request, name):
         try:
             obj = super(RESTTraverse, self).publishTraverse(request, name)
+            if (not IContentish.providedBy(obj)
+                    and not IService.providedBy(obj)):
+                raise KeyError
         except KeyError:
             # No object, maybe a named rest service
             service = queryMultiAdapter((self.context, request),
@@ -66,6 +71,9 @@ class RESTWrapper(object):
         adapter = DefaultPublishTraverse(self.context, request)
         try:
             obj = adapter.publishTraverse(request, name)
+            if (not IContentish.providedBy(obj)
+                    and not IService.providedBy(obj)):
+                raise KeyError
 
         # If there's no object with the given name, we get a KeyError.
         # In a non-folderish context a key lookup results in an AttributeError.
