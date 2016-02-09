@@ -2,8 +2,10 @@ from AccessControl import getSecurityManager
 from plone.rest.interfaces import IAPIRequest
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
+from zExceptions import NotFound
 from zope.component import adapter
 from zope.component.hooks import getSite
+
 import json
 import sys
 import traceback
@@ -33,6 +35,12 @@ class ErrorHandling(BrowserView):
     def render_exception(self, exception):
         result = {u'type': type(exception).__name__.decode('utf-8'),
                   u'message': str(exception).decode('utf-8')}
+
+        if isinstance(exception, NotFound):
+            # NotFound exceptions need special handling because their
+            # exception message gets turned into HTML by ZPublisher
+            url = self.request.getURL()
+            result[u'message'] = u'Resource not found: %s' % url
 
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
             result[u'traceback'] = self.render_traceback(exception)
