@@ -4,6 +4,9 @@ Changelog
 1.0a5 (unreleased)
 ------------------
 
+- Improve message for 404 Not Found exceptions (don't return HTML).
+  [lgraf]
+
 - Add regression tests for service dispatching.
   [lgraf]
 

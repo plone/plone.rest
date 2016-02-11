@@ -48,6 +48,10 @@ class TestErrorHandling(unittest.TestCase):
             'NotFound',
             response.json()['type']
         )
+        self.assertEqual(
+            'Resource not found: %s' % response.url,
+            response.json()['message']
+        )
 
     def test_401_unauthorized(self):
         response = requests.get(
