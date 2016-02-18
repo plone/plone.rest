@@ -4,6 +4,14 @@ Changelog
 1.0a5 (unreleased)
 ------------------
 
+- Implement permission handling. The permission required to access a service
+  must be declared in the service directive.
+  [buchi]
+
+- Register services with the Zope configuration system. This provides better
+  conflict detection and resolution.
+  [buchi]
+
 - Improve message for 404 Not Found exceptions (don't return HTML).
   [lgraf]
 

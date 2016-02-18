@@ -82,11 +82,13 @@ This is how you would register a PATCH request on Dexterity content:
     accept="application/json"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".service.Patch"
+    permission="cmf.ModifyPortalContent"
     />
 
 You have to specify the HTTP verb (GET, POST, PUT, DELETE, HEAD, OPTIONS), the
-media type used for content negotiation, the interface for the content objects
-and the factory class that actually returns the content.
+media type used for content negotiation, the interface for the content objects,
+the factory class that actually returns the content and the permission required
+to access the service.
 
 The factory class needs to inherit from the plone.rest 'Service' class and to implement a render method that returns a list or a dict::
 
@@ -167,6 +169,7 @@ Named services can be registered by providing a 'name' attribute in the service 
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".service.Search"
     name="search"
+    permission="zope2.View"
     />
 
 This registers a service endpoint accessible at the site root using the

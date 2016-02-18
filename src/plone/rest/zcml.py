@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
+from AccessControl.class_init import InitializeClass
+from AccessControl.security import getSecurityInfo
+from AccessControl.security import protectClass
+from Products.Five.browser import BrowserView
+from Products.Five.metaclass import makeClass
 from plone.rest.cors import get_cors_preflight_view
 from plone.rest.negotiation import parse_accept_header
 from plone.rest.negotiation import register_service
-from zope.component.zcml import adapter
+from zope.browserpage.metaconfigure import _handle_for
+from zope.component.zcml import handler
 from zope.configuration.fields import GlobalInterface
 from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
-from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.schema import TextLine, Bool
-from zope.security.checker import CheckerPublic
 from zope.security.zcml import Permission
 
 
@@ -83,8 +87,8 @@ class IService(Interface):
 
     permission = Permission(
         title=u"Permission",
-        description=u"The permission needed to use the view.",
-        required=False
+        description=u"The permission needed to access the service.",
+        required=True,
         )
 
 
@@ -94,46 +98,56 @@ def serviceDirective(
         accept,
         factory,
         for_,
+        permission,
         layer=IDefaultBrowserLayer,
         name=u'',
         cors_enabled=False,
         cors_origin=None,
-        permission=CheckerPublic
         ):
 
-    required = {}
-
-    if permission == 'zope.Public':
-        permission = CheckerPublic
-
-    for n in ('browserDefault', '__call__', 'publishTraverse'):
-        required[n] = permission
-
-    # defineChecker(factory, Checker(required))
+    _handle_for(_context, for_)
 
     media_types = parse_accept_header(accept)
     for media_type in media_types:
         service_id = register_service(method.upper(), media_type)
         view_name = service_id + name
 
-        adapter(
-            _context,
-            factory=(factory,),
-            provides=IBrowserPublisher,
-            for_=(for_, layer),
-            name=view_name,
+        # Create a new class. We'll execute some security declarations on it
+        # and don't want to modify the original class.
+        cdict = getSecurityInfo(factory)
+        cdict['__name__'] = view_name
+        new_class = makeClass(factory.__name__, (factory, BrowserView), cdict)
+
+        _context.action(
+            discriminator=('plone.rest:service', method, media_type, for_,
+                           name, layer),
+            callable=handler,
+            args=('registerAdapter', new_class, (for_, layer), Interface,
+                  view_name, _context.info),
         )
+
+        _context.action(
+            discriminator=('plone.rest:protectClass', new_class),
+            callable=protectClass,
+            args=(new_class, permission)
+        )
+        _context.action(
+            discriminator=('plone.rest:InitializeClass', new_class),
+            callable=InitializeClass,
+            args=(new_class,)
+            )
 
         if cors_enabled:
             # Check if there is already an adapter for options
 
             service_id = register_service(u'OPTIONS', media_type)
-            view_name = u'{}_{}'.format(service_id, name)
+            view_name = service_id + name
+
             # Register
-            adapter(
-                _context,
-                factory=(get_cors_preflight_view),
-                provides=IBrowserPublisher,
-                for_=(for_, layer),
-                name=view_name,
+            _context.action(
+                discriminator=('plone.rest:service', u'OPTIONS', media_type,
+                               for_, name, layer),
+                callable=handler,
+                args=('registerAdapter', get_cors_preflight_view,
+                      (for_, layer), Interface, view_name, _context.info),
             )

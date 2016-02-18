@@ -10,36 +10,42 @@
     method="GET"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Get"
+    permission="zope2.View"
     />
 
   <plone:service
     method="POST"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Post"
+    permission="cmf.AddPortalContent"
     />
 
   <plone:service
     method="PUT"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Put"
+    permission="cmf.ModifyPortalContent"
     />
 
   <plone:service
     method="DELETE"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Delete"
+    permission="zope2.DeleteObjects"
     />
 
   <plone:service
     method="PATCH"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Patch"
+    permission="cmf.ModifyPortalContent"
     />
 
   <plone:service
     method="OPTIONS"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.Options"
+    permission="zope2.View"
     />
 
   <!-- Plone Site Root -->
@@ -48,36 +54,42 @@
     method="GET"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Get"
+    permission="zope2.View"
     />
 
   <plone:service
     method="POST"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Post"
+    permission="cmf.AddPortalContent"
     />
 
   <plone:service
     method="PUT"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Put"
+    permission="cmf.ModifyPortalContent"
     />
 
   <plone:service
     method="DELETE"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Delete"
+    permission="zope2.DeleteObjects"
     />
 
   <plone:service
     method="PATCH"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Patch"
+    permission="cmf.ModifyPortalContent"
     />
 
   <plone:service
     method="OPTIONS"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     factory=".demo.Options"
+    permission="zope2.View"
     />
 
   <!-- Dexterity named services -->
@@ -86,6 +98,7 @@
     method="GET"
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedGet"
+    permission="zope2.View"
     name="namedservice"
     />
 
@@ -94,6 +107,7 @@
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedPost"
     name="namedservice"
+    permission="cmf.AddPortalContent"
     />
 
   <plone:service
@@ -101,6 +115,7 @@
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedPut"
     name="namedservice"
+    permission="cmf.ModifyPortalContent"
     />
 
   <plone:service
@@ -108,6 +123,7 @@
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedDelete"
     name="namedservice"
+    permission="zope2.DeleteObjects"
     />
 
   <plone:service
@@ -115,6 +131,7 @@
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedPatch"
     name="namedservice"
+    permission="cmf.ModifyPortalContent"
     />
 
   <plone:service
@@ -122,6 +139,7 @@
     for="plone.dexterity.interfaces.IDexterityContent"
     factory=".demo.NamedOptions"
     name="namedservice"
+    permission="zope2.View"
     />
 
   <plone:service
@@ -129,6 +147,7 @@
     for="*"
     factory=".demo.NamedGet"
     name="search"
+    permission="zope2.View"
     />
 
   <!-- Error Page -->
@@ -138,6 +157,7 @@
     for="*"
     name="500-internal-server-error"
     factory=".testing.InternalServerErrorService"
+    permission="zope2.View"
     />
 
 </configure>
