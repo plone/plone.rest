@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import IService
@@ -18,7 +19,10 @@ class RESTTraverse(DefaultPublishTraverse):
             obj = super(RESTTraverse, self).publishTraverse(request, name)
             if (not IContentish.providedBy(obj)
                     and not IService.providedBy(obj)):
-                raise KeyError
+                if isinstance(obj, VirtualHostMonster):
+                    return obj
+                else:
+                    raise KeyError
         except KeyError:
             # No object, maybe a named rest service
             service = queryMultiAdapter((self.context, request),

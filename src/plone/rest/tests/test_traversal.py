@@ -7,6 +7,7 @@ from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from zope.event import notify
 from zope.interface import alsoProvides
 
@@ -99,3 +100,12 @@ class TestTraversal(unittest.TestCase):
         alsoProvides(folder, INavigationRoot)
         obj = self.traverse(path='/plone/folder1/search', accept='text/html')
         self.assertFalse(isinstance(obj, Service), 'Got a service')
+
+    def test_virtual_hosting(self):
+        app = self.layer['app']
+        vhm = VirtualHostMonster()
+        vhm.id = 'virtual_hosting'
+        vhm.addToContainer(app)
+        obj = self.traverse(path='/VirtualHostBase/http/localhost:8080/plone/VirtualHostRoot/')  # noqa
+        self.assertTrue(isinstance(obj, Service), 'Not a service')
+        del app['virtual_hosting']
