@@ -22,6 +22,8 @@ Changelog
   override existing views with a named service (e.g. /search).
   [buchi]
 
+- Allow virtual hosting scenarios. #48
+  [tomgross]
 
 1.0a4 (2016-02-07)
 ------------------
