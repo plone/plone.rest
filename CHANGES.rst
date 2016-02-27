@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a5 (unreleased)
+1.0a5 (2016-02-27)
 ------------------
 
 - Implement permission handling. The permission required to access a service
