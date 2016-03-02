@@ -7,6 +7,10 @@ Changelog
 - Add support for CORS policies.
   [buchi]
 
+- Remove JSON render implementation in service base class. Services
+  must provide their own render implementation.
+  [buchi]
+
 
 1.0a5 (2016-02-27)
 ------------------
