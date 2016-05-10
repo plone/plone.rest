@@ -4,7 +4,6 @@ from AccessControl.security import getSecurityInfo
 from AccessControl.security import protectClass
 from Products.Five.browser import BrowserView
 from Products.Five.metaclass import makeClass
-from plone.rest.cors import get_cors_preflight_view
 from plone.rest.negotiation import parse_accept_header
 from plone.rest.negotiation import register_service
 from zope.browserpage.metaconfigure import _handle_for
@@ -13,7 +12,7 @@ from zope.configuration.fields import GlobalInterface
 from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.schema import TextLine, Bool
+from zope.schema import TextLine
 from zope.security.zcml import Permission
 
 
@@ -67,24 +66,6 @@ class IService(Interface):
         default=IDefaultBrowserLayer,
         )
 
-    cors_enabled = Bool(
-        title=u"The name of the view that should be the default."
-              u"[get|post|put|delete]",
-        description=u"""
-        This name refers to view that should be the view used by
-        default (if no view name is supplied explicitly).""",
-        required=False
-        )
-
-    cors_origin = TextLine(
-        title=u"The name of the view that should be the default." +
-              u"[get|post|put|delete]",
-        description=u"""
-        This name refers to view that should be the view used by
-        default (if no view name is supplied explicitly).""",
-        required=False
-        )
-
     permission = Permission(
         title=u"Permission",
         description=u"The permission needed to access the service.",
@@ -101,8 +82,6 @@ def serviceDirective(
         permission,
         layer=IDefaultBrowserLayer,
         name=u'',
-        cors_enabled=False,
-        cors_origin=None,
         ):
 
     _handle_for(_context, for_)
@@ -135,19 +114,4 @@ def serviceDirective(
             discriminator=('plone.rest:InitializeClass', new_class),
             callable=InitializeClass,
             args=(new_class,)
-            )
-
-        if cors_enabled:
-            # Check if there is already an adapter for options
-
-            service_id = register_service(u'OPTIONS', media_type)
-            view_name = service_id + name
-
-            # Register
-            _context.action(
-                discriminator=('plone.rest:service', u'OPTIONS', media_type,
-                               for_, name, layer),
-                callable=handler,
-                args=('registerAdapter', get_cors_preflight_view,
-                      (for_, layer), Interface, view_name, _context.info),
             )
