@@ -4,7 +4,8 @@ Changelog
 1.0a6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add support for CORS policies.
+  [buchi]
 
 
 1.0a5 (2016-02-27)
