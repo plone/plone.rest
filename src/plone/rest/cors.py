@@ -51,7 +51,7 @@ class CORSPolicy(object):
             return False
 
         method = self.request.getHeader('Access-Control-Request-Method', None)
-        if method not in self.allow_methods:
+        if self.allow_methods and method not in self.allow_methods:
             return False
 
         headers = self.request.getHeader('Access-Control-Request-Headers',

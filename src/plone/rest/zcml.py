@@ -159,6 +159,7 @@ class ICORSPolicyDirective(Interface):
         description=u"""A comma separated list of HTTP method names that are
         allowed by this CORS policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT".
         """,
+        required=False,
         )
 
     allow_headers = TextLine(
@@ -193,8 +194,8 @@ class ICORSPolicyDirective(Interface):
 def cors_policy_directive(
         _context,
         allow_origin,
-        allow_methods,
         allow_credentials,
+        allow_methods=None,
         expose_headers=None,
         allow_headers=None,
         max_age=None,
@@ -207,7 +208,10 @@ def cors_policy_directive(
     # class attributes.
     cdict = {}
     cdict['allow_origin'] = [o.strip() for o in allow_origin.split(',')]
-    cdict['allow_methods'] = [m.strip() for m in allow_methods.split(',')]
+    if allow_methods is not None:
+        cdict['allow_methods'] = [m.strip() for m in allow_methods.split(',')]
+    else:
+        cdict['allow_methods'] = None
     cdict['allow_credentials'] = allow_credentials
     if expose_headers:
         cdict['expose_headers'] = [

@@ -214,12 +214,13 @@ defines a policy for the site root.
 The CORSPolicy directive supports the following options:
 
 allow_origin
-  Origins that are allowed access to the resource. Either a comma separated
+  Origins that are allowed to access the resource. Either a comma separated
   list of origins, e.g. "http://example.net,http://mydomain.com" or "*".
 
 allow_methods
   A comma separated list of HTTP method names that are allowed by this CORS
-  policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT".
+  policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT". If not specified, all
+  methods for which there's a service registerd are allowed.
 
 allow_credentials
   Indicates whether the resource supports user credentials in the request.

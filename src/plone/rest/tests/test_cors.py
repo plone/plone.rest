@@ -177,6 +177,13 @@ class TestCORSPolicy(unittest.TestCase):
         self.assertEqual(
             'GET', self.response.getHeader('Access-Control-Allow-Methods'))
 
+    def test_preflight_cors_adds_allow_methods_if_unrestriced(self):
+        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy.allow_methods = None
+        self.assertTrue(policy.process_preflight_request())
+        self.assertEqual(
+            'GET', self.response.getHeader('Access-Control-Allow-Methods'))
+
     def test_preflight_cors_adds_allow_headers(self):
         policy = self.get_policy(origin="http://example.net", method='GET')
         policy.allow_headers = ['X-Allowed']
