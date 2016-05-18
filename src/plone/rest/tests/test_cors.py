@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from ZPublisher.pubevents import PubStart
 from plone.rest.cors import CORSPolicy
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+from zExceptions import Unauthorized
+from zope.event import notify
 
 import unittest
 
@@ -201,3 +204,39 @@ class TestCORSPolicy(unittest.TestCase):
         policy = self.get_policy(origin="http://example.net", method='GET')
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(200, self.response.getStatus())
+
+
+class TestCORS(unittest.TestCase):
+
+    layer = PLONE_REST_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+
+    def traverse(self, path='/plone', method='GET', headers={}):
+        request = self.layer['request']
+        request.environ['PATH_INFO'] = path
+        request.environ['PATH_TRANSLATED'] = path
+        request.environ['REQUEST_METHOD'] = method
+        request.environ['HTTP_ORIGIN'] = 'http://example.net'
+        request.environ.update(headers)
+        notify(PubStart(request))
+        return request.traverse(path)
+
+    def test_preflight_cors_is_accessible_anonymously(self):
+        headers = {}
+        headers['HTTP_ACCESS_CONTROL_REQUEST_METHOD'] = 'POST'
+        try:
+            self.traverse(method='OPTIONS', headers=headers)
+        except Unauthorized:
+            self.fail('Service not accessible for preflight.')
+
+    def test_simple_cors_gets_processed(self):
+        headers = {}
+        headers['HTTP_ACCEPT'] = 'application/json'
+        obj = self.traverse(method='GET', headers=headers)
+        obj()
+        self.assertEqual(
+            '*',
+            self.request.response.getHeader('Access-Control-Allow-Origin'))

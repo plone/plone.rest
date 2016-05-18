@@ -21,3 +21,10 @@ class Service(object):
 
         self.request.response.setHeader("Content-Type", "application/json")
         return json.dumps(self.render(), indent=2, sort_keys=True)
+
+    def __getattribute__(self, name):
+        # Preflight requests need to be publicly accessible since they don't
+        # include credentials
+        if name == '__roles__' and self.request._rest_cors_preflight:
+            return ['Anonymous']
+        return super(Service, self).__getattribute__(name)
