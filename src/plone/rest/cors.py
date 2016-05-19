@@ -1,136 +1,104 @@
 # -*- coding: utf-8 -*-
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
-import fnmatch
-import functools
+from plone.rest.interfaces import ICORSPolicy
+from zope.interface import implements
+
+# CORS preflight service registry
+# A mapping of method -> service_id
+_services = {}
 
 
-CORS_PARAMETERS = ('cors_headers', 'cors_enabled', 'cors_origins',
-                   'cors_credentials', 'cors_max_age',
-                   'cors_expose_all_headers')
+def register_method_for_preflight(method, service_id):
+    """Register the given method for preflighting with the given service_id."""
+    _services[method] = service_id
 
 
-def get_cors_preflight_view(service):
-    """Return a view for the OPTION method.
+def lookup_preflight_service_id(method):
+    """Lookup a service id for the given preflighted method."""
+    if method in _services:
+        return _services[method]
 
-    Checks that the User-Agent is authorized to do a request to the server, and
-    to this particular service, and add the various checks that are specified
-    in http://www.w3.org/TR/cors/#resource-processing-model.
-    """
 
-    def _preflight_view(request):
-        response = request.response
-        origin = request.headers.get('Origin')
-        supported_headers = service.cors_supported_headers_for()
+class CORSPolicy(object):
+    implements(ICORSPolicy)
 
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def process_simple_request(self):
+        """Process the current request as a simple CORS request by setting the
+           appropriate access control headers. Returns True if access control
+           headers were set.
+        """
+        origin = self._allowed_origin()
         if not origin:
-            request.errors.add('header', 'Origin',
-                               'this header is mandatory')
+            return False
 
-        requested_method = request.headers.get('Access-Control-Request-Method')
-        if not requested_method:
-            request.errors.add('header', 'Access-Control-Request-Method',
-                               'this header is mandatory')
+        self._process_origin_and_credentials(origin)
 
-        if not (requested_method and origin):
-            return
+        if self.expose_headers:
+            self.request.response.setHeader('Access-Control-Expose-Headers',
+                                            ', '.join(self.expose_headers))
+        return True
 
-        requested_headers = (
-            request.headers.get('Access-Control-Request-Headers', ()))
+    def process_preflight_request(self):
+        """Process the current request as a CORS preflight request by setting
+           the appropriate access control headers. Returns True if access
+           control headers were set.
+        """
+        origin = self._allowed_origin()
+        if not origin:
+            return False
 
-        if requested_headers:
-            requested_headers = map(str.strip, requested_headers.split(', '))
+        method = self.request.getHeader('Access-Control-Request-Method', None)
+        if self.allow_methods and method not in self.allow_methods:
+            return False
 
-        if requested_method not in service.cors_supported_methods:
-            request.errors.add('header', 'Access-Control-Request-Method',
-                               'Method not allowed')
+        headers = self.request.getHeader('Access-Control-Request-Headers',
+                                         None)
+        if headers:
+            headers = headers.split(',')
+            allowed_headers = [h.lower() for h in self.allow_headers]
+            for header in headers:
+                if header.strip().lower() not in allowed_headers:
+                    return False
 
-        if not service.cors_expose_all_headers:
-            for h in requested_headers:
-                if not h.lower() in [s.lower() for s in supported_headers]:
-                    request.errors.add(
-                        'header',
-                        'Access-Control-Request-Headers',
-                        'Header "%s" not allowed' % h)
+        self._process_origin_and_credentials(origin)
 
-        supported_headers = set(supported_headers) | set(requested_headers)
+        if self.max_age:
+            self.request.response.setHeader('Access-Control-Max-Age',
+                                            self.max_age)
 
-        response.headers['Access-Control-Allow-Headers'] = (
-            ','.join(supported_headers))
+        self.request.response.setHeader('Access-Control-Allow-Methods', method)
 
-        response.headers['Access-Control-Allow-Methods'] = (
-            ','.join(service.cors_supported_methods))
+        if self.allow_headers:
+            self.request.response.setHeader('Access-Control-Allow-Headers',
+                                            ', '.join(self.allow_headers))
 
-        max_age = service.cors_max_age_for(requested_method)
-        if max_age is not None:
-            response.headers['Access-Control-Max-Age'] = str(max_age)
+        self.request.response.setHeader('Content-Length', '0')
+        self.request.response.setStatus(200)
+        return True
 
-        return None
-    return _preflight_view
+    def _allowed_origin(self):
+        origin = self.request.getHeader('Origin', None)
+        if not origin:
+            return False
+        if origin not in self.allow_origin and self.allow_origin != ['*']:
+            return False
+        return origin
 
-
-def _get_method(request):
-    """Return what's supposed to be the method for CORS operations.
-    (e.g if the verb is options, look at the A-C-Request-Method header,
-    otherwise return the HTTP verb).
-    """
-    if request.method == 'OPTIONS':
-        method = request.headers.get('Access-Control-Request-Method',
-                                     request.method)
-    else:
-        method = request.method
-    return method
-
-
-def ensure_origin(service, request, response=None):
-    """Ensure that the origin header is set and allowed."""
-    response = response or request.response
-
-    # Don't check this twice.
-    if not request.info.get('cors_checked', False):
-        method = _get_method(request)
-
-        origin = request.headers.get('Origin')
-        if origin:
-            if not any([fnmatch.fnmatchcase(origin, o)
-                        for o in service.cors_origins_for(method)]):
-                request.errors.add('header', 'Origin',
-                                   '%s not allowed' % origin)
-            elif request.headers.get(
-                    'Access-Control-Allow-Credentials', False):
-                response.headers['Access-Control-Allow-Origin'] = origin
-            else:
-                if any([o == "*" for o in service.cors_origins_for(method)]):
-                    response.headers['Access-Control-Allow-Origin'] = '*'
-                else:
-                    response.headers['Access-Control-Allow-Origin'] = origin
-        request.info['cors_checked'] = True
-    return response
-
-
-def get_cors_validator(service):
-    return functools.partial(ensure_origin, service)
-
-
-def apply_cors_post_request(service, request, response):
-    """Handles CORS-related post-request things.
-
-    Add some response headers, such as the Expose-Headers and the
-    Allow-Credentials ones.
-    """
-    response = ensure_origin(service, request, response)
-    method = _get_method(request)
-
-    if (service.cors_support_credentials_for(method) and
-            'Access-Control-Allow-Credentials' not in response.headers):
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-
-    if request.method != 'OPTIONS':
-        # Which headers are exposed?
-        supported_headers = service.cors_supported_headers_for(request.method)
-        if supported_headers:
-            response.headers['Access-Control-Expose-Headers'] = (
-                ', '.join(supported_headers))
-
-    return response
+    def _process_origin_and_credentials(self, origin):
+        if self.allow_credentials:
+            self.request.response.setHeader('Access-Control-Allow-Origin',
+                                            origin)
+            self.request.response.setHeader('Access-Control-Allow-Credentials',
+                                            'true')
+            if len(self.allow_origin) > 1 or self.allow_origin == ['*']:
+                self.request.response.setHeader('Vary', 'Origin')
+        elif self.allow_origin == ['*']:
+            self.request.response.setHeader('Access-Control-Allow-Origin', '*')
+        else:
+            self.request.response.setHeader('Access-Control-Allow-Origin',
+                                            origin)
+            if len(self.allow_origin) > 1:
+                self.request.response.setHeader('Vary', 'Origin')

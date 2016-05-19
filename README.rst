@@ -180,6 +180,72 @@ following request::
   Accept: application/json
 
 
+CORS
+----
+
+plone.rest allows you to define CORS policies for services in ZCML. The
+following example defines a policy for all services.
+
+.. code-block:: xml
+
+  <plone:CORSPolicy
+    allow_origin="http://example.net"
+    allow_methods="DELETE,GET,OPTIONS,PATCH,POST,PUT"
+    allow_credentials="true"
+    expose_headers="Content-Length,X-My-Header"
+    allow_headers="X-Custom-Header"
+    max_age="3600"
+    />
+
+CORS policies can be bound to specific interfaces of content objects and to
+specific browser layers. This allows us to define different policies for
+different content types or to override existing policies. The following example
+defines a policy for the site root.
+
+.. code-block:: xml
+
+  <plone:CORSPolicy
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    layer="myproduct.interfaces.IMyBrowserLayer"
+    allow_origin="*"
+    allow_methods="GET"
+    />
+
+The CORSPolicy directive supports the following options:
+
+allow_origin
+  Origins that are allowed to access the resource. Either a comma separated
+  list of origins, e.g. "http://example.net,http://mydomain.com" or "*".
+
+allow_methods
+  A comma separated list of HTTP method names that are allowed by this CORS
+  policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT". If not specified, all
+  methods for which there's a service registerd are allowed.
+
+allow_credentials
+  Indicates whether the resource supports user credentials in the request.
+
+allow_headers
+  A comma separated list of request headers allowed to be sent by the client,
+  e.g. "X-My-Header"
+
+expose_headers
+  A comma separated list of response headers clients can access,
+  e.g. "Content-Length,X-My-Header".
+
+max_age
+  Indicates how long the results of a preflight request can be cached.
+
+for
+  Specifies the interface for which the CORS policy is registered. If this
+  attribute is not specified, the CORS policy applies to all objects.
+
+layer
+  A browser layer for which this CORS policy is registered. Useful for
+  overriding existing policies or for making them available only if a specific
+  add-on has been installed.
+
+
 Installation
 ------------
 

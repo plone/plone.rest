@@ -160,4 +160,10 @@
     permission="zope2.View"
     />
 
+  <plone:CORSPolicy
+    allow_methods="GET"
+    allow_origin="*"
+    expose_headers="X-My-Header"
+    />
+
 </configure>

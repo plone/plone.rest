@@ -7,5 +7,12 @@
         schema=".zcml.IService"
         handler=".zcml.serviceDirective"
         />
+
+    <directive
+    	name="CORSPolicy"
+    	schema=".zcml.ICORSPolicyDirective"
+    	handler=".zcml.cors_policy_directive"
+      />
+
   </directives>
 </configure>
