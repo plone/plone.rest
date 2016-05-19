@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from ZPublisher import BeforeTraverse
 from ZPublisher.pubevents import PubStart
 from base64 import b64encode
@@ -7,9 +8,9 @@ from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
-from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from zope.event import notify
 from zope.interface import alsoProvides
+from zope.publisher.interfaces.browser import IBrowserView
 
 import unittest
 
@@ -109,3 +110,11 @@ class TestTraversal(unittest.TestCase):
         obj = self.traverse(path='/VirtualHostBase/http/localhost:8080/plone/VirtualHostRoot/')  # noqa
         self.assertTrue(isinstance(obj, Service), 'Not a service')
         del app['virtual_hosting']
+
+    def test_json_request_to_regular_view_returns_view(self):
+        obj = self.traverse('/plone/folder_contents')
+        self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
+
+        self.portal[self.portal.invokeFactory('Folder', id='folder1')]
+        obj = self.traverse('/plone/folder1/folder_contents')
+        self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
