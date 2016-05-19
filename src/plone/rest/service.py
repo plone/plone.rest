@@ -4,8 +4,6 @@ from plone.rest.interfaces import IService
 from zope.component import queryMultiAdapter
 from zope.interface import implements
 
-import json
-
 
 class Service(object):
     implements(IService)
@@ -19,8 +17,10 @@ class Service(object):
             else:
                 policy.process_simple_request()
 
-        self.request.response.setHeader("Content-Type", "application/json")
-        return json.dumps(self.render(), indent=2, sort_keys=True)
+        return self.render()
+
+    def render(self):
+        raise NotImplementedError
 
     def __getattribute__(self, name):
         # Preflight requests need to be publicly accessible since they don't

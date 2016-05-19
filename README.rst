@@ -90,17 +90,14 @@ media type used for content negotiation, the interface for the content objects,
 the factory class that actually returns the content and the permission required
 to access the service.
 
-The factory class needs to inherit from the plone.rest 'Service' class and to implement a render method that returns a list or a dict::
+The factory class needs to inherit from the plone.rest 'Service' class and to implement a render method that returns the body of the response::
 
   from plone.rest import Service
 
   class Patch(Service):
 
       def render(self):
-          return {'message': 'PATCH: Hello World!'}
-
-
-The return value (list or dict) will be automatically transformed into JSON.
+          return '{"message": "PATCH: Hello World!"}'
 
 
 Content Negotiation
@@ -118,7 +115,7 @@ The server then will respond with '200 OK'::
   Content-Type: application/json
 
   {
-    'message': 'PATCH: Hello World!'
+    "message": "PATCH: Hello World!"
   }
 
 You can try this out on the command line:

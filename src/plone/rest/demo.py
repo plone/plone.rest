@@ -1,92 +1,101 @@
 # -*- coding: utf-8 -*-
 from plone.rest import Service
 
+import json
 
-class Get(Service):
+
+class BaseService(Service):
 
     def render(self):
+        self.request.response.setHeader("Content-Type", "application/json")
+        return json.dumps(self.data(), indent=2, sort_keys=True)
+
+
+class Get(BaseService):
+
+    def data(self):
         return {
             'method': 'GET',
             'id': self.context.id
         }
 
 
-class Post(Service):
+class Post(BaseService):
 
-    def render(self):
+    def data(self):
         return {
             'method': 'POST',
             'id': self.context.id
         }
 
 
-class Put(Service):
+class Put(BaseService):
 
-    def render(self):
+    def data(self):
         return {
             'method': 'PUT',
             'id': self.context.id
         }
 
 
-class Delete(Service):
+class Delete(BaseService):
 
-    def render(self):
+    def data(self):
         return {
             'method': 'DELETE',
             'id': self.context.id
         }
 
 
-class Patch(Service):
+class Patch(BaseService):
 
-    def render(self):
+    def data(self):
         return {
             'method': 'PATCH',
             'id': self.context.id
         }
 
 
-class Options(Service):
+class Options(BaseService):
 
-    def render(self):
+    def data(self):
         return {
             'method': 'OPTIONS',
             'id': self.context.id
         }
 
 
-class NamedGet(Service):
+class NamedGet(BaseService):
 
-    def render(self):
+    def data(self):
         return {'service': 'named get'}
 
 
-class NamedPost(Service):
+class NamedPost(BaseService):
 
-    def render(self):
+    def data(self):
         return {'service': 'named post'}
 
 
-class NamedPut(Service):
+class NamedPut(BaseService):
 
-    def render(self):
+    def data(self):
         return {'service': 'named put'}
 
 
-class NamedDelete(Service):
+class NamedDelete(BaseService):
 
-    def render(self):
+    def data(self):
         return {'service': 'named delete'}
 
 
-class NamedPatch(Service):
+class NamedPatch(BaseService):
 
-    def render(self):
+    def data(self):
         return {'service': 'named patch'}
 
 
-class NamedOptions(Service):
+class NamedOptions(BaseService):
 
-    def render(self):
+    def data(self):
         return {'service': 'named options'}
