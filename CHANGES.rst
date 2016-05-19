@@ -11,6 +11,10 @@ Changelog
   must provide their own render implementation.
   [buchi]
 
+- Fallback to regular views during traversal to ensure compatibility with
+  views beeing called with a specific Accept header.
+  [buchi]
+
 
 1.0a5 (2016-02-27)
 ------------------

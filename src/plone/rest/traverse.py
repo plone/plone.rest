@@ -28,6 +28,10 @@ class RESTTraverse(DefaultPublishTraverse):
             service = queryMultiAdapter((self.context, request),
                                         name=request._rest_service_id + name)
             if service is None:
+                # No service, fallback to regular view
+                view = queryMultiAdapter((self.context, request), name=name)
+                if view is not None:
+                    return view
                 raise
             return service
 
@@ -86,6 +90,10 @@ class RESTWrapper(object):
             service = queryMultiAdapter((self.context, request),
                                         name=request._rest_service_id + name)
             if service is None:
+                # No service, fallback to regular view
+                view = queryMultiAdapter((self.context, request), name=name)
+                if view is not None:
+                    return view
                 raise
             return service
         else:
