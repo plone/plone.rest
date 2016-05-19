@@ -60,7 +60,7 @@ class CORSPolicy(object):
             headers = headers.split(',')
             allowed_headers = [h.lower() for h in self.allow_headers]
             for header in headers:
-                if header.lower() not in allowed_headers:
+                if header.strip().lower() not in allowed_headers:
                     return False
 
         self._process_origin_and_credentials(origin)
