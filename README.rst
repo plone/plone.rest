@@ -177,6 +177,39 @@ following request::
   Accept: application/json
 
 
+Additional Path Segments
+------------------------
+
+To handle additional path segments after the service url like `/Plone/myservice/1/2`
+a service has to implement `IPublishTraverse`. The following example simply
+stores all path segments in an array in `self.params`.
+
+.. code-block:: python
+
+  from plone.rest import Service
+  from zope.interface import implements
+  from zope.publisher.interfaces import IPublishTraverse
+
+  class MyService(Service):
+
+      implements(IPublishTraverse)
+
+      def __init__(self, context, request):
+          super(MyService, self).__init__(context, request)
+          self.params = []
+
+      def publishTraverse(self, request, name):
+          self.params.append(name)
+          return self
+
+      def render(self):
+          return {'service': 'named get', 'params': self.params}
+
+
+See also the implementation of the workflow transition endpoint in
+plone.restapi for an other example.
+
+
 CORS
 ----
 
