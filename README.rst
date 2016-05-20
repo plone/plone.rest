@@ -190,7 +190,7 @@ following example defines a policy for all services.
     allow_methods="DELETE,GET,OPTIONS,PATCH,POST,PUT"
     allow_credentials="true"
     expose_headers="Content-Length,X-My-Header"
-    allow_headers="X-Custom-Header"
+    allow_headers="Accept,Authorization,Content-Type,X-Custom-Header"
     max_age="3600"
     />
 
@@ -278,4 +278,3 @@ License
 -------
 
 The project is licensed under the GPLv2.
-
