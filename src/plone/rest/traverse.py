@@ -38,6 +38,10 @@ class RESTTraverse(DefaultPublishTraverse):
         if name.startswith(request._rest_service_id):
             return obj
 
+        # Do not handle view namespace
+        if '@@' in request['PATH_INFO'] or '++view++' in request['PATH_INFO']:
+            return obj
+
         # Wrap object to ensure we handle further traversal
         return RESTWrapper(obj, request)
 
