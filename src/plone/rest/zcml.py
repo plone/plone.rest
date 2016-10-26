@@ -165,7 +165,8 @@ class ICORSPolicyDirective(Interface):
     allow_headers = TextLine(
         title=u"Headers",
         description=u"""A comma separated list of request headers allowed to be
-        sent by the client, e.g. "X-My-Header".""",
+        sent by the client, e.g. "X-My-Header". Any header is allowed if left
+        empty.""",
         required=False,
         )
 

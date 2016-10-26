@@ -4,7 +4,8 @@ Changelog
 1.0b1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- An empty allow_headers allows all headers.
+  [jaroel]
 
 
 1.0a6 (2016-05-22)
