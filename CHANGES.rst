@@ -4,7 +4,8 @@ Changelog
 1.0b1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Do not handle view namespace at all.
+  [buchi]
 
 
 1.0a6 (2016-05-22)
