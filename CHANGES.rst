@@ -4,7 +4,9 @@ Changelog
 1.0b1 (unreleased)
 ------------------
 
-- Do not handle view namespace at all.
+BUGFIXES:
+
+- Do not handle view namespace at all. This fixes: https://github.com/plone/plone.rest/issues/50
   [buchi]
 
 
