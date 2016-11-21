@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b1 (unreleased)
+1.0a7 (2016-11-21)
 ------------------
 
 BUGFIXES:
