@@ -8,10 +8,6 @@
   :target: https://landscape.io/github/plone/plone.rest/master
   :alt: Code Health
 
-.. image:: https://img.shields.io/pypi/dm/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
-    :alt: Downloads
-
 .. image:: https://img.shields.io/pypi/v/plone.rest.svg
     :target: https://pypi.python.org/pypi/plone.rest/
     :alt: Latest Version
