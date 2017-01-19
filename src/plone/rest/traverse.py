@@ -9,6 +9,7 @@ from zope.component import queryMultiAdapter
 from zope.interface import implements
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from Products.CMFCore.interfaces import IContentish
+from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 
 
 class RESTTraverse(DefaultPublishTraverse):
@@ -20,6 +21,9 @@ class RESTTraverse(DefaultPublishTraverse):
             if (not IContentish.providedBy(obj)
                     and not IService.providedBy(obj)):
                 if isinstance(obj, VirtualHostMonster):
+                    return obj
+                elif (isinstance(obj, BTreeFolder2)
+                        and obj.id == 'portal_resources'):
                     return obj
                 else:
                     raise KeyError
