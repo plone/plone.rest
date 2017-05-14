@@ -4,4 +4,6 @@ include *.rst
 exclude *.cfg
 exclude *.yml
 exclude bootstrap-buildout.py
+exclude Makefile
+exclude requirements.txt
 global-exclude *.pyc
