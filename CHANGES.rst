@@ -4,13 +4,17 @@ Changelog
 1.0a8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Bugfixes:
+
+- Do not render service in preflight requests when no CORS policy was defined.
+  Fixes: https://github.com/plone/plone.rest/issues/63
+  [buchi]
 
 
 1.0a7 (2016-11-21)
 ------------------
 
-BUGFIXES:
+Bugfixes:
 
 - Do not handle view namespace at all. This fixes: https://github.com/plone/plone.rest/issues/50
   [buchi]
