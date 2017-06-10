@@ -24,17 +24,15 @@ def lookup_service_id(method, accept):
        negotiation.
     """
     media_types = parse_accept_header(accept)
-    if len(media_types) != 1:
-        return None
-    type_, subtype = media_types[0]
-    types = _services.get(method, {})
-    subtypes = types.get(type_, {})
-    if subtype in subtypes:
-        return subtypes[subtype]
-    elif '*' in subtypes:
-        return subtypes['*']
-    if '*' in types:
-        return types['*']['*']
+    for type_, subtype in media_types:
+        types = _services.get(method, {})
+        subtypes = types.get(type_, {})
+        if subtype in subtypes:
+            return subtypes[subtype]
+        elif '*' in subtypes:
+            return subtypes['*']
+        if '*' in types:
+            return types['*']['*']
     return None
 
 
