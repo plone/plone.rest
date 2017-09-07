@@ -4,7 +4,8 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
-- Test for #66 - RestTraverser fails on subrequests.
+- Test and fixes the RestTraverser fails on subrequests.
+  Fixes #66 - https://github.com/plone/plone.rest/issues/66
   [jensens]
 
 1.0b1 (2017-05-14)

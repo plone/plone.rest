@@ -11,22 +11,35 @@ from zope.publisher.interfaces.browser import IBrowserPublisher
 from Products.CMFCore.interfaces import IContentish
 
 
+def get_rest_service_id(request):
+    """service id from request.
+
+    if the request does not have such an id set - i.e. in case of subrequests -
+    return ``__non_existing__```
+    """
+    return getattr(request, '_rest_service_id', '__non_existing__')
+
+
 class RESTTraverse(DefaultPublishTraverse):
     adapts(IPloneSiteRoot, IAPIRequest)
 
     def publishTraverse(self, request, name):
         try:
             obj = super(RESTTraverse, self).publishTraverse(request, name)
-            if (not IContentish.providedBy(obj)
-                    and not IService.providedBy(obj)):
+            if (
+                not IContentish.providedBy(obj) and
+                not IService.providedBy(obj)
+            ):
                 if isinstance(obj, VirtualHostMonster):
                     return obj
                 else:
                     raise KeyError
         except KeyError:
             # No object, maybe a named rest service
-            service = queryMultiAdapter((self.context, request),
-                                        name=request._rest_service_id + name)
+            service = queryMultiAdapter(
+                (self.context, request),
+                name=get_rest_service_id(request) + name,
+            )
             if service is None:
                 # No service, fallback to regular view
                 view = queryMultiAdapter((self.context, request), name=name)
@@ -35,7 +48,7 @@ class RESTTraverse(DefaultPublishTraverse):
                 raise
             return service
 
-        if name.startswith(request._rest_service_id):
+        if name.startswith(get_rest_service_id(request)):
             return obj
 
         # Do not handle view namespace
@@ -48,7 +61,7 @@ class RESTTraverse(DefaultPublishTraverse):
     def browserDefault(self, request):
         # Called when we have reached the end of the path
         # In our case this means an unamed service
-        return self.context, (request._rest_service_id,)
+        return self.context, (get_rest_service_id(request),)
 
 
 class RESTWrapper(object):
@@ -91,8 +104,10 @@ class RESTWrapper(object):
         # In a non-folderish context a key lookup results in an AttributeError.
         except (KeyError, AttributeError):
             # No object, maybe a named rest service
-            service = queryMultiAdapter((self.context, request),
-                                        name=request._rest_service_id + name)
+            service = queryMultiAdapter(
+                (self.context, request),
+                name=get_rest_service_id(request) + name
+            )
             if service is None:
                 # No service, fallback to regular view
                 view = queryMultiAdapter((self.context, request), name=name)
@@ -107,4 +122,4 @@ class RESTWrapper(object):
     def browserDefault(self, request):
         # Called when we have reached the end of the path
         # In our case this means an unamed service
-        return self.context, (request._rest_service_id,)
+        return self.context, (get_rest_service_id(request),)
