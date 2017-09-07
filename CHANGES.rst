@@ -4,8 +4,8 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Test for #66 - RestTraverser fails on subrequests.
+  [jensens]
 
 1.0b1 (2017-05-14)
 ------------------

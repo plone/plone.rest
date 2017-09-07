@@ -23,7 +23,12 @@ class TestTraversal(unittest.TestCase):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
 
-    def traverse(self, path='/plone', accept='application/json', method='GET'):
+    def prepare_request(
+        self,
+        path='/plone',
+        accept='application/json',
+        method='GET'
+    ):
         request = self.layer['request']
         request.environ['PATH_INFO'] = path
         request.environ['PATH_TRANSLATED'] = path
@@ -32,6 +37,10 @@ class TestTraversal(unittest.TestCase):
         request._auth = 'Basic %s' % b64encode(
             '%s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         notify(PubStart(request))
+        return request
+
+    def traverse(self, path='/plone', accept='application/json', method='GET'):
+        request = self.prepare_request(path=path, accept=accept, method=method)
         return request.traverse(path)
 
     def test_json_request_on_portal_root_returns_service(self):
@@ -54,6 +63,17 @@ class TestTraversal(unittest.TestCase):
         self.portal.invokeFactory('Document', id='doc1')
         obj = self.traverse(path='/plone/doc1')
         self.assertTrue(isinstance(obj, Service), 'Not a service')
+
+    def test_json_subrequest_on_content_object_returns_default_view(self):
+        # see https://github.com/plone/plone.rest/issues/66
+        self.portal.invokeFactory('Document', id='doc1')
+        path = '/plone/doc1'
+        request = self.prepare_request(path=path)
+        # subrequest does not have the attribute _rest_service_id set.
+        # by deleting the attribute a subrequest is roughly emulated.
+        del request._rest_service_id
+        obj = request.traverse(path)
+        self.assertFalse(isinstance(obj, Service), 'Got a service')
 
     def test_html_request_on_portal_root_returns_default_view(self):
         obj = self.traverse(accept='text/html')
