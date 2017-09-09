@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
-from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
-from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import IService
-from zope.component import adapts
-from zope.component import queryMultiAdapter
-from zope.interface import implements
-from zope.publisher.interfaces.browser import IBrowserPublisher
 from Products.CMFCore.interfaces import IContentish
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
+from zope.component import adapter
+from zope.component import queryMultiAdapter
+from zope.interface import implementer
+from zope.publisher.interfaces.browser import IBrowserPublisher
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 
+@adapter(IPloneSiteRoot, IAPIRequest)
 class RESTTraverse(DefaultPublishTraverse):
-    adapts(IPloneSiteRoot, IAPIRequest)
 
-    def publishTraverse(self, request, name):
+    def publishTraverse(self, request, name):  # noqa:N802
         try:
             obj = super(RESTTraverse, self).publishTraverse(request, name)
-            if (not IContentish.providedBy(obj)
-                    and not IService.providedBy(obj)):
+            if (not IContentish.providedBy(obj) and
+                    not IService.providedBy(obj)):
                 if isinstance(obj, VirtualHostMonster):
                     return obj
                 else:
@@ -45,16 +45,16 @@ class RESTTraverse(DefaultPublishTraverse):
         # Wrap object to ensure we handle further traversal
         return RESTWrapper(obj, request)
 
-    def browserDefault(self, request):
+    def browserDefault(self, request):  # noqa:N802
         # Called when we have reached the end of the path
         # In our case this means an unamed service
         return self.context, (request._rest_service_id,)
 
 
+@implementer(IBrowserPublisher)
 class RESTWrapper(object):
     """A wrapper for objects traversed during a REST request.
     """
-    implements(IBrowserPublisher)
 
     def __init__(self, context, request):
         self.context = context
@@ -78,13 +78,13 @@ class RESTWrapper(object):
                 self._bpth_called = True
                 bpth(arg1, arg2)
 
-    def publishTraverse(self, request, name):
+    def publishTraverse(self, request, name):  # noqa:N802
         # Try to get an object using default traversal
         adapter = DefaultPublishTraverse(self.context, request)
         try:
             obj = adapter.publishTraverse(request, name)
-            if (not IContentish.providedBy(obj)
-                    and not IService.providedBy(obj)):
+            if (not IContentish.providedBy(obj) and
+                    not IService.providedBy(obj)):
                 raise KeyError
 
         # If there's no object with the given name, we get a KeyError.
@@ -104,7 +104,7 @@ class RESTWrapper(object):
             # Wrap object to ensure we handle further traversal
             return RESTWrapper(obj, request)
 
-    def browserDefault(self, request):
+    def browserDefault(self, request):  # noqa:N802
         # Called when we have reached the end of the path
         # In our case this means an unamed service
         return self.context, (request._rest_service_id,)

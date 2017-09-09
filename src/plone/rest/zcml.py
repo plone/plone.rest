@@ -2,13 +2,13 @@
 from AccessControl.class_init import InitializeClass
 from AccessControl.security import getSecurityInfo
 from AccessControl.security import protectClass
-from Products.Five.browser import BrowserView
-from Products.Five.metaclass import makeClass
 from plone.rest.cors import CORSPolicy
 from plone.rest.cors import register_method_for_preflight
 from plone.rest.interfaces import ICORSPolicy
 from plone.rest.negotiation import parse_accept_header
 from plone.rest.negotiation import register_service
+from Products.Five.browser import BrowserView
+from Products.Five.metaclass import makeClass
 from zope.browserpage.metaconfigure import _handle_for
 from zope.component.zcml import handler
 from zope.configuration.fields import GlobalInterface
@@ -25,35 +25,35 @@ class IService(Interface):
     """
 
     method = TextLine(
-        title=u"The name of the view that should be the default. " +
-              u"[get|post|put|delete]",
+        title=u'The name of the view that should be the default. ' +
+              u'[get|post|put|delete]',
         description=u"""
         This name refers to view that should be the view used by
         default (if no view name is supplied explicitly).""",
-        )
+    )
 
     accept = TextLine(
-        title=u"Acceptable media types",
+        title=u'Acceptable media types',
         description=u"""Specifies the media type used for content negotiation.
         The service is limited to the given media type and only called if the
         request contains an "Accept" header with the given media type. Multiple
         media types can be given by separating them with a comma.""",
-        default=u"application/json")
+        default=u'application/json')
 
     for_ = GlobalObject(
-        title=u"The interface this view is the default for.",
+        title=u'The interface this view is the default for.',
         description=u"""Specifies the interface for which the view is
         registered. All objects implementing this interface can make use of
         this view. If this attribute is not specified, the view is available
         for all objects.""",
-        )
+    )
 
     factory = GlobalObject(
-        title=u"The factory for this service",
-        description=u"The factory is usually subclass of the Service class.")
+        title=u'The factory for this service',
+        description=u'The factory is usually subclass of the Service class.')
 
     name = TextLine(
-        title=u"The name of the service.",
+        title=u'The name of the service.',
         description=u"""When no name is defined, the service is available at
         the object's absolute URL. When defining a name, the service is
         available at the object's absolute URL appended with a slash and the
@@ -62,22 +62,22 @@ class IService(Interface):
         default=u'')
 
     layer = GlobalInterface(
-        title=u"The browser layer for which this service is registered.",
+        title=u'The browser layer for which this service is registered.',
         description=u"""Useful for overriding existing services or for making
                         services available only if a specific add-on has been
                         installed.""",
         required=False,
         default=IDefaultBrowserLayer,
-        )
+    )
 
     permission = Permission(
-        title=u"Permission",
-        description=u"The permission needed to access the service.",
+        title=u'Permission',
+        description=u'The permission needed to access the service.',
         required=True,
-        )
+    )
 
 
-def serviceDirective(
+def serviceDirective(  # noqa:N802
         _context,
         method,
         accept,
@@ -124,71 +124,71 @@ def serviceDirective(
             discriminator=('plone.rest:InitializeClass', new_class),
             callable=InitializeClass,
             args=(new_class,)
-            )
+        )
 
 
 class ICORSPolicyDirective(Interface):
     """Directive for defining CORS policies"""
 
     for_ = GlobalObject(
-        title=u"The interface this CORS policy is for.",
+        title=u'The interface this CORS policy is for.',
         description=u"""Specifies the interface for which the CORS policy is
         registered. If this attribute is not specified, the CORS policy applies
         to all objects.""",
         required=False,
-        )
+    )
 
     layer = GlobalInterface(
-        title=u"The browser layer for which this CORS policy is registered.",
+        title=u'The browser layer for which this CORS policy is registered.',
         description=u"""Useful for overriding existing policies or for making
                         them available only if a specific add-on has been
                         installed.""",
         required=False,
         default=IDefaultBrowserLayer,
-        )
+    )
 
     allow_origin = TextLine(
-        title=u"Origins",
+        title=u'Origins',
         description=u"""Origins that are allowed access to the resource. Either
         a comma separated list of origins, e.g. "http://example.net,
         http://mydomain.com" or "*".""",
-        )
+    )
 
     allow_methods = TextLine(
-        title=u"Methods",
+        title=u'Methods',
         description=u"""A comma separated list of HTTP method names that are
         allowed by this CORS policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT".
         """,
         required=False,
-        )
+    )
 
     allow_headers = TextLine(
-        title=u"Headers",
+        title=u'Headers',
         description=u"""A comma separated list of request headers allowed to be
         sent by the client, e.g. "X-My-Header".""",
         required=False,
-        )
+    )
 
     expose_headers = TextLine(
-        title=u"Exposed Headers",
+        title=u'Exposed Headers',
         description=u"""A comma separated list of response headers clients can
         access, e.g. "Content-Length,X-My-Header".""",
         required=False,
-        )
+    )
 
     allow_credentials = Bool(
-        title=u"Support Credentials",
+        title=u'Support Credentials',
         description=u"""Indicates whether the resource supports user
         credentials in the request.""",
         default=False,
-        )
+    )
 
     max_age = TextLine(
-        title=u"Max Age",
+        title=u'Max Age',
         description=u"""Indicates how long the results of a preflight request
         can be cached.""",
         required=False,
-        )
+    )
 
 
 def cors_policy_directive(
@@ -230,4 +230,4 @@ def cors_policy_directive(
         callable=handler,
         args=('registerAdapter', new_class, (for_, layer),
               ICORSPolicy, u'', _context.info),
-        )
+    )

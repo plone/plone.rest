@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from ZPublisher.pubevents import PubStart
 from plone.app.testing import popGlobalRegistry
 from plone.app.testing import pushGlobalRegistry
 from plone.rest.cors import CORSPolicy
@@ -10,6 +9,7 @@ from zope.component import provideAdapter
 from zope.event import notify
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from ZPublisher.pubevents import PubStart
 
 import unittest
 
@@ -48,7 +48,7 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_simple_cors_with_wrong_origin_doesnt_add_ac_headers(self):
-        policy = self.get_policy(origin="http://wrong.net")
+        policy = self.get_policy(origin='http://wrong.net')
         policy.allow_origin = ['http://example.net']
         self.assertFalse(policy.process_simple_request())
         self.assertEqual(
@@ -56,13 +56,13 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_simple_cors_adds_wildcard_allow_origin(self):
-        policy = self.get_policy(origin="http://example.net")
+        policy = self.get_policy(origin='http://example.net')
         self.assertTrue(policy.process_simple_request())
         self.assertEqual(
             '*', self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_simple_cors_adds_matching_allow_origin(self):
-        policy = self.get_policy(origin="http://example.net")
+        policy = self.get_policy(origin='http://example.net')
         policy.allow_origin = ['http://example.net']
         self.assertTrue(policy.process_simple_request())
         self.assertEqual(
@@ -70,7 +70,7 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_simple_cors_adds_allow_credentials(self):
-        policy = self.get_policy(origin="http://example.net")
+        policy = self.get_policy(origin='http://example.net')
         policy.allow_origin = ['http://example.net']
         policy.allow_credentials = True
         self.assertTrue(policy.process_simple_request())
@@ -79,7 +79,7 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Credentials'))
 
     def test_simple_cors_adds_origin_when_supporting_credentials(self):
-        policy = self.get_policy(origin="http://example.net")
+        policy = self.get_policy(origin='http://example.net')
         policy.allow_credentials = True
         self.assertTrue(policy.process_simple_request())
         self.assertEqual(
@@ -90,13 +90,13 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Credentials'))
 
     def test_simple_cors_adds_vary_when_allowing_multiple_origins(self):
-        policy = self.get_policy(origin="http://example.net")
+        policy = self.get_policy(origin='http://example.net')
         policy.allow_origin = ['http://some.host', 'http://example.net']
         self.assertTrue(policy.process_simple_request())
         self.assertEqual('Origin', self.response.getHeader('Vary'))
 
     def test_simple_cors_adds_exposed_headers(self):
-        policy = self.get_policy(origin="http://example.net")
+        policy = self.get_policy(origin='http://example.net')
         policy.expose_headers = ['Content-Length', 'X-My-Header']
         self.assertTrue(policy.process_simple_request())
         self.assertEqual(
@@ -111,7 +111,7 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_preflight_cors_with_wrong_origin_doesnt_add_ac_headers(self):
-        policy = self.get_policy(origin="http://wrong.net")
+        policy = self.get_policy(origin='http://wrong.net')
         policy.allow_origin = ['http://example.net']
         self.assertFalse(policy.process_preflight_request())
         self.assertEqual(
@@ -119,7 +119,7 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_preflight_cors_with_wrong_method_doesnt_add_ac_headers(self):
-        policy = self.get_policy(origin="http://example.net", method="LOCK")
+        policy = self.get_policy(origin='http://example.net', method='LOCK')
         self.assertFalse(policy.process_preflight_request())
         self.assertEqual(
             None,
@@ -127,20 +127,20 @@ class TestCORSPolicy(unittest.TestCase):
 
     def test_preflight_cors_with_wrong_header_doesnt_add_ac_headers(self):
         policy = self.get_policy(
-            origin="http://example.net", headers='X-Secret')
+            origin='http://example.net', headers='X-Secret')
         self.assertFalse(policy.process_preflight_request())
         self.assertEqual(
             None,
             self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_preflight_cors_adds_wildcard_allow_origin(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(
             '*', self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_preflight_cors_adds_matching_allow_origin(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         policy.allow_origin = ['http://example.net']
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(
@@ -148,7 +148,7 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Origin'))
 
     def test_preflight_cors_adds_allow_credentials(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         policy.allow_origin = ['http://example.net']
         policy.allow_credentials = True
         self.assertTrue(policy.process_preflight_request())
@@ -157,7 +157,7 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Credentials'))
 
     def test_preflight_cors_adds_origin_when_supporting_credentials(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         policy.allow_credentials = True
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(
@@ -168,33 +168,33 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Credentials'))
 
     def test_preflight_cors_adds_vary_when_allowing_multiple_origins(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         policy.allow_origin = ['http://some.host', 'http://example.net']
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual('Origin', self.response.getHeader('Vary'))
 
     def test_preflight_cors_adds_max_age(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         policy.max_age = '3600'
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(
             '3600', self.response.getHeader('Access-Control-Max-Age'))
 
     def test_preflight_cors_adds_allow_methods(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(
             'GET', self.response.getHeader('Access-Control-Allow-Methods'))
 
     def test_preflight_cors_adds_allow_methods_if_unrestriced(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         policy.allow_methods = None
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(
             'GET', self.response.getHeader('Access-Control-Allow-Methods'))
 
     def test_preflight_cors_adds_allow_headers(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         policy.allow_headers = ['X-Allowed']
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(
@@ -202,12 +202,12 @@ class TestCORSPolicy(unittest.TestCase):
             self.response.getHeader('Access-Control-Allow-Headers'))
 
     def test_preflight_cors_sets_content_length_zero(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual('0', self.response.getHeader('Content-Length'))
 
     def test_preflight_cors_sets_status_code_200(self):
-        policy = self.get_policy(origin="http://example.net", method='GET')
+        policy = self.get_policy(origin='http://example.net', method='GET')
         self.assertTrue(policy.process_preflight_request())
         self.assertEqual(200, self.response.getStatus())
 

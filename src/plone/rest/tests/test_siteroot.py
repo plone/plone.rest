@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
+from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
 
-import unittest
 import requests
+import unittest
 
 
 class TestSiteRootServiceEndpoints(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
         self.assertEqual(
             response.status_code,
             200,
-            'GET /Plone should return status code 200, not {}'.format(
+            'GET /Plone should return status code 200, not {0}'.format(
                 response.status_code
             )
         )
@@ -45,7 +45,7 @@ class TestSiteRootServiceEndpoints(unittest.TestCase):
         self.assertEqual(
             response.status_code,
             200,
-            'POST /Plone should return status code 201, not {}'.format(
+            'POST /Plone should return status code 201, not {0}'.format(
                 response.status_code
             )
         )

@@ -8,6 +8,7 @@
 /build
 /dist
 /extras
+/local
 /local.cfg
 .coverage
 *.egg-info
@@ -25,3 +26,4 @@ docs/doctrees
 docs/html
 htmlcov
 bower_components
+/pip-selfcheck.json

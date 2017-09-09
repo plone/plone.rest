@@ -46,12 +46,12 @@ class DispatchingTestCase(unittest.TestCase):
             msg = ''
             for (request_args, expected_status, actual_status) in failures:
                 msg += ('\n'
-                        'Request:  %s\n'
-                        'Expected: %s\n'
-                        'Got:      %s\n' % (
+                        'Request:  {0}\n'
+                        'Expected: {1}\n'
+                        'Got:      {2}\n'.format(
                             request_args, expected_status, actual_status))
 
-            self.fail('The following assertions failed:\n%s' % msg)
+            self.fail('The following assertions failed:\n{0}'.format(msg))
 
 
 class TestDispatchingSiteRoot(DispatchingTestCase):
@@ -134,8 +134,8 @@ class TestDispatchingDexterity(DispatchingTestCase):
 
         self.portal.invokeFactory('Folder', id='public')
         public_folder = self.portal.public
-        wftool = getToolByName(self.portal, "portal_workflow")
-        wftool.doActionFor(public_folder, "publish")
+        wftool = getToolByName(self.portal, 'portal_workflow')
+        wftool.doActionFor(public_folder, 'publish')
 
         transaction.commit()
 

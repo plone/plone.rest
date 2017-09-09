@@ -5,7 +5,6 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.rest.service import Service
 from plone.testing import z2
-
 from zope.configuration import xmlconfig
 
 
@@ -13,14 +12,14 @@ class PloneRestLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
-    def setUpZope(self, app, configurationContext):
+    def setUpZope(self, app, configurationContext):  # noqa:N802,N803
         import plone.rest
-        xmlconfig.file(
+        xmlconfig.file(  # noqa:D001
             'configure.zcml',
             plone.rest,
             context=configurationContext
         )
-        xmlconfig.file(
+        xmlconfig.file(  # noqa:D001
             'testing.zcml',
             plone.rest,
             context=configurationContext
@@ -30,11 +29,11 @@ class PloneRestLayer(PloneSandboxLayer):
 PLONE_REST_FIXTURE = PloneRestLayer()
 PLONE_REST_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_REST_FIXTURE,),
-    name="PloneRestLayer:Integration"
+    name='PloneRestLayer:Integration'
 )
 PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_REST_FIXTURE, z2.ZSERVER_FIXTURE),
-    name="PloneRestLayer:Functional"
+    name='PloneRestLayer:Functional'
 )
 
 

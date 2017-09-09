@@ -7,7 +7,7 @@ import json
 class BaseService(Service):
 
     def render(self):
-        self.request.response.setHeader("Content-Type", "application/json")
+        self.request.response.setHeader('Content-Type', 'application/json')
         return json.dumps(self.data(), indent=2, sort_keys=True)
 
 

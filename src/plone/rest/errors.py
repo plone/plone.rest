@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from plone.rest.interfaces import IAPIRequest
 from Products.CMFCore.permissions import ManagePortal
@@ -40,7 +41,7 @@ class ErrorHandling(BrowserView):
             # NotFound exceptions need special handling because their
             # exception message gets turned into HTML by ZPublisher
             url = self.request.getURL()
-            result[u'message'] = u'Resource not found: %s' % url
+            result[u'message'] = u'Resource not found: {0}'.format(url)
 
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
             result[u'traceback'] = self.render_traceback(exception)
