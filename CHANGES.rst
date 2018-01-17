@@ -4,7 +4,8 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Re-release 1.0b1 as 1.0.0.
+  [timo]
 
 
 1.0b1 (2017-05-14)
