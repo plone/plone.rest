@@ -24,6 +24,12 @@ class TestPermissions(unittest.TestCase):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
         setRoles(self.portal, TEST_USER_ID, ['Member'])
+        self.portal.acl_users.userFolderAddUser(
+            'admin',
+            'secret',
+            ['Manager'],
+            []
+        )
         login(self.portal, SITE_OWNER_NAME)
         self.portal.invokeFactory('Document', id='doc1')
         wftool = getToolByName(self.portal, 'portal_workflow')
