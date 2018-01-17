@@ -4,6 +4,9 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
+- Add support for Plone 5.1.
+  [timo]
+
 - Add Plone 4.3, 5.0 and 5.1 to list classifiers in setup.py.
   [timo]
 
