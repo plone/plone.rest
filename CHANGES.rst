@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b2 (unreleased)
+1.0.0 (2018-01-17)
 ------------------
 
 - Add support for Plone 5.1.
