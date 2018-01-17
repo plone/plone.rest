@@ -4,7 +4,10 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
-- Re-release 1.0b1 as 1.0.0.
+- Add Plone 4.3, 5.0 and 5.1 to list classifiers in setup.py.
+  [timo]
+
+- Set development status to production/stable in setup.py.
   [timo]
 
 
