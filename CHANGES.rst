@@ -4,7 +4,8 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Get rid of Products.Five.metaclass dependency.
+  [timo]
 
 
 1.0.0 (2018-01-17)
