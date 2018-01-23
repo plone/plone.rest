@@ -3,7 +3,6 @@ from AccessControl.class_init import InitializeClass
 from AccessControl.security import getSecurityInfo
 from AccessControl.security import protectClass
 from Products.Five.browser import BrowserView
-from Products.Five.metaclass import makeClass
 from plone.rest.cors import CORSPolicy
 from plone.rest.cors import register_method_for_preflight
 from plone.rest.interfaces import ICORSPolicy
@@ -105,7 +104,7 @@ def serviceDirective(
         cdict = getSecurityInfo(factory)
         cdict['__name__'] = view_name
         cdict['method'] = method.upper()
-        new_class = makeClass(factory.__name__, (factory, BrowserView), cdict)
+        new_class = type(factory.__name__, (factory, BrowserView), cdict)
 
         _context.action(
             discriminator=('plone.rest:service', method, media_type, for_,
@@ -223,7 +222,7 @@ def cors_policy_directive(
     else:
         cdict['allow_headers'] = []
     cdict['max_age'] = max_age
-    new_class = makeClass(CORSPolicy.__name__, (CORSPolicy,), cdict)
+    new_class = type(CORSPolicy.__name__, (CORSPolicy,), cdict)
 
     _context.action(
         discriminator=('plone.rest:CORSPolicy', for_, layer),
