@@ -24,6 +24,7 @@ Bugfixes:
 
 - Do not handle view namespace at all. This fixes: https://github.com/plone/plone.rest/issues/50
   [buchi]
+- Fix error with uploading file to theme editor [displacedaussie]
 
 
 1.0a6 (2016-05-22)
