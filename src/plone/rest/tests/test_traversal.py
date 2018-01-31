@@ -11,6 +11,8 @@ from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.publisher.interfaces.browser import IBrowserView
+from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
+from plone.resource.interfaces import IResourceDirectory
 
 import unittest
 
@@ -128,9 +130,18 @@ class TestTraversal(unittest.TestCase):
         self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
 
     def test_json_request_to_portal_resource_returns_view(self):
-        obj = self.traverse('/plone/portal_resources')
-        self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
+        root = BTreeFolder2('portal_resources')
+        root._setOb('demo', BTreeFolder2('demo'))
+        from StringIO import StringIO
+        from OFS.Image import File
+        file = File('test.html', 'test.html', StringIO('asdf'))
+        root.demo._setOb('test.html', file)
+        from plone.resource.directory import PersistentResourceDirectory
+        return PersistentResourceDirectory(root)
 
-        self.portal[self.portal.invokeFactory('theme', id='theme1')]
-        obj = self.traverse('/plone/portal_resources/theme1')
-        self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
+        obj = self.traverse('/plone/portal_resources/demo')
+        self.assertTrue(IResourceDirectory.providedBy(obj), 'IResourceDirectory expected')
+
+        from plone.resource.file import FilesystemFile
+        obj = self.traverse('/plone/portal_resources/demo/test.html')
+        self.assertTrue(isinstance(obj,FilesystemFile), 'FilesystemFile expected')
