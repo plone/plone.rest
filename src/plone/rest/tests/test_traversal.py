@@ -129,7 +129,7 @@ class TestTraversal(unittest.TestCase):
         obj = self.traverse('/plone/folder1/@@folder_contents')
         self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
 
-    def test_json_request_to_portal_resource_returns_view(self):
+    def test_json_request_to_portal_resource_returns_resource(self):
         root = BTreeFolder2('portal_resources')
         root._setOb('demo', BTreeFolder2('demo'))
         from StringIO import StringIO
