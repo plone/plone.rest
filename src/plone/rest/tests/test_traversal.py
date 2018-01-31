@@ -131,14 +131,6 @@ class TestTraversal(unittest.TestCase):
         obj = self.traverse('/plone/portal_resources')
         self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
 
-        self.portal[self.portal.invokeFactory('Folder', id='folder1')]
-        obj = self.traverse('/plone/folder1/portal_resources')
-        self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
-
-    def test_json_request_to_portal_resource_returns_view(self):
-        obj = self.traverse('/plone/portal_resources')
-        self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
-
-        self.portal[self.portal.invokeFactory('Folder', id='folder1')]
-        obj = self.traverse('/plone/portal_resources/folder1')
+        self.portal[self.portal.invokeFactory('theme', id='theme1')]
+        obj = self.traverse('/plone/portal_resources/theme1')
         self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
