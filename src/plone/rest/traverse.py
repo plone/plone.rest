@@ -11,6 +11,7 @@ from zope.publisher.interfaces.browser import IBrowserPublisher
 from Products.CMFCore.interfaces import IContentish
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 
+
 class RESTTraverse(DefaultPublishTraverse):
     adapts(IPloneSiteRoot, IAPIRequest)
 

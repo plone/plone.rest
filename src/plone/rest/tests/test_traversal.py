@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-from OFS.Image import File
-from Products.CMFCore.FSPageTemplate import FSPageTemplate
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
-from StringIO import StringIO
 from ZPublisher import BeforeTraverse
 from ZPublisher.pubevents import PubStart
 from base64 import b64encode
@@ -132,5 +129,4 @@ class TestTraversal(unittest.TestCase):
 
     def test_json_request_to_portal_resource_returns_page_template_object(self):
         obj = self.traverse('/plone/portal_resources')
-        self.assertTrue(isinstance(obj._ReplaceableWrapper__ob,FSPageTemplate), 'FSPageTemplate expected')
-
+        self.assertIsNotNone(obj, 'Object expected')
