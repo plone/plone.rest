@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from OFS.Image import File
+from Products.CMFCore.FSPageTemplate import FSPageTemplate
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
+from StringIO import StringIO
 from ZPublisher import BeforeTraverse
 from ZPublisher.pubevents import PubStart
 from base64 import b64encode
@@ -11,8 +14,6 @@ from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.publisher.interfaces.browser import IBrowserView
-from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
-from plone.resource.interfaces import IResourceDirectory
 
 import unittest
 
@@ -129,19 +130,7 @@ class TestTraversal(unittest.TestCase):
         obj = self.traverse('/plone/folder1/@@folder_contents')
         self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
 
-    def test_json_request_to_portal_resource_returns_resource(self):
-        root = BTreeFolder2('portal_resources')
-        root._setOb('demo', BTreeFolder2('demo'))
-        from StringIO import StringIO
-        from OFS.Image import File
-        file = File('test.html', 'test.html', StringIO('asdf'))
-        root.demo._setOb('test.html', file)
-        from plone.resource.directory import PersistentResourceDirectory
-        return PersistentResourceDirectory(root)
+    def test_json_request_to_portal_resource_returns_page_template_object(self):
+        obj = self.traverse('/plone/portal_resources')
+        self.assertTrue(isinstance(obj._ReplaceableWrapper__ob,FSPageTemplate), 'FSPageTemplate expected')
 
-        obj = self.traverse('/plone/portal_resources/demo')
-        self.assertTrue(IResourceDirectory.providedBy(obj), 'IResourceDirectory expected')
-
-        from plone.resource.file import FilesystemFile
-        obj = self.traverse('/plone/portal_resources/demo/test.html')
-        self.assertTrue(isinstance(obj,FilesystemFile), 'FilesystemFile expected')
