@@ -14,6 +14,7 @@ class PloneRestLayer(PloneSandboxLayer):
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        z2.installProduct(app, 'diazo')
         import plone.rest
         xmlconfig.file(
             'configure.zcml',
