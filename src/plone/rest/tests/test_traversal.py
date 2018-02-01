@@ -127,6 +127,6 @@ class TestTraversal(unittest.TestCase):
         obj = self.traverse('/plone/folder1/@@folder_contents')
         self.assertTrue(IBrowserView.providedBy(obj), 'IBrowserView expected')
 
-    def test_json_request_to_portal_resource_returns_page_template_object(self):
+    def test_json_request_to_portal_resource_returns_page_template(self):
         obj = self.traverse('/plone/portal_resources')
         self.assertIsNotNone(obj, 'Object expected')
