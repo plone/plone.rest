@@ -95,3 +95,19 @@ class TestNamedServiceEndpoints(unittest.TestCase):
             {u'service': u'named options'},
             response.json()
         )
+
+    def test_portal_resources_upload(self):
+        # This view provided by plone.app.themeing and is normally called within a theme but the url below should
+        # also return 200 and error json
+        # TODO: probably not best place for this. Should be test file for stuff like VHM that shouldn't be interfered with?
+
+        response = requests.post(
+            self.portal.absolute_url() + '/portal_resources/themeFileUpload',
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            {"failure": "error"},
+            response.json()
+        )

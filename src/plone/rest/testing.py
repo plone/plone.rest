@@ -25,7 +25,11 @@ class PloneRestLayer(PloneSandboxLayer):
             plone.rest,
             context=configurationContext
         )
+        z2.installProduct(app, 'plone.app.theming')
 
+    def setUpPloneSite(self, portal):
+        # Install into Plone site using portal_setup
+        self.applyProfile(portal, 'plone.app.theming:default')
 
 PLONE_REST_FIXTURE = PloneRestLayer()
 PLONE_REST_INTEGRATION_TESTING = IntegrationTesting(
