@@ -46,34 +46,49 @@ class CORSPolicy(object):
            the appropriate access control headers. Returns True if access
            control headers were set.
         """
+        response = self.request.response
         origin = self._allowed_origin()
         if not origin:
             return False
 
-        method = self.request.getHeader('Access-Control-Request-Method', None)
+        method = self.request.getHeader('Access-Control-Request-Method')
         if self.allow_methods and method not in self.allow_methods:
             return False
 
-        headers = self.request.getHeader('Access-Control-Request-Headers',
-                                         None)
-        if headers:
-            headers = headers.split(',')
+        headers = self.request.getHeader('Access-Control-Request-Headers', '')
+
+        # self.allow_headers is non-empty if we need to check the headers.
+        if self.allow_headers:
             allowed_headers = [h.lower() for h in self.allow_headers]
-            for header in headers:
-                if header.strip().lower() not in allowed_headers:
+            for header in headers.split(','):
+                header = header.strip().lower()
+                if header and header not in allowed_headers:
                     return False
 
         self._process_origin_and_credentials(origin)
 
         if self.max_age:
-            self.request.response.setHeader('Access-Control-Max-Age',
-                                            self.max_age)
+            response.setHeader('Access-Control-Max-Age', self.max_age)
 
-        self.request.response.setHeader('Access-Control-Allow-Methods', method)
+        response.setHeader('Access-Control-Allow-Methods', method)
 
         if self.allow_headers:
-            self.request.response.setHeader('Access-Control-Allow-Headers',
-                                            ', '.join(self.allow_headers))
+            response.setHeader(
+                'Access-Control-Allow-Headers',
+                ', '.join(self.allow_headers)
+            )
+        elif headers:
+            # allow_headers was left empty, so we will allow all headers. We
+            # need to pass back the headers the client sent us, so the client
+            # does not cancel the request.
+            # Note: omitting Access-Control-Allow-Headers in the response is
+            # allowed per specification, but not wildly supported.
+            headers = self.request.getHeader(
+                'Access-Control-Request-Headers', ''
+            )
+            self.request.response.setHeader(
+                'Access-Control-Allow-Headers', headers
+            )
 
         self.request.response.setHeader('Content-Length', '0')
         self.request.response.setStatus(200)

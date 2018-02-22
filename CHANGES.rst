@@ -4,7 +4,8 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- An empty allow_headers allows all headers.
+  [jaroel]
 
 
 1.0.0 (2018-01-17)
