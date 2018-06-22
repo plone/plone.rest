@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 (unreleased)
+1.1.0 (2018-06-22)
 ------------------
 
 - Get rid of Products.Five.metaclass dependency for Zope 4 compatibility.
