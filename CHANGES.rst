@@ -4,7 +4,7 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Get rid of Products.Five.metaclass dependency.
+- Get rid of Products.Five.metaclass dependency for Zope 4 compatibility.
   [timo]
 
 
