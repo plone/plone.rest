@@ -41,7 +41,7 @@ PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
 class InternalServerErrorService(Service):
 
     def __call__(self):
-        from urllib2 import HTTPError
+        from six.moves.urllib.error import HTTPError
         raise HTTPError(
             'http://nohost/plone/500-internal-server-error',
             500,
