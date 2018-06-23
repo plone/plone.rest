@@ -59,6 +59,7 @@ setup(name='plone.rest',
           'zope.traversing',
           'Products.CMFCore',
           'Zope2',
+          'six',
       ],
       entry_points="""
       # -*- Entry points: -*-

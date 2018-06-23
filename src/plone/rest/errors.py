@@ -7,6 +7,7 @@ from zope.component import adapter
 from zope.component.hooks import getSite
 
 import json
+import six
 import sys
 import traceback
 
@@ -33,8 +34,12 @@ class ErrorHandling(BrowserView):
         return
 
     def render_exception(self, exception):
-        result = {u'type': type(exception).__name__.decode('utf-8'),
-                  u'message': str(exception).decode('utf-8')}
+        name = type(exception).__name__
+        message = str(exception)
+        if six.PY2:
+            name = name.decode('utf-8')
+            message = message.decode('utf-8')
+        result = {u'type': name, u'message': message}
 
         if isinstance(exception, NotFound):
             # NotFound exceptions need special handling because their
