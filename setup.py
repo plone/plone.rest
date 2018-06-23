@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.0b2.dev0'
+version = '1.1.1.dev0'
 
 long_description = (
     read('README.rst') + '\n\n' +
@@ -20,9 +20,12 @@ setup(name='plone.rest',
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
-          "Development Status :: 3 - Alpha",
+          "Development Status :: 5 - Production/Stable",
           "Environment :: Web Environment",
           "Framework :: Plone",
+          "Framework :: Plone :: 4.3",
+          "Framework :: Plone :: 5.0",
+          "Framework :: Plone :: 5.1",
           "Framework :: Zope2",
           "License :: OSI Approved :: GNU General Public License (GPL)",
           "Operating System :: OS Independent",

@@ -20,6 +20,9 @@
 /lib
 /.mr.developer.cfg
 *.mo
+local/
+pip-selfcheck.json
+share/
 docs/Makefile
 docs/make.bat
 docs/doctrees

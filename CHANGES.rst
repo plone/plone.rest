@@ -1,10 +1,30 @@
 Changelog
 =========
 
-1.0b2 (unreleased)
+1.1.1 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+1.1.0 (2018-06-22)
+------------------
+
+- Get rid of Products.Five.metaclass dependency for Zope 4 compatibility.
+  [timo]
+
+
+1.0.0 (2018-01-17)
+------------------
+
+- Add support for Plone 5.1.
+  [timo]
+
+- Add Plone 4.3, 5.0 and 5.1 to list classifiers in setup.py.
+  [timo]
+
+- Set development status to production/stable in setup.py.
+  [timo]
 
 
 1.0b1 (2017-05-14)
