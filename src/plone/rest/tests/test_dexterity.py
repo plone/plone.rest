@@ -117,7 +117,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         )
         image_file = os.path.join(os.path.dirname(__file__), u'image.png')
         self.portal.newsitem.image = NamedBlobImage(
-            data=open(image_file, 'r').read(),
+            data=open(image_file, 'rb').read(),
             contentType='image/png',
             filename=u'image.png'
         )
@@ -177,7 +177,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             os.path.dirname(__file__), u'file.pdf'
         )
         self.portal.file.file = NamedBlobFile(
-            data=open(pdf_file, 'r').read(),
+            data=open(pdf_file, 'rb').read(),
             contentType='application/pdf',
             filename=u'file.pdf'
         )
@@ -203,7 +203,7 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.portal.image.description = u'This is an image'
         image_file = os.path.join(os.path.dirname(__file__), u'image.png')
         self.portal.image.image = NamedBlobImage(
-            data=open(image_file, 'r').read(),
+            data=open(image_file, 'rb').read(),
             contentType='image/png',
             filename=u'image.png'
         )
