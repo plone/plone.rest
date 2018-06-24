@@ -10,6 +10,11 @@
     handler=".events.mark_as_api_request"
     />
 
+  <subscriber
+    for="ZPublisher.interfaces.IPubStart"
+    handler=".vary.add_vary_accept_header"
+    />
+
   <include file="patches.zcml" />
 
   <adapter factory=".traverse.RESTTraverse" />
