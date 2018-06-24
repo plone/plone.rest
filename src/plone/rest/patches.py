@@ -13,3 +13,25 @@ def __before_publishing_traverse__(self, arg1, arg2=None):
         return
 
     return self._old___before_publishing_traverse__(arg1, arg2)
+
+
+PERMANENT_REDIRECT = {308: 'Permanent Redirect'}
+
+
+def patch_zpublisher_status_codes(scope, unused_original, unused_replacement):
+    """Add '308 Permanent Redirect' to the list of status codes the ZPublisher
+    knows about. Otherwise setStatus() will turn it into a 500.
+    """
+    # Patch the forward mapping (code -> reason)
+    status_reasons = getattr(scope, 'status_reasons')
+    if 308 not in status_reasons:
+        status_reasons.update(PERMANENT_REDIRECT)
+
+    # Update the reverse mapping
+    status_codes = getattr(scope, 'status_codes')
+    key, val = PERMANENT_REDIRECT.items()[0]
+
+    status_codes[''.join(val.split(' ')).lower()] = key
+    status_codes[val.lower()] = key
+    status_codes[key] = key
+    status_codes[str(key)] = key

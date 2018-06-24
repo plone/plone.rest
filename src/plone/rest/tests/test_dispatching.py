@@ -27,7 +27,7 @@ class DispatchingTestCase(unittest.TestCase):
         self.portal_url = self.portal.absolute_url()
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
-    def validate(self, expectations):
+    def validate(self, expectations, follow_redirects=False):
         failures = []
         for expectation in expectations:
             path, method, creds, expected_status = expectation
@@ -37,10 +37,12 @@ class DispatchingTestCase(unittest.TestCase):
                 method, url,
                 headers={'Accept': 'application/json'},
                 auth=creds,
+                allow_redirects=follow_redirects,
             )
 
             if response.status_code != expected_status:
-                request_args = (path, method, creds)
+                request_args = (path, method, creds,
+                                '(follow_redirects=%s)' % follow_redirects)
                 actual_status = response.status_code
                 failure = (request_args, expected_status, actual_status)
                 failures.append(failure)
@@ -207,3 +209,152 @@ class TestDispatchingDexterity(DispatchingTestCase):
             ('/public', 'OPTIONS', INVALID_CREDS, 200),
         ]
         self.validate(expectations)
+
+
+class TestDispatchingRedirects(DispatchingTestCase):
+
+    def setUp(self):
+        super(TestDispatchingRedirects, self).setUp()
+
+        self.portal.invokeFactory('Folder', id='private-old')
+        self.portal.manage_renameObject('private-old', 'private-new')
+
+        self.portal.invokeFactory('Folder', id='public-old')
+        public_folder = self.portal['public-old']
+        wftool = getToolByName(self.portal, "portal_workflow")
+        wftool.doActionFor(public_folder, "publish")
+        self.portal.manage_renameObject('public-old', 'public-new')
+
+        transaction.commit()
+
+    def test_moved_private_dx_folder_with_creds(self):
+        expectations = [
+            ('/private-old', 'GET', CREDS, 301),
+            ('/private-old', 'POST', CREDS, 308),
+            ('/private-old', 'PUT', CREDS, 308),
+            ('/private-old', 'PATCH', CREDS, 308),
+            ('/private-old', 'DELETE', CREDS, 308),
+            ('/private-old', 'OPTIONS', CREDS, 308),
+        ]
+        self.validate(expectations)
+
+        # Same, but with following redirects, asserting on the final status
+        expectations = [
+            ('/private-old', 'GET', CREDS, 200),
+            ('/private-old', 'POST', CREDS, 200),
+            ('/private-old', 'PUT', CREDS, 200),
+            ('/private-old', 'PATCH', CREDS, 200),
+            ('/private-old', 'DELETE', CREDS, 200),
+            ('/private-old', 'OPTIONS', CREDS, 200),
+        ]
+        self.validate(expectations, follow_redirects=True)
+
+    def test_moved_private_dx_folder_without_creds(self):
+        expectations = [
+            ('/private-old', 'GET', NO_CREDS, 301),
+            ('/private-old', 'POST', NO_CREDS, 308),
+            ('/private-old', 'PUT', NO_CREDS, 308),
+            ('/private-old', 'PATCH', NO_CREDS, 308),
+            ('/private-old', 'DELETE', NO_CREDS, 308),
+            ('/private-old', 'OPTIONS', NO_CREDS, 308),
+        ]
+        self.validate(expectations)
+
+        # Same, but with following redirects, asserting on the final status
+        expectations = [
+            ('/private-old', 'GET', NO_CREDS, 401),
+            ('/private-old', 'POST', NO_CREDS, 401),
+            ('/private-old', 'PUT', NO_CREDS, 401),
+            ('/private-old', 'PATCH', NO_CREDS, 401),
+            ('/private-old', 'DELETE', NO_CREDS, 401),
+            ('/private-old', 'OPTIONS', NO_CREDS, 401),
+        ]
+        self.validate(expectations, follow_redirects=True)
+
+    def test_moved_private_dx_folder_invalid_creds(self):
+        expectations = [
+            ('/private-old', 'GET', INVALID_CREDS, 301),
+            ('/private-old', 'POST', INVALID_CREDS, 308),
+            ('/private-old', 'PUT', INVALID_CREDS, 308),
+            ('/private-old', 'PATCH', INVALID_CREDS, 308),
+            ('/private-old', 'DELETE', INVALID_CREDS, 308),
+            ('/private-old', 'OPTIONS', INVALID_CREDS, 308),
+        ]
+        self.validate(expectations)
+
+        # Same, but with following redirects, asserting on the final status
+        expectations = [
+            ('/private-old', 'GET', INVALID_CREDS, 401),
+            ('/private-old', 'POST', INVALID_CREDS, 401),
+            ('/private-old', 'PUT', INVALID_CREDS, 401),
+            ('/private-old', 'PATCH', INVALID_CREDS, 401),
+            ('/private-old', 'DELETE', INVALID_CREDS, 401),
+            ('/private-old', 'OPTIONS', INVALID_CREDS, 401),
+        ]
+        self.validate(expectations, follow_redirects=True)
+
+    def test_moved_public_dx_folder_with_creds(self):
+        expectations = [
+            ('/public-old', 'GET', CREDS, 301),
+            ('/public-old', 'POST', CREDS, 308),
+            ('/public-old', 'PUT', CREDS, 308),
+            ('/public-old', 'PATCH', CREDS, 308),
+            ('/public-old', 'DELETE', CREDS, 308),
+            ('/public-old', 'OPTIONS', CREDS, 308),
+        ]
+        self.validate(expectations)
+
+        # Same, but with following redirects, asserting on the final status
+        expectations = [
+            ('/public-old', 'GET', CREDS, 200),
+            ('/public-old', 'POST', CREDS, 200),
+            ('/public-old', 'PUT', CREDS, 200),
+            ('/public-old', 'PATCH', CREDS, 200),
+            ('/public-old', 'DELETE', CREDS, 200),
+            ('/public-old', 'OPTIONS', CREDS, 200),
+        ]
+        self.validate(expectations, follow_redirects=True)
+
+    def test_moved_public_dx_folder_without_creds(self):
+        expectations = [
+            ('/public-old', 'GET', NO_CREDS, 301),
+            ('/public-old', 'POST', NO_CREDS, 308),
+            ('/public-old', 'PUT', NO_CREDS, 308),
+            ('/public-old', 'PATCH', NO_CREDS, 308),
+            ('/public-old', 'DELETE', NO_CREDS, 308),
+            ('/public-old', 'OPTIONS', NO_CREDS, 308),
+        ]
+        self.validate(expectations)
+
+        # Same, but with following redirects, asserting on the final status
+        expectations = [
+            ('/public-old', 'GET', NO_CREDS, 200),
+            ('/public-old', 'POST', NO_CREDS, 401),
+            ('/public-old', 'PUT', NO_CREDS, 401),
+            ('/public-old', 'PATCH', NO_CREDS, 401),
+            ('/public-old', 'DELETE', NO_CREDS, 401),
+            ('/public-old', 'OPTIONS', NO_CREDS, 200),
+        ]
+        self.validate(expectations, follow_redirects=True)
+
+    def test_moved_public_dx_folder_invalid_creds(self):
+        expectations = [
+            ('/public-old', 'GET', INVALID_CREDS, 301),
+            ('/public-old', 'POST', INVALID_CREDS, 308),
+            ('/public-old', 'PUT', INVALID_CREDS, 308),
+            ('/public-old', 'PATCH', INVALID_CREDS, 308),
+            ('/public-old', 'DELETE', INVALID_CREDS, 308),
+            ('/public-old', 'OPTIONS', INVALID_CREDS, 308),
+        ]
+        self.validate(expectations)
+
+        # Same, but with following redirects, asserting on the final status
+        expectations = [
+            ('/public-old', 'GET', INVALID_CREDS, 200),
+            ('/public-old', 'POST', INVALID_CREDS, 401),
+            ('/public-old', 'PUT', INVALID_CREDS, 401),
+            ('/public-old', 'PATCH', INVALID_CREDS, 401),
+            ('/public-old', 'DELETE', INVALID_CREDS, 401),
+            ('/public-old', 'OPTIONS', INVALID_CREDS, 200),
+        ]
+        self.validate(expectations, follow_redirects=True)

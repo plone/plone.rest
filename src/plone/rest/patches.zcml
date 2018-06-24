@@ -13,4 +13,12 @@
     preserveOriginal="true"
     />
 
+  <monkey:patch
+    description="Teach ZPublisher about status 308"
+    module="ZPublisher.HTTPResponse"
+    original="status_codes"
+    replacement=".patches.PERMANENT_REDIRECT"
+    handler=".patches.patch_zpublisher_status_codes"
+    />
+
 </configure>
