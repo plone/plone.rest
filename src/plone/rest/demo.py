@@ -99,3 +99,14 @@ class NamedOptions(BaseService):
 
     def data(self):
         return {'service': 'named options'}
+
+
+class MultiVaryService(Service):
+
+    def render(self):
+        self.request.response.setHeader('Content-Type', 'application/json')
+        self.request.response.addHeader('Vary', 'Whatever')
+        return json.dumps(self.data(), indent=2, sort_keys=True)
+
+    def data(self):
+        return {'dummy': 'data'}

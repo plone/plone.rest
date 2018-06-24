@@ -166,4 +166,12 @@
     expose_headers="X-My-Header"
     />
 
+
+  <plone:service
+    method="GET"
+    for="*"
+    name="@multi-vary"
+    factory=".demo.MultiVaryService"
+    permission="zope2.View"
+  />
 </configure>

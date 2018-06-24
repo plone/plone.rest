@@ -152,12 +152,11 @@ OPTIONS::
 Content Negotiation and caching
 -------------------------------
 
-Due to the dual behavior of URLs when using Content Negotiation (the same URL can provide
-responses in different formats, this package adds the ``Vary: Accept`` HTTP header.
+Due to the dual behavior of URLs when using Content Negotiation (the same URL can provide responses in different formats) this package adds the ``Vary: Accept`` HTTP header.
 
-This way, eventual proxy-caches used in front of the application that serves the API are
-instructed to keep different versions of the responses of the server depending on the
-value of the ``Accept`` header used to request those resources.
+This way, eventual proxy-caches used in front of the application that serves the API are instructed to keep different versions of the responses of the server depending on the value of the ``Accept`` header used to request those resources.
+
+The ``Vary`` header can have multiple values thus you can add them in your endpoints. If you are using plone.app.caching, it can also handle them for you for caching purposes. Zope will join all your ``Vary`` header values producing the actual valid header that will be sent to the end user.
 
 
 Named Services

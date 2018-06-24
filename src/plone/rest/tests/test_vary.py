@@ -26,7 +26,9 @@ class TestEndpointsAddVaryHeader(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
         self.assertIn('Vary', response.headers)
-        self.assertEqual('Accept', response.headers.get('Vary'))
+        vary_header = response.headers.get('Vary')
+        vary_headers = [header.strip() for header in vary_header.split(',')]
+        self.assertIn('Accept', vary_headers)
 
     def test_api_request_has_vary_header(self):
         response = requests.get(
@@ -34,5 +36,20 @@ class TestEndpointsAddVaryHeader(unittest.TestCase):
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         )
+
         self.assertIn('Vary', response.headers)
-        self.assertEqual('Accept', response.headers.get('Vary'))
+        vary_header = response.headers.get('Vary')
+        vary_headers = [header.strip() for header in vary_header.split(',')]
+        self.assertIn('Accept', vary_headers)
+
+    def test_multiple_vary_values(self):
+        response = requests.get(
+            '{}/@multi-vary'.format(self.portal.absolute_url()),
+            headers={'Accept': 'application/json'},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        )
+        self.assertIn('Vary', response.headers)
+        vary_header = response.headers.get('Vary')
+        vary_headers = [header.strip() for header in vary_header.split(',')]
+        self.assertIn('Accept', vary_headers)
+        self.assertIn('Whatever', vary_headers)
