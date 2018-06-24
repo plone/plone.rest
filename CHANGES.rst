@@ -4,7 +4,8 @@ Changelog
 1.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add a ``Vary: Accept`` header in all responses.
+  [erral]
 
 
 1.1.1 (2018-06-22)

@@ -149,6 +149,17 @@ OPTIONS::
   $ http --auth admin:admin OPTIONS localhost:8080/Plone/doc1 Accept:application/json
 
 
+Content Negotiation and caching
+-------------------------------
+
+Due to the dual behavior of URLs when using Content Negotiation (the same URL can provide
+responses in different formats, this package adds the ``Vary: Accept`` HTTP header.
+
+This way, eventual proxy-caches used in front of the application that serves the API are
+instructed to keep different versions of the responses of the server depending on the
+value of the ``Accept`` header used to request those resources.
+
+
 Named Services
 --------------
 
