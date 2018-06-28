@@ -19,6 +19,8 @@
     original="status_codes"
     replacement=".patches.PERMANENT_REDIRECT"
     handler=".patches.patch_zpublisher_status_codes"
+    preconditions="Zope2-=4.0a1"
+    ignoreOriginal="True"
     />
 
 </configure>
