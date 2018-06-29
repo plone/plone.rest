@@ -4,6 +4,8 @@ Changelog
 1.2.0 (unreleased)
 ------------------
 
+New features:
+
 - Add support for redirects from plone.app.redirector.
   [lgraf]
 
@@ -11,11 +13,15 @@ Changelog
 1.1.1 (2018-06-22)
 ------------------
 
+Bugfixes:
+
 - Re-release 1.1.0.
 
 
 1.1.0 (2018-06-22)
 ------------------
+
+New features:
 
 - Get rid of Products.Five.metaclass dependency for Zope 4 compatibility.
   [timo]
@@ -23,6 +29,8 @@ Changelog
 
 1.0.0 (2018-01-17)
 ------------------
+
+New features:
 
 - Add support for Plone 5.1.
   [timo]
