@@ -297,6 +297,30 @@ Install plone.rest by adding it to your buildout::
 and then running "bin/buildout"
 
 
+Redirects
+---------
+
+plone.rest will handle redirects created by ``plone.app.redirector`` pretty
+much the same way as regular Plone.
+
+If a redirect exists for a given URL, a ``GET`` request will be answered with
+``301``, and the new location for the resource is indicated in the ``Location``
+header::
+
+  HTTP/1.1 301 Moved Permanently
+
+  Content-Type: application/json
+  Location: http://localhost:8080/Plone/my-folder-new-location
+
+Any other request method than GET (``POST``, ``PATCH``, ...) will be answered
+with ``308 Permanent Redirect``. This status code instructs the client that
+it should NOT switch the method, but retry (if desired) the request with the
+*same* method at the new location.
+
+In practice, both the Python ``requests`` library a well as Postman seem to
+honour this behavior by default.
+
+
 Contribute
 ----------
 
