@@ -1,20 +1,21 @@
 .. image:: https://secure.travis-ci.org/plone/plone.rest.png?branch=master
   :target: http://travis-ci.org/plone/plone.rest
 
-.. image:: https://coveralls.io/repos/plone/plone.rest/badge.png?branch=master
-  :target: https://coveralls.io/r/plone/plone.rest
+.. image:: https://img.shields.io/coveralls/github/plone/plone.rest.svg
+   :alt: Coveralls github
+   :target: https://coveralls.io/github/plone/plone.restapi
 
-.. image:: https://landscape.io/github/plone/plone.rest/master/landscape.svg?style=plastic
+.. image:: https://landscape.io/github/plone/plone.rest/master/landscape.svg?style=flat
   :target: https://landscape.io/github/plone/plone.rest/master
   :alt: Code Health
-
-.. image:: https://img.shields.io/pypi/v/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
-    :alt: Latest Version
 
 .. image:: https://img.shields.io/pypi/status/plone.rest.svg
     :target: https://pypi.python.org/pypi/plone.rest/
     :alt: Egg Status
+
+.. image:: https://img.shields.io/pypi/v/plone.rest.svg
+    :target: https://pypi.python.org/pypi/plone.rest/
+    :alt: Latest Version
 
 .. image:: https://img.shields.io/pypi/l/plone.rest.svg
     :target: https://pypi.python.org/pypi/plone.rest/
