@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.1.2 (unreleased)
+1.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add support for redirects from plone.app.redirector.
+  [lgraf]
 
 
 1.1.1 (2018-06-22)
