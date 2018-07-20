@@ -10,6 +10,12 @@ env:
   - PLONE_VERSION=4.3.x
   - PLONE_VERSION=5.0.x
   - PLONE_VERSION=5.1.x
+matrix:
+  exclude:
+    - python: 3.6
+      env: PLONE_VERSION=4.3.x
+    - python: 3.6
+      env: PLONE_VERSION=5.0.x
 before_install:
   - mkdir -p $HOME/buildout-cache/{eggs,downloads}
   - virtualenv .
