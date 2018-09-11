@@ -6,7 +6,10 @@ Changelog
 
 New features:
 
-- Extract IPloneSiteRoot in favor of ISiteRoot from CMFCore
+- Remove unnecessary dependency on Products.CMFPlone.
+  Import ISiteRoot from Products.CMFCore.interfaces instead of
+  IPloneSiteRoot from Products.CMFPlone.interfaces.siteroot.
+  [jordic]
 
 
 1.2.0 (2018-06-29)

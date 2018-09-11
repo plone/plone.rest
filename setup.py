@@ -47,6 +47,7 @@ setup(name='plone.rest',
               'plone.app.testing[robot]>=4.2.2',
               'plone.app.robotframework',
               'plone.dexterity',
+              'Products.CMFPlone',
               'requests',
           ]
       ),
