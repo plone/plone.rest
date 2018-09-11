@@ -4,17 +4,9 @@ Changelog
 1.2.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
-- *add item here*
-
-Bug fixes:
-
-- *add item here*
+- Extract IPloneSiteRoot in favor of ISiteRoot from CMFCore
 
 
 1.2.0 (2018-06-29)
