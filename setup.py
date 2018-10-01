@@ -18,7 +18,7 @@ setup(name='plone.rest',
       description="Plone support for HTTP verbs.",
       long_description=long_description,
       # Get more strings from
-      # http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      # https://pypi.org/classifiers/
       classifiers=[
           "Development Status :: 5 - Production/Stable",
           "Environment :: Web Environment",
@@ -35,7 +35,7 @@ setup(name='plone.rest',
       keywords='',
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
-      url='http://pypi.python.org/pypi/plone.rest',
+      url='https://pypi.org/project/plone.rest',
       license='GPL version 2',
       packages=find_packages('src'),
       package_dir={'': 'src'},
