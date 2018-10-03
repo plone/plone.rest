@@ -8,7 +8,6 @@ from six.moves import urllib
 from six.moves.urllib.parse import quote
 from six.moves.urllib.parse import unquote
 from zExceptions import NotFound
-from ZPublisher.HTTPRequest import WSGIRequest
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.component.hooks import getSite
@@ -17,6 +16,9 @@ import json
 import six
 import sys
 import traceback
+
+
+PY3 = sys.version_info[0] == 3
 
 
 @adapter(Exception, IAPIRequest)
@@ -71,10 +73,10 @@ class ErrorHandling(BrowserView):
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()
         if exception is not exc_obj:
-            if not isinstance(self.request, WSGIRequest):
-                # XXX: Only check if exceptions are the same, when this is not a WSGIRequest
-                # since WSGIPublisher normalizes the exceptions.
+            if not PY3:
+                # XXX: Only display this warning if not in Python 3.
                 # https://github.com/plone/Products.CMFPlone/issues/2474
+                # https://github.com/plone/plone.rest/commit/96599cc3bb3ef5a23b10eb585781d88274fbcaf5#comments
                 return (u'ERROR: Another exception happened before we could '
                         u'render the traceback.')
 
