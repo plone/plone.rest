@@ -1,15 +1,37 @@
 Changelog
 =========
 
-1.1.2 (unreleased)
+1.3.1 (unreleased)
 ------------------
 
 - Prepare for Python 2 / 3 compatibility
   [tschorr,pbauer,frapell]
 
 
+1.3.0 (2018-09-11)
+------------------
+
+New features:
+
+- Remove unnecessary dependency on Products.CMFPlone.
+  Import ISiteRoot from Products.CMFCore.interfaces instead of
+  IPloneSiteRoot from Products.CMFPlone.interfaces.siteroot.
+  [jordic]
+
+
+1.2.0 (2018-06-29)
+------------------
+
+New features:
+
+- Add support for redirects from plone.app.redirector.
+  [lgraf]
+
+
 1.1.1 (2018-06-22)
 ------------------
+
+Bugfixes:
 
 - Re-release 1.1.0.
 
@@ -17,12 +39,16 @@ Changelog
 1.1.0 (2018-06-22)
 ------------------
 
+New features:
+
 - Get rid of Products.Five.metaclass dependency for Zope 4 compatibility.
   [timo]
 
 
 1.0.0 (2018-01-17)
 ------------------
+
+New features:
 
 - Add support for Plone 5.1.
   [timo]
