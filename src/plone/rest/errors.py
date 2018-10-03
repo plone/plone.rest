@@ -11,7 +11,7 @@ from zExceptions import NotFound
 try:
     from ZPublisher.HTTPRequest import WSGIRequest
     HAS_WSGI = True
-except:
+except ImportError:
     HAS_WSGI = False
 from zope.component import adapter
 from zope.component import queryUtility
