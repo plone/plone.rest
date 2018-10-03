@@ -4,7 +4,8 @@ Changelog
 1.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Prepare for Python 2 / 3 compatibility
+  [tschorr,pbauer,frapell]
 
 
 1.1.1 (2018-06-22)
