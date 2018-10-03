@@ -3,6 +3,7 @@ from plone.rest.interfaces import IAPIRequest
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
 from zExceptions import NotFound
+from ZPublisher.HTTPRequest import WSGIRequest
 from zope.component import adapter
 from zope.component.hooks import getSite
 
@@ -55,8 +56,12 @@ class ErrorHandling(BrowserView):
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()
         if exception is not exc_obj:
-            return (u'ERROR: Another exception happened before we could '
-                    u'render the traceback.')
+            if not isinstance(self.request, WSGIRequest):
+                # XXX: Only check if exceptions are the same, when this is not a WSGIRequest
+                # since WSGIPublisher normalizes the exceptions.
+                # https://github.com/plone/Products.CMFPlone/issues/2474
+                return (u'ERROR: Another exception happened before we could '
+                        u'render the traceback.')
 
         raw = '\n'.join(traceback.format_tb(exc_traceback))
         return raw.strip().split('\n')
