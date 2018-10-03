@@ -118,4 +118,4 @@ class TestErrorHandling(unittest.TestCase):
         self.assertIsInstance(traceback, list)
         self.assertRegexpMatches(
             traceback[0],
-            r'^File "[^"]*", line \d*, in publish')
+            r'^File "[^"]*", line \d*, in (publish|transaction_pubevents)')
