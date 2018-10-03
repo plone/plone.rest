@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
@@ -8,7 +9,6 @@ from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.interfaces import ISiteRoot
 
 
 @adapter(IPloneSiteRoot, IAPIRequest)
