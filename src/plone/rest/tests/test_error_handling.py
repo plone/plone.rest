@@ -116,6 +116,6 @@ class TestErrorHandling(unittest.TestCase):
 
         traceback = response.json()[u'traceback']
         self.assertIsInstance(traceback, list)
-        self.assertRegexpMatches(
+        self.assertRegex(
             traceback[0],
             r'^File "[^"]*", line \d*, in (publish|transaction_pubevents)')

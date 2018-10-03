@@ -61,18 +61,18 @@ class TestTraversal(unittest.TestCase):
 
     def test_html_request_on_portal_root_returns_default_view(self):
         obj = self.traverse(accept='text/html')
-        self.assertEquals('listing_view', obj.__name__)
+        self.assertEqual('listing_view', obj.__name__)
 
     def test_html_request_on_portal_root_returns_dynamic_view(self):
         self.portal.setLayout('summary_view')
         obj = self.traverse(accept='text/html')
-        self.assertEquals('summary_view', obj.__name__)
+        self.assertEqual('summary_view', obj.__name__)
 
     def test_html_request_on_portal_root_returns_default_page(self):
         self.portal.invokeFactory('Document', id='doc1')
         self.portal.setDefaultPage('doc1')
         obj = self.traverse(accept='text/html')
-        self.assertEquals('document_view', obj.__name__)
+        self.assertEqual('document_view', obj.__name__)
 
     def test_json_request_on_object_with_multihook(self):
         doc1 = self.portal[self.portal.invokeFactory('Document', id='doc1')]
@@ -86,7 +86,7 @@ class TestTraversal(unittest.TestCase):
 
         obj = self.traverse(path='/plone/doc1')
         self.assertTrue(isinstance(obj, Service), 'Not a service')
-        self.assertEquals(1, self.request._btr_test_called)
+        self.assertEqual(1, self.request._btr_test_called)
 
     def test_json_request_on_existing_view_returns_named_service(self):
         obj = self.traverse('/plone/search')
