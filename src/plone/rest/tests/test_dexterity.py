@@ -116,13 +116,11 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
             'text/html'
         )
         image_file = os.path.join(os.path.dirname(__file__), u'image.png')
-        fd = open(image_file, 'rb')
         self.portal.newsitem.image = NamedBlobImage(
-            data=fd.read(),
+            data=open(image_file, 'rb').read(),
             contentType='image/png',
             filename=u'image.png'
         )
-        fd.close()
         self.portal.newsitem.image_caption = u'This is an image caption.'
         import transaction
         transaction.commit()
@@ -178,13 +176,11 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         pdf_file = os.path.join(
             os.path.dirname(__file__), u'file.pdf'
         )
-        fd = open(pdf_file, 'rb')
         self.portal.file.file = NamedBlobFile(
-            data=fd.read(),
+            data=open(pdf_file, 'rb').read(),
             contentType='application/pdf',
             filename=u'file.pdf'
         )
-        fd.close()
         intids = getUtility(IIntIds)
         file_id = intids.getId(self.portal.file)
         self.portal.file.file = RelationValue(file_id)
@@ -206,13 +202,11 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.portal.image.title = 'My Image'
         self.portal.image.description = u'This is an image'
         image_file = os.path.join(os.path.dirname(__file__), u'image.png')
-        fd = open(image_file, 'rb')
         self.portal.image.image = NamedBlobImage(
-            data=fd.read(),
+            data=open(image_file, 'rb').read(),
             contentType='image/png',
             filename=u'image.png'
         )
-        fd.close()
         import transaction
         transaction.commit()
 

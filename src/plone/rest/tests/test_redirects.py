@@ -174,4 +174,4 @@ class TestRedirects(unittest.TestCase):
     def test_gracefully_deals_with_missing_request_url(self):
         error_view = ErrorHandling(self.portal, self.portal.REQUEST)
         self.portal.REQUEST['ACTUAL_URL'] = None
-        self.assertEqual(False, error_view.attempt_redirect())
+        self.assertEquals(False, error_view.attempt_redirect())
