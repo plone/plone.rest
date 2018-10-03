@@ -75,9 +75,13 @@ class ErrorHandling(BrowserView):
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()
         if exception is not exc_obj:
-            if HAS_WSGI and isinstance(self.request, WSGIRequest) and str(exception) == str(exc_obj):
-                # WSGIRequest may "upgrade" the exception, resulting in a new exception
-                # which has the same string representation as the original exception.
+            if HAS_WSGI and \
+               isinstance(self.request, WSGIRequest) and \
+               str(exception) == str(exc_obj):
+                # WSGIRequest may "upgrade" the exception,
+                # resulting in a new exception which has
+                # the same string representation as the
+                # original exception.
                 # https://github.com/plone/Products.CMFPlone/issues/2474
                 # https://github.com/plone/plone.rest/commit/96599cc3bb3ef5a23b10eb585781d88274fbcaf5#comments
                 pass
