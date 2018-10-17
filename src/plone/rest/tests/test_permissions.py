@@ -41,8 +41,9 @@ class TestPermissions(unittest.TestCase):
         request.environ['PATH_TRANSLATED'] = path
         request.environ['HTTP_ACCEPT'] = accept
         request.environ['REQUEST_METHOD'] = method
-        request._auth = 'Basic %s' % b64encode(
-            '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
+        auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        b64auth = b64encode(auth.encode('utf8'))
+        request._auth = 'Basic %s' % b64auth.decode('utf8')
         notify(PubStart(request))
         return request.traverse(path)
 

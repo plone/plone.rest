@@ -4,7 +4,8 @@ Changelog
 1.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Prepare for Python 2 / 3 compatibility
+  [tschorr,pbauer,frapell]
 
 
 1.3.0 (2018-09-11)

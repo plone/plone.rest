@@ -2,11 +2,11 @@
 from plone.rest.interfaces import ICORSPolicy
 from plone.rest.interfaces import IService
 from zope.component import queryMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IService)
 class Service(object):
-    implements(IService)
 
     def __call__(self):
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)

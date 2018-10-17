@@ -8,11 +8,17 @@ from six.moves import urllib
 from six.moves.urllib.parse import quote
 from six.moves.urllib.parse import unquote
 from zExceptions import NotFound
+try:
+    from ZPublisher.HTTPRequest import WSGIRequest
+    HAS_WSGI = True
+except ImportError:
+    HAS_WSGI = False
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.component.hooks import getSite
 
 import json
+import six
 import sys
 import traceback
 
@@ -42,8 +48,12 @@ class ErrorHandling(BrowserView):
         return
 
     def render_exception(self, exception):
-        result = {u'type': type(exception).__name__.decode('utf-8'),
-                  u'message': str(exception).decode('utf-8')}
+        name = type(exception).__name__
+        message = str(exception)
+        if six.PY2:
+            name = name.decode('utf-8')
+            message = message.decode('utf-8')
+        result = {u'type': name, u'message': message}
 
         if isinstance(exception, NotFound):
             # First check if a redirect from p.a.redirector exists
@@ -65,8 +75,19 @@ class ErrorHandling(BrowserView):
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()
         if exception is not exc_obj:
-            return (u'ERROR: Another exception happened before we could '
-                    u'render the traceback.')
+            if HAS_WSGI and \
+               isinstance(self.request, WSGIRequest) and \
+               str(exception) == str(exc_obj):
+                # WSGIRequest may "upgrade" the exception,
+                # resulting in a new exception which has
+                # the same string representation as the
+                # original exception.
+                # https://github.com/plone/Products.CMFPlone/issues/2474
+                # https://github.com/plone/plone.rest/commit/96599cc3bb3ef5a23b10eb585781d88274fbcaf5#comments
+                pass
+            else:
+                return (u'ERROR: Another exception happened before we could '
+                        u'render the traceback.')
 
         raw = '\n'.join(traceback.format_tb(exc_traceback))
         return raw.strip().split('\n')

@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import IService
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import queryMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.interfaces import ISiteRoot
 
 
+@adapter(IPloneSiteRoot, IAPIRequest)
 class RESTTraverse(DefaultPublishTraverse):
-    adapts(ISiteRoot, IAPIRequest)
 
     def publishTraverse(self, request, name):
         try:
@@ -51,10 +51,10 @@ class RESTTraverse(DefaultPublishTraverse):
         return self.context, (request._rest_service_id,)
 
 
+@implementer(IBrowserPublisher)
 class RESTWrapper(object):
     """A wrapper for objects traversed during a REST request.
     """
-    implements(IBrowserPublisher)
 
     def __init__(self, context, request):
         self.context = context

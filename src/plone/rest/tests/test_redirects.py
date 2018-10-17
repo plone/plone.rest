@@ -38,7 +38,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_post_to_moved_item_causes_308_redirect(self):
         response = requests.post(
@@ -50,7 +50,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(308, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_unauthorized_request_to_item_still_redirects_first(self):
         response = requests.get(
@@ -65,7 +65,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
         # Following the redirect then leads to an item that will produce a 401
         response = requests.get(
@@ -86,7 +86,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new?key=value',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_named_service_on_moved_item_causes_301_redirect(self):
         response = requests.get(
@@ -98,7 +98,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new/namedservice',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_named_service_plus_path_parameter_works(self):
         response = requests.get(
@@ -110,7 +110,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new/namedservice/param',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_redirects_for_regular_views_still_work(self):
         response = requests.get(
@@ -122,7 +122,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new/@@some-view',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_redirects_for_views_plus_params_plus_querystring_works(self):
         response = requests.get(
@@ -134,7 +134,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/folder-new/@@some-view/param?k=v',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_doesnt_cause_redirect_loop_on_bogus_storage_entries(self):
         storage = queryUtility(IRedirectionStorage)
@@ -164,7 +164,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(self.portal_url + '/new-item',
                          response.headers['Location'])
-        self.assertEqual(u'', response.text)
+        self.assertEqual(b'', response.raw.read())
 
     def test_aborts_redirect_checks_early_for_app_root(self):
         error_view = ErrorHandling(self.portal, self.portal.REQUEST)

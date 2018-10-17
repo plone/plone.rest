@@ -5,6 +5,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+
 version = '1.3.1-dev.0'
 
 long_description = (
@@ -32,6 +33,8 @@ setup(name='plone.rest',
           "Operating System :: OS Independent",
           "Programming Language :: Python",
           "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.7",
       ],
       keywords='',
       author='Plone Foundation',
@@ -61,6 +64,7 @@ setup(name='plone.rest',
           'zope.traversing',
           'Products.CMFCore',
           'Zope2',
+          'six',
       ],
       entry_points="""
       # -*- Entry points: -*-

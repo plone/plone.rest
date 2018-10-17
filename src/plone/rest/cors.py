@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.rest.interfaces import ICORSPolicy
-from zope.interface import implements
+from zope.interface import implementer
 
 # CORS preflight service registry
 # A mapping of method -> service_id
@@ -18,8 +18,8 @@ def lookup_preflight_service_id(method):
         return _services[method]
 
 
+@implementer(ICORSPolicy)
 class CORSPolicy(object):
-    implements(ICORSPolicy)
 
     def __init__(self, context, request):
         self.context = context
