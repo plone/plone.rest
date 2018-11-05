@@ -4,6 +4,8 @@ Changelog
 1.3.1 (unreleased)
 ------------------
 
+Bug fixes:
+
 - Prepare for Python 2 / 3 compatibility
   [tschorr,pbauer,frapell]
 
