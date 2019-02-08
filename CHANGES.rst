@@ -1,11 +1,12 @@
 Changelog
 =========
 
-1.4.1 (unreleased)
-------------------
+.. You should *NOT* be adding new change log entries to this file.
+   You should create a file in the news directory instead.
+   For helpful instructions, please see:
+   https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
 
-- Nothing changed yet.
-
+.. towncrier release notes start
 
 1.4.0 (2018-11-08)
 ------------------
