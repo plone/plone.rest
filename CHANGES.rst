@@ -1,16 +1,27 @@
 Changelog
 =========
 
-1.0a8 (unreleased)
+1.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Bugfixes:
+- Fix error with uploading file to theme editor. plone.rest no longer works in portal_resources. [displacedaussie]
+
+
+1.0b1 (2017-05-14)
+------------------
+
+Bugfixes:
+
+- Do not render service in preflight requests when no CORS policy was defined.
+  Fixes: https://github.com/plone/plone.rest/issues/63
+  [buchi]
 
 
 1.0a7 (2016-11-21)
 ------------------
 
-BUGFIXES:
+Bugfixes:
 
 - Do not handle view namespace at all. This fixes: https://github.com/plone/plone.rest/issues/50
   [buchi]

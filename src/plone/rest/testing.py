@@ -5,7 +5,6 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.rest.service import Service
 from plone.testing import z2
-
 from zope.configuration import xmlconfig
 
 
@@ -14,6 +13,7 @@ class PloneRestLayer(PloneSandboxLayer):
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        z2.installProduct(app, 'plone.app.theming')
         import plone.rest
         xmlconfig.file(
             'configure.zcml',
@@ -25,6 +25,10 @@ class PloneRestLayer(PloneSandboxLayer):
             plone.rest,
             context=configurationContext
         )
+
+    def setUpPloneSite(self, portal):
+        # Install into Plone site using portal_setup
+        self.applyProfile(portal, 'plone.app.theming:default')
 
 
 PLONE_REST_FIXTURE = PloneRestLayer()

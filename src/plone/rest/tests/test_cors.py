@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 from ZPublisher.pubevents import PubStart
+from plone.app.testing import popGlobalRegistry
+from plone.app.testing import pushGlobalRegistry
 from plone.rest.cors import CORSPolicy
+from plone.rest.interfaces import ICORSPolicy
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from zExceptions import Unauthorized
+from zope.component import provideAdapter
 from zope.event import notify
+from zope.interface import Interface
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 import unittest
 
@@ -240,3 +246,21 @@ class TestCORS(unittest.TestCase):
         self.assertEqual(
             '*',
             self.request.response.getHeader('Access-Control-Allow-Origin'))
+
+    def test_preflight_request_without_cors_policy_doesnt_render_service(self):
+        # "Unregister" the current CORS policy
+        class NoCORSPolicy(object):
+            def __new__(cls, context, request):
+                return None
+        pushGlobalRegistry(self.portal)
+        provideAdapter(
+            NoCORSPolicy, (Interface, IDefaultBrowserLayer), ICORSPolicy)
+
+        headers = {
+            'HTTP_ACCESS_CONTROL_REQUEST_METHOD': 'GET',
+            'HTTP_ACCEPT': '*/*',
+        }
+        service = self.traverse(method='OPTIONS', headers=headers)
+        self.assertTrue(service() is None, 'Should return None')
+
+        popGlobalRegistry(self.portal)

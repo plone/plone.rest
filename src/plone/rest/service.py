@@ -16,6 +16,9 @@ class Service(object):
                 return
             else:
                 policy.process_simple_request()
+        else:
+            if self.request._rest_cors_preflight:
+                return
 
         return self.render()
 
