@@ -119,3 +119,75 @@ class TestErrorHandling(unittest.TestCase):
         self.assertRegexpMatches(
             traceback[0],
             r'^File "[^"]*", line \d*, in (publish|transaction_pubevents)')
+
+    def test_api_exception(self):
+        response = requests.get(
+            self.portal_url + '/api-exception?status=400&details=dict',
+            headers={'Accept': 'application/json'},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.headers.get('Content-Type'),
+            'application/json',
+            'When sending a GET request with Accept: application/json ' +
+            'the server should respond with sending back application/json.'
+        )
+        response = response.json()
+        self.assertEqual(
+            response,
+            {
+                'type': 'error400',
+                'message': 'errormessage for error 400',
+                'details': {
+                    'foo': 'bar',
+                }
+            }
+        )
+
+    def test_api_exception_with_dict_details(self):
+        response = requests.get(
+            self.portal_url + '/api-exception?status=400&details=dict',
+            headers={'Accept': 'application/json'},
+        )
+
+        self.assertEqual(response.json()['details'], {'foo': 'bar'})
+
+    def test_api_exception_with_list_details(self):
+        response = requests.get(
+            self.portal_url + '/api-exception?status=400&details=list',
+            headers={'Accept': 'application/json'},
+        )
+
+        self.assertEqual(response.json()['details'], ['foo', 'bar'])
+
+    def test_api_exception_with_string_details(self):
+        response = requests.get(
+            self.portal_url + '/api-exception?status=400&details=string',
+            headers={'Accept': 'application/json'},
+        )
+
+        self.assertEqual(response.json()['details'], 'foobar')
+
+    def test_api_exception_without_details(self):
+        response = requests.get(
+            self.portal_url + '/api-exception?status=400&details=none',
+            headers={'Accept': 'application/json'},
+        )
+
+        self.assertEqual(response.json()['details'], None)
+
+    def test_api_exception_with_traceback(self):
+        self.maxDiff = None
+        response = requests.get(
+            self.portal_url + '/api-exception-with-traceback',
+            headers={'Accept': 'application/json'},
+        )
+        response = response.json()
+
+        self.assertEqual(
+            sorted(response['details'].keys()),
+            ['Just kidding', 'traceback'])
+        self.assertTrue(
+            "raise AssertionError('You should not call this method')" in
+            ' '.join(response['details']['traceback']))

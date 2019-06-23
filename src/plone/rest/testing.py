@@ -49,3 +49,47 @@ class InternalServerErrorService(Service):
             {},
             None
         )
+
+
+class ApiExceptionService(Service):
+
+    def __call__(self):
+        details_mapping = {
+            'none': None,
+            'dict': {'foo': 'bar'},
+            'list': ['foo', 'bar'],
+            'string': 'foobar',
+        }
+
+        data = self.request.form
+        details = details_mapping[data['details']]
+        status = int(data['status'])
+
+        from plone.rest.errors import RestApiException
+        raise RestApiException(
+            status,
+            u'error%s' % status,
+            u'errormessage for error %s' % status,
+            details=details
+        )
+
+
+class ApiExceptionServiceWithTraceback(Service):
+
+    def render(self):
+        from plone.rest.errors import RestApiException
+        try:
+            self.broken_method()
+        except AssertionError, OriginalException:
+            raise RestApiException(
+                500,                               # status code
+                'somethingWentWrong',              # type
+                'Something went wrong.',           # message
+                details={
+                    'Just kidding': 'Jokes on you'
+                },
+                exception=OriginalException,
+            )
+
+    def broken_method(self):
+        raise AssertionError('You should not call this method')

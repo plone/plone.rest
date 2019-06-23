@@ -23,6 +23,41 @@ import sys
 import traceback
 
 
+def render_traceback(exception):
+    _, exc_obj, exc_traceback = sys.exc_info()
+    if exception is not exc_obj:
+        if HAS_WSGI and \
+           isinstance(self.request, WSGIRequest) and \
+           str(exception) == str(exc_obj):
+            # WSGIRequest may "upgrade" the exception,
+            # resulting in a new exception which has
+            # the same string representation as the
+            # original exception.
+            # https://github.com/plone/Products.CMFPlone/issues/2474
+            # https://github.com/plone/plone.rest/commit/96599cc3bb3ef5a23b10eb585781d88274fbcaf5#comments
+            pass
+        else:
+            return (u'ERROR: Another exception happened before we could '
+                    u'render the traceback.')
+    raw = '\n'.join(traceback.format_tb(exc_traceback))
+    return raw.strip().split('\n')
+
+
+class RestApiException(Exception):
+
+    def __init__(self, status, type_, message, details=None, exception=None):
+        self.status = status
+        self.type = type_
+        self.message = message
+        self.details = details
+        self.traceback = None
+        if exception:
+            assert isinstance(self.details, (type(None), dict)), \
+                ('If you pass an exception the parameter details needs to '
+                 'be a dict or None')
+            self.traceback = render_traceback(exception)
+
+
 @adapter(Exception, IAPIRequest)
 class ErrorHandling(BrowserView):
     """This view is responsible for serializing unhandled exceptions, as well
@@ -31,21 +66,26 @@ class ErrorHandling(BrowserView):
 
     def __call__(self):
         exception = self.context
+        if isinstance(exception, RestApiException):
+            return self.handle_api_exception(exception)
+        return self.handle_non_api_exception(exception)
+
+    def handle_api_exception(self, exception):
+        data = {
+            u'type': exception.type,
+            u'message': exception.message,
+            u'details': exception.details,
+        }
+        if exception.traceback:
+            if data['details'] is None:
+                data['details'] = {}
+            data['details']['traceback'] = exception.traceback
+
+        return self.generate_response(exception.status, data)
+
+    def handle_non_api_exception(self, exception):
         data = self.render_exception(exception)
-        result = json.dumps(data, indent=2, sort_keys=True)
-
-        # Write and lock the response in order to avoid later changes
-        # especially for Unauthorized exceptions.
-        response = self.request.response
-        response.setHeader('Content-Type', 'application/json')
-        response.setStatus(type(exception), lock=1)
-        response.setBody(result, lock=1)
-
-        # Avoid redirect to login page on Unauthorized by adding
-        # a fake challenged flag, which makes the PAS believe it
-        # already did challenge and redirect.
-        response._has_challenged = True
-        return
+        return self.generate_response(type(exception), data)
 
     def render_exception(self, exception):
         name = type(exception).__name__
@@ -68,29 +108,24 @@ class ErrorHandling(BrowserView):
             result[u'message'] = u'Resource not found: %s' % url
 
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
-            result[u'traceback'] = self.render_traceback(exception)
+            result[u'traceback'] = render_traceback(exception)
 
         return result
 
-    def render_traceback(self, exception):
-        _, exc_obj, exc_traceback = sys.exc_info()
-        if exception is not exc_obj:
-            if HAS_WSGI and \
-               isinstance(self.request, WSGIRequest) and \
-               str(exception) == str(exc_obj):
-                # WSGIRequest may "upgrade" the exception,
-                # resulting in a new exception which has
-                # the same string representation as the
-                # original exception.
-                # https://github.com/plone/Products.CMFPlone/issues/2474
-                # https://github.com/plone/plone.rest/commit/96599cc3bb3ef5a23b10eb585781d88274fbcaf5#comments
-                pass
-            else:
-                return (u'ERROR: Another exception happened before we could '
-                        u'render the traceback.')
+    def generate_response(self, status, data):
+        # Write and lock the response in order to avoid later changes
+        # especially for Unauthorized exceptions.
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        response.setStatus(status, lock=1)
+        result = json.dumps(data, indent=2, sort_keys=True)
+        response.setBody(result, lock=1)
 
-        raw = '\n'.join(traceback.format_tb(exc_traceback))
-        return raw.strip().split('\n')
+        # Avoid redirect to login page on Unauthorized by adding
+        # a fake challenged flag, which makes the PAS believe it
+        # already did challenge and redirect.
+        response._has_challenged = True
+        return
 
     def find_redirect_if_view_or_service(self, old_path_elements, storage):
         """Find redirect for URLs like:

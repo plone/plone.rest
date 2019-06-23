@@ -160,6 +160,22 @@
     permission="zope2.View"
     />
 
+  <plone:service
+    method="GET"
+    for="*"
+    name="api-exception"
+    factory=".testing.ApiExceptionService"
+    permission="zope2.View"
+    />
+
+  <plone:service
+    method="GET"
+    for="*"
+    name="api-exception-with-traceback"
+    factory=".testing.ApiExceptionServiceWithTraceback"
+    permission="zope2.View"
+    />
+
   <plone:CORSPolicy
     allow_methods="GET"
     allow_origin="*"
