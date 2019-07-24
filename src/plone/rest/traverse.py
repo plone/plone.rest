@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
@@ -11,7 +11,7 @@ from zope.publisher.interfaces.browser import IBrowserPublisher
 from Products.CMFCore.interfaces import IContentish
 
 
-@adapter(IPloneSiteRoot, IAPIRequest)
+@adapter(ISiteRoot, IAPIRequest)
 class RESTTraverse(DefaultPublishTraverse):
 
     def publishTraverse(self, request, name):
