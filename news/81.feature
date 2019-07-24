@@ -1,0 +1,1 @@
+Remove CMFPlone dependency. [timo]
