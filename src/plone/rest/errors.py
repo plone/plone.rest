@@ -8,8 +8,10 @@ from six.moves import urllib
 from six.moves.urllib.parse import quote
 from six.moves.urllib.parse import unquote
 from zExceptions import NotFound
+
 try:
     from ZPublisher.HTTPRequest import WSGIRequest
+
     HAS_WSGI = True
 except ImportError:
     HAS_WSGI = False
@@ -37,7 +39,7 @@ class ErrorHandling(BrowserView):
         # Write and lock the response in order to avoid later changes
         # especially for Unauthorized exceptions.
         response = self.request.response
-        response.setHeader('Content-Type', 'application/json')
+        response.setHeader("Content-Type", "application/json")
         response.setStatus(type(exception), lock=1)
         response.setBody(result, lock=1)
 
@@ -51,33 +53,35 @@ class ErrorHandling(BrowserView):
         name = type(exception).__name__
         message = str(exception)
         if six.PY2:
-            name = name.decode('utf-8')
-            message = message.decode('utf-8')
-        result = {u'type': name, u'message': message}
+            name = name.decode("utf-8")
+            message = message.decode("utf-8")
+        result = {u"type": name, u"message": message}
 
         if isinstance(exception, NotFound):
             # First check if a redirect from p.a.redirector exists
             redirect_performed = self.attempt_redirect()
             if redirect_performed:
-                self.request.response.setBody('', lock=1)
+                self.request.response.setBody("", lock=1)
                 return
 
             # NotFound exceptions need special handling because their
             # exception message gets turned into HTML by ZPublisher
             url = self.request.getURL()
-            result[u'message'] = u'Resource not found: %s' % url
+            result[u"message"] = u"Resource not found: %s" % url
 
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
-            result[u'traceback'] = self.render_traceback(exception)
+            result[u"traceback"] = self.render_traceback(exception)
 
         return result
 
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()
         if exception is not exc_obj:
-            if HAS_WSGI and \
-               isinstance(self.request, WSGIRequest) and \
-               str(exception) == str(exc_obj):
+            if (
+                HAS_WSGI
+                and isinstance(self.request, WSGIRequest)
+                and str(exception) == str(exc_obj)
+            ):
                 # WSGIRequest may "upgrade" the exception,
                 # resulting in a new exception which has
                 # the same string representation as the
@@ -86,11 +90,13 @@ class ErrorHandling(BrowserView):
                 # https://github.com/plone/plone.rest/commit/96599cc3bb3ef5a23b10eb585781d88274fbcaf5#comments
                 pass
             else:
-                return (u'ERROR: Another exception happened before we could '
-                        u'render the traceback.')
+                return (
+                    u"ERROR: Another exception happened before we could "
+                    u"render the traceback."
+                )
 
-        raw = '\n'.join(traceback.format_tb(exc_traceback))
-        return raw.strip().split('\n')
+        raw = "\n".join(traceback.format_tb(exc_traceback))
+        return raw.strip().split("\n")
 
     def find_redirect_if_view_or_service(self, old_path_elements, storage):
         """Find redirect for URLs like:
@@ -124,7 +130,7 @@ class ErrorHandling(BrowserView):
         splitpoint = len(old_path_elements)
 
         while splitpoint > 1:
-            possible_obj_path = '/'.join(old_path_elements[:splitpoint])
+            possible_obj_path = "/".join(old_path_elements[:splitpoint])
             remainder = old_path_elements[splitpoint:]
             new_path = storage.get(possible_obj_path)
 
@@ -133,7 +139,7 @@ class ErrorHandling(BrowserView):
                     # New URL would match originally requested URL.
                     # Lets not cause a redirect loop.
                     return None
-                return new_path + '/' + '/'.join(remainder)
+                return new_path + "/" + "/".join(remainder)
 
             splitpoint -= 1
 
@@ -156,13 +162,13 @@ class ErrorHandling(BrowserView):
         try:
             old_path_elements = self.request.physicalPathFromURL(url)
         except ValueError:  # pragma: no cover
-            return False    # pragma: no cover
+            return False  # pragma: no cover
 
         storage = queryUtility(IRedirectionStorage)
         if storage is None:
             return False
 
-        old_path = '/'.join(old_path_elements)
+        old_path = "/".join(old_path_elements)
 
         # First lets try with query string in cases or content migration
 
@@ -174,7 +180,7 @@ class ErrorHandling(BrowserView):
             # if we matched on the query_string we don't want to include it
             # in redirect
             if new_path:
-                query_string = ''
+                query_string = ""
 
         if not new_path:
             new_path = storage.get(old_path)
@@ -182,8 +188,7 @@ class ErrorHandling(BrowserView):
         # Attempt our own strategy at finding redirects for named REST
         # services, views or templates.
         if not new_path:
-            new_path = self.find_redirect_if_view_or_service(
-                old_path_elements, storage)
+            new_path = self.find_redirect_if_view_or_service(old_path_elements, storage)
 
         if not new_path:
             return False
@@ -194,8 +199,7 @@ class ErrorHandling(BrowserView):
             # avoid double quoting
             url_path = unquote(url.path)
             url_path = quote(url_path)
-            url = urllib.parse.SplitResult(
-                *(url[:2] + (url_path, ) + url[3:])).geturl()
+            url = urllib.parse.SplitResult(*(url[:2] + (url_path,) + url[3:])).geturl()
         else:
             url = self.request.physicalPathToURL(new_path)
 
@@ -207,7 +211,7 @@ class ErrorHandling(BrowserView):
         # with 308 Permanent Redirect, which instructs the client to NOT
         # switch the method (if the original request was a POST, it should
         # re-POST to the new URL from the Location header).
-        if self.request.method.upper() == 'GET':
+        if self.request.method.upper() == "GET":
             status = 301
         else:
             status = 308
@@ -219,7 +223,9 @@ class ErrorHandling(BrowserView):
     def _url(self):
         """Get the current, canonical URL
         """
-        return self.request.get('ACTUAL_URL',
-            self.request.get('VIRTUAL_URL',  # noqa
-                   self.request.get('URL',   # noqa
-                     None)))                 # noqa
+        return self.request.get(
+            "ACTUAL_URL",
+            self.request.get(
+                "VIRTUAL_URL", self.request.get("URL", None)  # noqa  # noqa
+            ),
+        )  # noqa

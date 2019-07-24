@@ -13,20 +13,19 @@ from Products.CMFCore.interfaces import IContentish
 
 @adapter(ISiteRoot, IAPIRequest)
 class RESTTraverse(DefaultPublishTraverse):
-
     def publishTraverse(self, request, name):
         try:
             obj = super(RESTTraverse, self).publishTraverse(request, name)
-            if (not IContentish.providedBy(obj)
-                    and not IService.providedBy(obj)):
+            if not IContentish.providedBy(obj) and not IService.providedBy(obj):
                 if isinstance(obj, VirtualHostMonster):
                     return obj
                 else:
                     raise KeyError
         except KeyError:
             # No object, maybe a named rest service
-            service = queryMultiAdapter((self.context, request),
-                                        name=request._rest_service_id + name)
+            service = queryMultiAdapter(
+                (self.context, request), name=request._rest_service_id + name
+            )
             if service is None:
                 # No service, fallback to regular view
                 view = queryMultiAdapter((self.context, request), name=name)
@@ -39,7 +38,7 @@ class RESTTraverse(DefaultPublishTraverse):
             return obj
 
         # Do not handle view namespace
-        if '@@' in request['PATH_INFO'] or '++view++' in request['PATH_INFO']:
+        if "@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]:
             return obj
 
         # Wrap object to ensure we handle further traversal
@@ -72,7 +71,7 @@ class RESTWrapper(object):
 
     # MultiHook requries this to be a class attribute
     def __before_publishing_traverse__(self, arg1, arg2=None):
-        bpth = getattr(self.context, '__before_publishing_traverse__', False)
+        bpth = getattr(self.context, "__before_publishing_traverse__", False)
         if bpth:
             if not self._bpth_called:
                 self._bpth_called = True
@@ -83,16 +82,16 @@ class RESTWrapper(object):
         adapter = DefaultPublishTraverse(self.context, request)
         try:
             obj = adapter.publishTraverse(request, name)
-            if (not IContentish.providedBy(obj)
-                    and not IService.providedBy(obj)):
+            if not IContentish.providedBy(obj) and not IService.providedBy(obj):
                 raise KeyError
 
         # If there's no object with the given name, we get a KeyError.
         # In a non-folderish context a key lookup results in an AttributeError.
         except (KeyError, AttributeError):
             # No object, maybe a named rest service
-            service = queryMultiAdapter((self.context, request),
-                                        name=request._rest_service_id + name)
+            service = queryMultiAdapter(
+                (self.context, request), name=request._rest_service_id + name
+            )
             if service is None:
                 # No service, fallback to regular view
                 view = queryMultiAdapter((self.context, request), name=name)

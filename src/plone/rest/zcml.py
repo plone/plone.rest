@@ -24,12 +24,12 @@ class IService(Interface):
     """
 
     method = TextLine(
-        title=u"The name of the view that should be the default. " +
-              u"[get|post|put|delete]",
+        title=u"The name of the view that should be the default. "
+        + u"[get|post|put|delete]",
         description=u"""
         This name refers to view that should be the view used by
         default (if no view name is supplied explicitly).""",
-        )
+    )
 
     accept = TextLine(
         title=u"Acceptable media types",
@@ -37,7 +37,8 @@ class IService(Interface):
         The service is limited to the given media type and only called if the
         request contains an "Accept" header with the given media type. Multiple
         media types can be given by separating them with a comma.""",
-        default=u"application/json")
+        default=u"application/json",
+    )
 
     for_ = GlobalObject(
         title=u"The interface this view is the default for.",
@@ -45,11 +46,12 @@ class IService(Interface):
         registered. All objects implementing this interface can make use of
         this view. If this attribute is not specified, the view is available
         for all objects.""",
-        )
+    )
 
     factory = GlobalObject(
         title=u"The factory for this service",
-        description=u"The factory is usually subclass of the Service class.")
+        description=u"The factory is usually subclass of the Service class.",
+    )
 
     name = TextLine(
         title=u"The name of the service.",
@@ -58,7 +60,8 @@ class IService(Interface):
         available at the object's absolute URL appended with a slash and the
         service name.""",
         required=False,
-        default=u'')
+        default=u"",
+    )
 
     layer = GlobalInterface(
         title=u"The browser layer for which this service is registered.",
@@ -67,25 +70,25 @@ class IService(Interface):
                         installed.""",
         required=False,
         default=IDefaultBrowserLayer,
-        )
+    )
 
     permission = Permission(
         title=u"Permission",
         description=u"The permission needed to access the service.",
         required=True,
-        )
+    )
 
 
 def serviceDirective(
-        _context,
-        method,
-        accept,
-        factory,
-        for_,
-        permission,
-        layer=IDefaultBrowserLayer,
-        name=u'',
-        ):
+    _context,
+    method,
+    accept,
+    factory,
+    for_,
+    permission,
+    layer=IDefaultBrowserLayer,
+    name=u"",
+):
 
     _handle_for(_context, for_)
 
@@ -102,28 +105,33 @@ def serviceDirective(
         # Create a new class. We'll execute some security declarations on it
         # and don't want to modify the original class.
         cdict = getSecurityInfo(factory)
-        cdict['__name__'] = view_name
-        cdict['method'] = method.upper()
+        cdict["__name__"] = view_name
+        cdict["method"] = method.upper()
         new_class = type(factory.__name__, (factory, BrowserView), cdict)
 
         _context.action(
-            discriminator=('plone.rest:service', method, media_type, for_,
-                           name, layer),
+            discriminator=("plone.rest:service", method, media_type, for_, name, layer),
             callable=handler,
-            args=('registerAdapter', new_class, (for_, layer), Interface,
-                  view_name, _context.info),
+            args=(
+                "registerAdapter",
+                new_class,
+                (for_, layer),
+                Interface,
+                view_name,
+                _context.info,
+            ),
         )
 
         _context.action(
-            discriminator=('plone.rest:protectClass', new_class),
+            discriminator=("plone.rest:protectClass", new_class),
             callable=protectClass,
-            args=(new_class, permission)
+            args=(new_class, permission),
         )
         _context.action(
-            discriminator=('plone.rest:InitializeClass', new_class),
+            discriminator=("plone.rest:InitializeClass", new_class),
             callable=InitializeClass,
-            args=(new_class,)
-            )
+            args=(new_class,),
+        )
 
 
 class ICORSPolicyDirective(Interface):
@@ -135,7 +143,7 @@ class ICORSPolicyDirective(Interface):
         registered. If this attribute is not specified, the CORS policy applies
         to all objects.""",
         required=False,
-        )
+    )
 
     layer = GlobalInterface(
         title=u"The browser layer for which this CORS policy is registered.",
@@ -144,14 +152,14 @@ class ICORSPolicyDirective(Interface):
                         installed.""",
         required=False,
         default=IDefaultBrowserLayer,
-        )
+    )
 
     allow_origin = TextLine(
         title=u"Origins",
         description=u"""Origins that are allowed access to the resource. Either
         a comma separated list of origins, e.g. "http://example.net,
         http://mydomain.com" or "*".""",
-        )
+    )
 
     allow_methods = TextLine(
         title=u"Methods",
@@ -159,74 +167,80 @@ class ICORSPolicyDirective(Interface):
         allowed by this CORS policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT".
         """,
         required=False,
-        )
+    )
 
     allow_headers = TextLine(
         title=u"Headers",
         description=u"""A comma separated list of request headers allowed to be
         sent by the client, e.g. "X-My-Header".""",
         required=False,
-        )
+    )
 
     expose_headers = TextLine(
         title=u"Exposed Headers",
         description=u"""A comma separated list of response headers clients can
         access, e.g. "Content-Length,X-My-Header".""",
         required=False,
-        )
+    )
 
     allow_credentials = Bool(
         title=u"Support Credentials",
         description=u"""Indicates whether the resource supports user
         credentials in the request.""",
         default=False,
-        )
+    )
 
     max_age = TextLine(
         title=u"Max Age",
         description=u"""Indicates how long the results of a preflight request
         can be cached.""",
         required=False,
-        )
+    )
 
 
 def cors_policy_directive(
-        _context,
-        allow_origin,
-        allow_credentials,
-        allow_methods=None,
-        expose_headers=None,
-        allow_headers=None,
-        max_age=None,
-        for_=Interface,
-        layer=IDefaultBrowserLayer,):
+    _context,
+    allow_origin,
+    allow_credentials,
+    allow_methods=None,
+    expose_headers=None,
+    allow_headers=None,
+    max_age=None,
+    for_=Interface,
+    layer=IDefaultBrowserLayer,
+):
 
     _handle_for(_context, for_)
 
     # Create a new policy class and store the CORS policy configuration in
     # class attributes.
     cdict = {}
-    cdict['allow_origin'] = [o.strip() for o in allow_origin.split(',')]
+    cdict["allow_origin"] = [o.strip() for o in allow_origin.split(",")]
     if allow_methods is not None:
-        cdict['allow_methods'] = [m.strip() for m in allow_methods.split(',')]
+        cdict["allow_methods"] = [m.strip() for m in allow_methods.split(",")]
     else:
-        cdict['allow_methods'] = None
-    cdict['allow_credentials'] = allow_credentials
+        cdict["allow_methods"] = None
+    cdict["allow_credentials"] = allow_credentials
     if expose_headers:
-        cdict['expose_headers'] = [
-            h.strip() for h in expose_headers.split(',')]
+        cdict["expose_headers"] = [h.strip() for h in expose_headers.split(",")]
     else:
-        cdict['expose_headers'] = []
+        cdict["expose_headers"] = []
     if allow_headers:
-        cdict['allow_headers'] = [h.strip() for h in allow_headers.split(',')]
+        cdict["allow_headers"] = [h.strip() for h in allow_headers.split(",")]
     else:
-        cdict['allow_headers'] = []
-    cdict['max_age'] = max_age
+        cdict["allow_headers"] = []
+    cdict["max_age"] = max_age
     new_class = type(CORSPolicy.__name__, (CORSPolicy,), cdict)
 
     _context.action(
-        discriminator=('plone.rest:CORSPolicy', for_, layer),
+        discriminator=("plone.rest:CORSPolicy", for_, layer),
         callable=handler,
-        args=('registerAdapter', new_class, (for_, layer),
-              ICORSPolicy, u'', _context.info),
-        )
+        args=(
+            "registerAdapter",
+            new_class,
+            (for_, layer),
+            ICORSPolicy,
+            u"",
+            _context.info,
+        ),
+    )
