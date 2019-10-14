@@ -26,6 +26,7 @@ install:
   - sed -ie "s#plone-x.x.x.cfg#plone-$PLONE_VERSION.cfg#" travis.cfg
   - buildout -N -t 3 -c travis.cfg
 script:
+  - bin/black src/ --check
   - bin/code-analysis
   - bin/test
   - bin/test-coverage
