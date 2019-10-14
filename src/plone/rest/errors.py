@@ -1,5 +1,8 @@
 from AccessControl import getSecurityManager
-from plone.app.redirector.interfaces import IRedirectionStorage
+try:
+    from plone.app.redirector.interfaces import IRedirectionStorage
+except ImportError:
+    IRedirectionStorage = None
 from plone.memoize.instance import memoize
 from plone.rest.interfaces import IAPIRequest
 from Products.CMFCore.permissions import ManagePortal
