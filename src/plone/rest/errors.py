@@ -1,4 +1,5 @@
 from AccessControl import getSecurityManager
+
 try:
     from plone.app.redirector.interfaces import IRedirectionStorage
 except ImportError:
