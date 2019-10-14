@@ -20,7 +20,6 @@ def lookup_preflight_service_id(method):
 
 @implementer(ICORSPolicy)
 class CORSPolicy(object):
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -37,8 +36,9 @@ class CORSPolicy(object):
         self._process_origin_and_credentials(origin)
 
         if self.expose_headers:
-            self.request.response.setHeader('Access-Control-Expose-Headers',
-                                            ', '.join(self.expose_headers))
+            self.request.response.setHeader(
+                "Access-Control-Expose-Headers", ", ".join(self.expose_headers)
+            )
         return True
 
     def process_preflight_request(self):
@@ -50,14 +50,13 @@ class CORSPolicy(object):
         if not origin:
             return False
 
-        method = self.request.getHeader('Access-Control-Request-Method', None)
+        method = self.request.getHeader("Access-Control-Request-Method", None)
         if self.allow_methods and method not in self.allow_methods:
             return False
 
-        headers = self.request.getHeader('Access-Control-Request-Headers',
-                                         None)
+        headers = self.request.getHeader("Access-Control-Request-Headers", None)
         if headers:
-            headers = headers.split(',')
+            headers = headers.split(",")
             allowed_headers = [h.lower() for h in self.allow_headers]
             for header in headers:
                 if header.strip().lower() not in allowed_headers:
@@ -66,39 +65,36 @@ class CORSPolicy(object):
         self._process_origin_and_credentials(origin)
 
         if self.max_age:
-            self.request.response.setHeader('Access-Control-Max-Age',
-                                            self.max_age)
+            self.request.response.setHeader("Access-Control-Max-Age", self.max_age)
 
-        self.request.response.setHeader('Access-Control-Allow-Methods', method)
+        self.request.response.setHeader("Access-Control-Allow-Methods", method)
 
         if self.allow_headers:
-            self.request.response.setHeader('Access-Control-Allow-Headers',
-                                            ', '.join(self.allow_headers))
+            self.request.response.setHeader(
+                "Access-Control-Allow-Headers", ", ".join(self.allow_headers)
+            )
 
-        self.request.response.setHeader('Content-Length', '0')
+        self.request.response.setHeader("Content-Length", "0")
         self.request.response.setStatus(200)
         return True
 
     def _allowed_origin(self):
-        origin = self.request.getHeader('Origin', None)
+        origin = self.request.getHeader("Origin", None)
         if not origin:
             return False
-        if origin not in self.allow_origin and self.allow_origin != ['*']:
+        if origin not in self.allow_origin and self.allow_origin != ["*"]:
             return False
         return origin
 
     def _process_origin_and_credentials(self, origin):
         if self.allow_credentials:
-            self.request.response.setHeader('Access-Control-Allow-Origin',
-                                            origin)
-            self.request.response.setHeader('Access-Control-Allow-Credentials',
-                                            'true')
-            if len(self.allow_origin) > 1 or self.allow_origin == ['*']:
-                self.request.response.setHeader('Vary', 'Origin')
-        elif self.allow_origin == ['*']:
-            self.request.response.setHeader('Access-Control-Allow-Origin', '*')
+            self.request.response.setHeader("Access-Control-Allow-Origin", origin)
+            self.request.response.setHeader("Access-Control-Allow-Credentials", "true")
+            if len(self.allow_origin) > 1 or self.allow_origin == ["*"]:
+                self.request.response.setHeader("Vary", "Origin")
+        elif self.allow_origin == ["*"]:
+            self.request.response.setHeader("Access-Control-Allow-Origin", "*")
         else:
-            self.request.response.setHeader('Access-Control-Allow-Origin',
-                                            origin)
+            self.request.response.setHeader("Access-Control-Allow-Origin", origin)
             if len(self.allow_origin) > 1:
-                self.request.response.setHeader('Vary', 'Origin')
+                self.request.response.setHeader("Vary", "Origin")

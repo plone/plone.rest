@@ -10,14 +10,13 @@ def mark_as_api_request(event):
        actual request method and Accept header.
     """
     request = event.request
-    method = request.get('REQUEST_METHOD', 'GET')
-    if method == 'OPTIONS' and request.getHeader('Origin', False):
-        preflighted_method = request.getHeader(
-            'Access-Control-Request-Method', None)
+    method = request.get("REQUEST_METHOD", "GET")
+    if method == "OPTIONS" and request.getHeader("Origin", False):
+        preflighted_method = request.getHeader("Access-Control-Request-Method", None)
         service_id = lookup_preflight_service_id(preflighted_method)
         request._rest_cors_preflight = True
     else:
-        accept = request.getHeader('Accept', 'text/html')
+        accept = request.getHeader("Accept", "text/html")
         service_id = lookup_service_id(method, accept)
         request._rest_cors_preflight = False
 

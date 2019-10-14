@@ -7,7 +7,6 @@ from zope.interface import implementer
 
 @implementer(IService)
 class Service(object):
-
     def __call__(self):
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
         if policy is not None:
@@ -28,6 +27,6 @@ class Service(object):
     def __getattribute__(self, name):
         # Preflight requests need to be publicly accessible since they don't
         # include credentials
-        if name == '__roles__' and self.request._rest_cors_preflight:
-            return ['Anonymous']
+        if name == "__roles__" and self.request._rest_cors_preflight:
+            return ["Anonymous"]
         return super(Service, self).__getattribute__(name)

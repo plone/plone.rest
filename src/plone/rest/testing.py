@@ -15,37 +15,28 @@ class PloneRestLayer(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         import plone.rest
-        xmlconfig.file(
-            'configure.zcml',
-            plone.rest,
-            context=configurationContext
-        )
-        xmlconfig.file(
-            'testing.zcml',
-            plone.rest,
-            context=configurationContext
-        )
+
+        xmlconfig.file("configure.zcml", plone.rest, context=configurationContext)
+        xmlconfig.file("testing.zcml", plone.rest, context=configurationContext)
 
 
 PLONE_REST_FIXTURE = PloneRestLayer()
 PLONE_REST_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(PLONE_REST_FIXTURE,),
-    name="PloneRestLayer:Integration"
+    bases=(PLONE_REST_FIXTURE,), name="PloneRestLayer:Integration"
 )
 PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PLONE_REST_FIXTURE, z2.ZSERVER_FIXTURE),
-    name="PloneRestLayer:Functional"
+    bases=(PLONE_REST_FIXTURE, z2.ZSERVER_FIXTURE), name="PloneRestLayer:Functional"
 )
 
 
 class InternalServerErrorService(Service):
-
     def __call__(self):
         from six.moves.urllib.error import HTTPError
+
         raise HTTPError(
-            'http://nohost/plone/500-internal-server-error',
+            "http://nohost/plone/500-internal-server-error",
             500,
-            'InternalServerError',
+            "InternalServerError",
             {},
-            None
+            None,
         )
