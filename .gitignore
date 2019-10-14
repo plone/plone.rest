@@ -28,3 +28,5 @@ docs/doctrees
 docs/html
 htmlcov
 bower_components
+.vscode/
+pyvenv.cfg
