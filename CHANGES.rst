@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+1.6.0 (2019-10-15)
+------------------
+
+New features:
+
+
+- Remove CMFPlone and make plone.app.redirector dependency optional [timo] (#81)
+
+
 1.5.2 (unreleased)
 ------------------
 
