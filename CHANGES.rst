@@ -17,12 +17,6 @@ New features:
 - Remove CMFPlone and make plone.app.redirector dependency optional [timo] (#81)
 
 
-1.5.2 (unreleased)
-------------------
-
-- Nothing changed yet.
-
-
 1.5.1 (2019-10-15)
 ------------------
 
