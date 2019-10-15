@@ -8,7 +8,7 @@ Changelog
 
 .. towncrier release notes start
 
-1.5.1 (unreleased)
+1.5.1 (2019-10-15)
 ------------------
 
 - Nothing changed yet.
