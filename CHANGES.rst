@@ -17,7 +17,7 @@ Changelog
 1.5.1 (2019-10-15)
 ------------------
 
-- Nothing changed yet.
+- Brown bag release.
 
 
 1.5.0 (2019-10-13)
