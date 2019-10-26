@@ -6,6 +6,7 @@ exclude *.yml
 exclude bootstrap-buildout.py
 exclude Makefile
 exclude requirements.txt
+exclude CODEOWNERS
 global-exclude *.pyc
 include pyproject.toml
 recursive-exclude news *
