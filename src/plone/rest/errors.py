@@ -6,6 +6,7 @@ except ImportError:
     IRedirectionStorage = None
 from plone.memoize.instance import memoize
 from plone.rest.interfaces import IAPIRequest
+from plone.rest.interfaces import ICORSPolicy
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
 from six.moves import urllib
@@ -20,6 +21,7 @@ try:
 except ImportError:
     HAS_WSGI = False
 from zope.component import adapter
+from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.component.hooks import getSite
 
@@ -60,6 +62,10 @@ class ErrorHandling(BrowserView):
             name = name.decode("utf-8")
             message = message.decode("utf-8")
         result = {u"type": name, u"message": message}
+
+        policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
+        if policy is not None:
+            policy.process_simple_request()
 
         if isinstance(exception, NotFound):
             # First check if a redirect from p.a.redirector exists
