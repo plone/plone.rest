@@ -1,5 +1,4 @@
 graft src/plone/rest
-graft docs
 include *.rst
 exclude *.cfg
 exclude *.yml
