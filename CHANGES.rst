@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.6.1 (2020-03-22)
+------------------
+
+Bug fixes:
+
+
+- CORS preflight should happen for all error codes, fixes #101
+  [sneridagh] (#101)
+
+
 1.6.0 (2019-10-15)
 ------------------
 

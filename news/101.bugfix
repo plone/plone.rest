@@ -1,2 +1,0 @@
-CORS preflight should happen for all error codes, fixes #101
-[sneridagh]
