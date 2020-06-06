@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
-from plone.rest.interfaces import IService
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
@@ -13,7 +11,6 @@ from Products.CMFCore.interfaces import IContentish
 
 @adapter(ISiteRoot, IAPIRequest)
 class RESTTraverse(DefaultPublishTraverse):
-
     def publishTraverse(self, request, name):
 
         service = queryMultiAdapter(
@@ -25,11 +22,12 @@ class RESTTraverse(DefaultPublishTraverse):
         obj = super(RESTTraverse, self).publishTraverse(request, name)
 
         # Wrap object to ensure we handle further traversal
-        if IContentish.providedBy(obj) and not ("@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]):
+        if IContentish.providedBy(obj) and not (
+            "@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]
+        ):
             return RESTWrapper(obj, request)
         else:
             return obj
-
 
     def browserDefault(self, request):
         # Called when we have reached the end of the path
