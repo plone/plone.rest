@@ -232,7 +232,7 @@ The server returns the payload as self.request['BODY']
         def __call__(self):
             data = self.request['BODY']
             json_data = json.loads(data)
-            // do something with the data
+            # do something with the data
             
         def render(self):
             return '{"message": "POST: Hello World!"}'
