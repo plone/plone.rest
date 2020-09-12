@@ -123,6 +123,9 @@ You can try this out on the command line:
 
 .. note:: You have to install httpie (pip install httpie) to make this example work.
 
+Examples
+--------
+
 Here is a list of examples for all supported HTTP verbs:
 
 GET::
@@ -172,6 +175,66 @@ following request::
   GET /Plone/search HTTP/1.1
   Host: localhost:8080
   Accept: application/json
+
+HTTP POST and Payloads
+----------------------
+
+The example below shows a ZMCL directive that registers a POST endpoint
+that accepts json payloads.
+
+.. code-block:: xml
+
+  <plone:service
+    method="POST"
+    accept="application/json"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".post.ImportDataPost"
+    name="@import_data"
+    permission="zope2.View"
+    />
+
+
+We will assume that we have a file called ``data.json``.
+The contents of the file includes two objects.
+
+.. code-block:: json
+
+  [ 
+   {
+    "first_name":"John",
+    "last_name":"Doe",
+    "age":15
+    },
+    {
+    "first_name":"John",
+    "last_name":"Doe",
+    "age":15
+    }
+  ]
+
+
+Then we call our newly defined endpoint:
+
+.. code-block:: console
+  
+  http --auth admin:admin POST localhost:8080/Plone/@import_data Accept:application/json < data.json
+
+
+The server returns the payload as self.request['BODY']
+
+
+    import json
+    from plone.rest import Service
+
+    class ImportDataPost(Service):
+
+        def __call__(self):
+            data = self.request['BODY']
+            json_data = json.loads(data)
+            // do something with the data
+            
+        def render(self):
+            return '{"message": "POST: Hello World!"}'
 
 
 Additional Path Segments
