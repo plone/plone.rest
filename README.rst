@@ -222,6 +222,7 @@ Then we call our newly defined endpoint:
 
 The server returns the payload as self.request['BODY']
 
+.. code-block:: python
 
     import json
     from plone.rest import Service
