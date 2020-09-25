@@ -220,7 +220,7 @@ Then we call our newly defined endpoint:
   http --auth admin:admin POST localhost:8080/Plone/@import_data Accept:application/json < data.json
 
 
-The server returns the payload as self.request['BODY']
+The json payload is accessible as self.request['BODY']
 
 .. code-block:: python
 
