@@ -108,7 +108,7 @@ To access the service endpoint we created we have to send a GET request to a Dex
 
 2. or by adding an explicit traversal step to the path like so::
 
-    PATCH /Plone/++rest++json/doc1 HTTP/1.1
+    PATCH /Plone/++api++/doc1 HTTP/1.1
     Host: localhost:8080
 
 The server then will respond with '200 OK'::
@@ -142,32 +142,32 @@ Here is a list of examples for all supported HTTP verbs:
 GET::
 
   $ http --auth admin:admin GET localhost:8080/Plone/doc1 Accept:application/json
-  $ http --auth admin:admin GET localhost:8080/Plone/++rest++json/doc1 
+  $ http --auth admin:admin GET localhost:8080/Plone/++api++/doc1
 
 POST::
 
   $ http --auth admin:admin POST localhost:8080/Plone/doc1 Accept:application/json
-  $ http --auth admin:admin POST localhost:8080/Plone/++rest++json/doc1 
+  $ http --auth admin:admin POST localhost:8080/Plone/++api++/doc1
 
 PUT::
 
   $ http --auth admin:admin PUT localhost:8080/Plone/doc1 Accept:application/json
-  $ http --auth admin:admin PUT localhost:8080/Plone/++rest++json/doc1 Accept:application/json
+  $ http --auth admin:admin PUT localhost:8080/Plone/++api++/doc1
 
 DELETE::
 
   $ http --auth admin:admin DELETE localhost:8080/Plone/doc1 Accept:application/json
-  $ http --auth admin:admin DELETE localhost:8080/Plone/++rest++json/doc1
+  $ http --auth admin:admin DELETE localhost:8080/Plone/++api++/doc1
 
 PATCH::
 
   $ http --auth admin:admin PATCH localhost:8080/Plone/doc1 Accept:application/json
-  $ http --auth admin:admin PATCH localhost:8080/Plone/++rest++json/doc1 
+  $ http --auth admin:admin PATCH localhost:8080/Plone/++api++/doc1
 
 OPTIONS::
 
   $ http --auth admin:admin OPTIONS localhost:8080/Plone/doc1 Accept:application/json
-  $ http --auth admin:admin OPTIONS localhost:8080/Plone/++rest++json/doc1
+  $ http --auth admin:admin OPTIONS localhost:8080/Plone/++api++/doc1
 
 
 Named Services
@@ -195,7 +195,7 @@ following request::
 
 Service endpoints can also be accessed using the traverser::
 
-  GET /Plone/++rest++json/search HTTP/1.1
+  GET /Plone/++api++/search HTTP/1.1
   Host: localhost:8080
 
 
