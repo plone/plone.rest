@@ -7,12 +7,18 @@
   <include file="meta.zcml"/>
   <subscriber
     for="ZPublisher.interfaces.IPubStart"
-    handler=".events.mark_as_api_request"
+    handler=".events.subscriber_mark_as_api_request"
     />
 
   <include file="patches.zcml" />
 
   <adapter factory=".traverse.RESTTraverse" />
+
+  <adapter
+      for="* zope.publisher.interfaces.IRequest"
+      name="api"
+      factory=".traverse.MarkAsRESTTraverser"
+      />
 
   <adapter
       factory=".errors.ErrorHandling"

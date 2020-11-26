@@ -4,10 +4,12 @@ from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import IService
+from plone.rest.events import mark_as_api_request
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
+from zope.traversing.interfaces import ITraversable
 from Products.CMFCore.interfaces import IContentish
 
 
@@ -48,6 +50,22 @@ class RESTTraverse(DefaultPublishTraverse):
         # Called when we have reached the end of the path
         # In our case this means an unamed service
         return self.context, (request._rest_service_id,)
+
+
+@implementer(ITraversable)
+class MarkAsRESTTraverser(object):
+    """ 
+    Traversal adapter for the ``++api++`` namespace.
+    It marks the request as API request.
+    """
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def traverse(self, name_ignored, subpath_ignored):
+        mark_as_api_request(self.request, "application/json")
+        return self.context
 
 
 @implementer(IBrowserPublisher)
