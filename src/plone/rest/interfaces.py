@@ -3,18 +3,16 @@ from zope.interface import Interface
 
 
 class IAPIRequest(Interface):
-    """Marker for API requests.
-    """
+    """Marker for API requests."""
 
 
 class IService(Interface):
-    """Marker for REST services.
-    """
+    """Marker for REST services."""
 
 
 class ICORSPolicy(Interface):
     """Provides methods for processing simple and preflight CORS requests by
-       adding access control headers.
+    adding access control headers.
     """
 
     def process_simple_request():
