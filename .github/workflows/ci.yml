@@ -12,7 +12,7 @@ jobs:
           - python-version: 3.7
             plone-version: 4.3
           - python-version: 3.7
-            plone-version: 4.3
+            plone-version: 5.1
 
     steps:
 
