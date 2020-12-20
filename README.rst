@@ -1,6 +1,3 @@
-.. image:: https://secure.travis-ci.org/plone/plone.rest.png?branch=master
-  :target: http://travis-ci.org/plone/plone.rest
-
 .. image:: https://img.shields.io/coveralls/github/plone/plone.rest.svg
    :alt: Coveralls github
    :target: https://coveralls.io/github/plone/plone.restapi

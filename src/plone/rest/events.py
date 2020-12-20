@@ -7,7 +7,7 @@ from zope.interface import alsoProvides
 
 def mark_as_api_request(event):
     """Mark a request as IAPIRequest if there's a service registered for the
-       actual request method and Accept header.
+    actual request method and Accept header.
     """
     request = event.request
     method = request.get("REQUEST_METHOD", "GET")

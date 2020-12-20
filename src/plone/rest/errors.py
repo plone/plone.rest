@@ -231,8 +231,7 @@ class ErrorHandling(BrowserView):
 
     @memoize
     def _url(self):
-        """Get the current, canonical URL
-        """
+        """Get the current, canonical URL"""
         return self.request.get(
             "ACTUAL_URL",
             self.request.get(
