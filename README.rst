@@ -2,10 +2,6 @@
    :alt: Coveralls github
    :target: https://coveralls.io/github/plone/plone.restapi
 
-.. image:: https://landscape.io/github/plone/plone.rest/master/landscape.svg?style=flat
-  :target: https://landscape.io/github/plone/plone.rest/master
-  :alt: Code Health
-
 .. image:: https://img.shields.io/pypi/status/plone.rest.svg
     :target: https://pypi.python.org/pypi/plone.rest/
     :alt: Egg Status
