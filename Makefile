@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-version = 3.7
+version = 3
 
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
@@ -27,7 +27,7 @@ update: ## Update Make and Buildout
 	wget -O plone-4.3.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-4.3.x.cfg
 	wget -O plone-5.1.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.1.x.cfg
 	wget -O plone-5.2.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.2.x.cfg
-	wget -O travis.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/travis.cfg
+	wget -O ci.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/ci.cfg
 	wget -O versions.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/versions.cfg
 
 .installed.cfg: bin/buildout *.cfg
@@ -70,6 +70,12 @@ build-plone-5.2: .installed.cfg  ## Build Plone 5.2
 	bin/pip install --upgrade pip
 	bin/pip install -r requirements.txt
 	bin/buildout -c plone-5.2.x.cfg
+
+.PHONY: Build Plone 5.2 Performance
+build-plone-5.2-performance: .installed.cfg  ## Build Plone 5.2
+	bin/pip install --upgrade pip
+	bin/pip install -r requirements.txt
+	bin/buildout -c plone-5.2.x-performance.cfg
 
 .PHONY: Test
 test:  ## Test

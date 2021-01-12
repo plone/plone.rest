@@ -70,8 +70,7 @@ class MarkAsRESTTraverser(object):
 
 @implementer(IBrowserPublisher)
 class RESTWrapper(object):
-    """A wrapper for objects traversed during a REST request.
-    """
+    """A wrapper for objects traversed during a REST request."""
 
     def __init__(self, context, request):
         self.context = context

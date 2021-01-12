@@ -26,8 +26,8 @@ class CORSPolicy(object):
 
     def process_simple_request(self):
         """Process the current request as a simple CORS request by setting the
-           appropriate access control headers. Returns True if access control
-           headers were set.
+        appropriate access control headers. Returns True if access control
+        headers were set.
         """
         origin = self._allowed_origin()
         if not origin:
@@ -43,8 +43,8 @@ class CORSPolicy(object):
 
     def process_preflight_request(self):
         """Process the current request as a CORS preflight request by setting
-           the appropriate access control headers. Returns True if access
-           control headers were set.
+        the appropriate access control headers. Returns True if access
+        control headers were set.
         """
         origin = self._allowed_origin()
         if not origin:
