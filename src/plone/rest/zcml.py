@@ -20,8 +20,7 @@ from zope.security.zcml import Permission
 
 
 class IService(Interface):
-    """
-    """
+    """"""
 
     method = TextLine(
         title=u"The name of the view that should be the default. "

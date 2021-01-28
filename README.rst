@@ -1,13 +1,10 @@
-.. image:: https://secure.travis-ci.org/plone/plone.rest.png?branch=master
-  :target: http://travis-ci.org/plone/plone.rest
+.. image:: https://github.com/plone/plone.rest/workflows/plone.rest%20CI/badge.svg
+   :alt: Github Actions Status
+   :target: https://github.com/plone/plone.rest/actions?query=workflow%3A%22plone.rest+CI%22
 
 .. image:: https://img.shields.io/coveralls/github/plone/plone.rest.svg
    :alt: Coveralls github
    :target: https://coveralls.io/github/plone/plone.restapi
-
-.. image:: https://landscape.io/github/plone/plone.rest/master/landscape.svg?style=flat
-  :target: https://landscape.io/github/plone/plone.rest/master
-  :alt: Code Health
 
 .. image:: https://img.shields.io/pypi/status/plone.rest.svg
     :target: https://pypi.python.org/pypi/plone.rest/

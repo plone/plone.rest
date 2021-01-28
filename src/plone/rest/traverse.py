@@ -36,9 +36,8 @@ class RESTTraverse(DefaultPublishTraverse):
 
 
 @implementer(IBrowserPublisher)
-class RESTWrapper(RESTTraverse):
-    """A traversal hijack wrapper for REST requests.
-    """
+class RESTWrapper(object):
+    """A wrapper for objects traversed during a REST request."""
 
     def __init__(self, context, request):
         self.context = context
