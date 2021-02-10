@@ -186,6 +186,7 @@ class ICORSPolicyDirective(Interface):
         title=u"Support Credentials",
         description=u"""Indicates whether the resource supports user
         credentials in the request.""",
+        required=True,
         default=False,
     )
 
