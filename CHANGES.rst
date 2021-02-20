@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+1.6.2 (2021-02-20)
+------------------
+
+Bug fixes:
+
+
+- Explicitly make ``allow_credentials`` required in CORS policy.
+  This was the default for Bool fields until and including zope.schema 6.0.1, but in 6.1.0 this changed.
+  [maurits] (#104)
+
+
 1.6.1 (2020-03-22)
 ------------------
 
