@@ -6,7 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [2.7, 3.7, 3.8]
         plone-version: [5.2]
 
     steps:
@@ -35,12 +35,13 @@ jobs:
           update-wheel: "true"
 
       - name: buildout
-        run: buildout -t 10 -c plone-${{ matrix.plone-version }}.x.cfg code-analysis:return-status-codes=True
+        run: buildout -t 10 -c plone-${{ matrix.plone-version }}.x.cfg code-analysis:return-status-codes=true
         env:
           CI: true
 
       - name: black
-        run: pip install black && black src/ --check; fi
+        if: ${{ matrix.python-version != '2.7' }}
+        run: pip install black && black src/ --check
 
       - name: code-analysis
         run: bin/code-analysis
