@@ -1,0 +1,4 @@
+Drop Plone < 5.2 and bump to version 2.0 due to drop.
+CI setup/ buildout: simplify; use release dependencies; no specialties (external copy overs) in Plone Core Code; fix CI.
+Name contributors according to GH history.
+[jensens]
