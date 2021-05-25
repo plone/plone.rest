@@ -33,7 +33,8 @@ It is a software architectural principle to create loosely coupled web APIs.
 
 plone.rest provides the basic infrastructure that allows us to build RESTful endpoints in Plone.
 
-The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases. A number of these specific endpoints are already in active use.
+The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases. 
+A number of these specific endpoints are already in active use.
 
 
 Audience
