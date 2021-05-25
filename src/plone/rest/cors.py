@@ -2,6 +2,7 @@
 from plone.rest.interfaces import ICORSPolicy
 from zope.interface import implementer
 
+
 # CORS preflight service registry
 # A mapping of method -> service_id
 _services = {}

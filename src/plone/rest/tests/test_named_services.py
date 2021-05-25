@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
 from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
 
-import unittest
 import requests
 import transaction
+import unittest
 
 
 class TestNamedServiceEndpoints(unittest.TestCase):

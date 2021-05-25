@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from ZPublisher.pubevents import PubStart
 from plone.app.testing import popGlobalRegistry
 from plone.app.testing import pushGlobalRegistry
 from plone.rest.cors import CORSPolicy
@@ -10,6 +9,7 @@ from zope.component import provideAdapter
 from zope.event import notify
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from ZPublisher.pubevents import PubStart
 
 import unittest
 

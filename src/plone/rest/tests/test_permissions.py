@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
-from ZPublisher.pubevents import PubStart
 from base64 import b64encode
+from plone.app.testing import login
+from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import login
-from plone.app.testing import setRoles
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+from Products.CMFCore.utils import getToolByName
 from zExceptions import Unauthorized
 from zope.event import notify
+from ZPublisher.pubevents import PubStart
 
 import unittest
 

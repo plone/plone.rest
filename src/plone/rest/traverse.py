@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.interfaces import ISiteRoot
-from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
-from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import IService
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
-from Products.CMFCore.interfaces import IContentish
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 
 @adapter(ISiteRoot, IAPIRequest)

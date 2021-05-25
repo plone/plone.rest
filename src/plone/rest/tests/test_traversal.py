@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
-from ZPublisher import BeforeTraverse
-from ZPublisher.pubevents import PubStart
 from base64 import b64encode
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.testing import setRoles
@@ -10,9 +7,12 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.publisher.interfaces.browser import IBrowserView
+from ZPublisher import BeforeTraverse
+from ZPublisher.pubevents import PubStart
 
 import unittest
 

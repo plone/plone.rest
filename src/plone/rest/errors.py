@@ -1,9 +1,5 @@
 from AccessControl import getSecurityManager
-
-try:
-    from plone.app.redirector.interfaces import IRedirectionStorage
-except ImportError:
-    IRedirectionStorage = None
+from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.memoize.instance import memoize
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import ICORSPolicy
@@ -13,17 +9,11 @@ from six.moves import urllib
 from six.moves.urllib.parse import quote
 from six.moves.urllib.parse import unquote
 from zExceptions import NotFound
-
-try:
-    from ZPublisher.HTTPRequest import WSGIRequest
-
-    HAS_WSGI = True
-except ImportError:
-    HAS_WSGI = False
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.component.hooks import getSite
+from ZPublisher.HTTPRequest import WSGIRequest
 
 import json
 import six
@@ -87,11 +77,7 @@ class ErrorHandling(BrowserView):
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()
         if exception is not exc_obj:
-            if (
-                HAS_WSGI
-                and isinstance(self.request, WSGIRequest)
-                and str(exception) == str(exc_obj)
-            ):
+            if isinstance(self.request, WSGIRequest) and str(exception) == str(exc_obj):
                 # WSGIRequest may "upgrade" the exception,
                 # resulting in a new exception which has
                 # the same string representation as the
