@@ -23,7 +23,9 @@ class RESTTraverse(DefaultPublishTraverse):
 
         # Wrap object to ensure we handle further traversal
         if IContentish.providedBy(obj) and not (
-            "@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]
+            "@@" in request["PATH_INFO"]
+            or "++view++" in request["PATH_INFO"]
+            or "fileUpload" in request["PATH_INFO"]
         ):
             return RESTWrapper(obj, request)
         else:
