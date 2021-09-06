@@ -10,7 +10,6 @@ from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 
 class RESTPublishTraverse(object):
-
     def publishTraverse(self, request, name):
         service = queryMultiAdapter(
             (self.context, request), name=request._rest_service_id + name
@@ -22,8 +21,7 @@ class RESTPublishTraverse(object):
         obj = adapter.publishTraverse(request, name)
 
         if IContentish.providedBy(obj) and not (
-            "@@" in request["PATH_INFO"]
-            or "++view++" in request["PATH_INFO"]
+            "@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]
         ):
             return RESTWrapper(obj, request)
 
@@ -37,7 +35,7 @@ class RESTPublishTraverse(object):
 
 @adapter(ISiteRoot, IAPIRequest)
 class RESTTraverse(RESTPublishTraverse, DefaultPublishTraverse):
-    """ traversal object during REST requests. """
+    """traversal object during REST requests."""
 
 
 @implementer(IBrowserPublisher)
