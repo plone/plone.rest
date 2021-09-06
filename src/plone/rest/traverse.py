@@ -1,33 +1,33 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.interfaces import ISiteRoot
-from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import ISiteRoot
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
-from Products.CMFCore.interfaces import IContentish
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 
-@adapter(ISiteRoot, IAPIRequest)
-class RESTTraverse(DefaultPublishTraverse):
+class RESTPublishTraverse(object):
+
     def publishTraverse(self, request, name):
-
         service = queryMultiAdapter(
             (self.context, request), name=request._rest_service_id + name
         )
-        if service:
+        if service is not None:
             return service
 
-        obj = super(RESTTraverse, self).publishTraverse(request, name)
+        adapter = DefaultPublishTraverse(self.context, request)
+        obj = adapter.publishTraverse(request, name)
 
-        # Wrap object to ensure we handle further traversal
         if IContentish.providedBy(obj) and not (
-            "@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]
+            "@@" in request["PATH_INFO"]
+            or "++view++" in request["PATH_INFO"]
         ):
             return RESTWrapper(obj, request)
-        else:
-            return obj
+
+        return obj
 
     def browserDefault(self, request):
         # Called when we have reached the end of the path
@@ -35,8 +35,13 @@ class RESTTraverse(DefaultPublishTraverse):
         return self.context, (request._rest_service_id,)
 
 
+@adapter(ISiteRoot, IAPIRequest)
+class RESTTraverse(RESTPublishTraverse, DefaultPublishTraverse):
+    """ traversal object during REST requests. """
+
+
 @implementer(IBrowserPublisher)
-class RESTWrapper(object):
+class RESTWrapper(RESTPublishTraverse):
     """A wrapper for objects traversed during a REST request."""
 
     def __init__(self, context, request):
