@@ -2,6 +2,7 @@ graft src/plone/rest
 include *.rst
 exclude *.cfg
 exclude *.yml
+exclude .flake8
 exclude bootstrap-buildout.py
 exclude Makefile
 exclude requirements.txt
