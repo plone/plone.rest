@@ -54,7 +54,7 @@ class RESTTraverse(DefaultPublishTraverse):
 
 @implementer(ITraversable)
 class MarkAsRESTTraverser(object):
-    """ 
+    """
     Traversal adapter for the ``++api++`` namespace.
     It marks the request as API request.
     """

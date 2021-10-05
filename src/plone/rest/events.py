@@ -28,9 +28,8 @@ def mark_as_api_request(request, accept):
 
 
 def subscriber_mark_as_api_request(event):
-    """Subscriber to mark a request as IAPIRequest (see mark_as_api_request)
-    """
+    """Subscriber to mark a request as IAPIRequest (see mark_as_api_request)"""
     mark_as_api_request(
-        event.request, 
+        event.request,
         event.request.getHeader("Accept", "text/html"),
-    )    
+    )
