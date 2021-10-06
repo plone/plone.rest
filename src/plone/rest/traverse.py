@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from plone.rest.interfaces import IAPIRequest
-from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.interfaces import ISiteRoot
+from plone.rest.interfaces import IService
+from plone.rest.events import mark_as_api_request
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+from zope.traversing.interfaces import ITraversable
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import ISiteRoot
 
 
 class RESTPublishTraverse(object):
@@ -36,6 +39,22 @@ class RESTPublishTraverse(object):
 @adapter(ISiteRoot, IAPIRequest)
 class RESTTraverse(RESTPublishTraverse, DefaultPublishTraverse):
     """traversal object during REST requests."""
+
+
+@implementer(ITraversable)
+class MarkAsRESTTraverser(object):
+    """
+    Traversal adapter for the ``++api++`` namespace.
+    It marks the request as API request.
+    """
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def traverse(self, name_ignored, subpath_ignored):
+        mark_as_api_request(self.request, "application/json")
+        return self.context
 
 
 @implementer(IBrowserPublisher)

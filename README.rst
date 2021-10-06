@@ -98,11 +98,18 @@ The factory class needs to inherit from the plone.rest 'Service' class and to im
 Content Negotiation
 -------------------
 
-To access the service endpoint we just created we have to send a GET request to a Dexterity object by setting the 'Accept' header to 'application/json'::
+To access the service endpoint we created we have to send a GET request to a Dexterity object:
 
-  PATCH /Plone/doc1 HTTP/1.1
-  Host: localhost:8080
-  Accept: application/json
+1. by setting the 'Accept' header to 'application/json'::
+
+    PATCH /Plone/doc1 HTTP/1.1
+    Host: localhost:8080
+    Accept: application/json
+
+2. or by adding an explicit traversal step to the path like so::
+
+    PATCH /Plone/++api++/doc1 HTTP/1.1
+    Host: localhost:8080
 
 The server then will respond with '200 OK'::
 
@@ -112,6 +119,15 @@ The server then will respond with '200 OK'::
   {
     "message": "PATCH: Hello World!"
   }
+
+Why two methods? 
+Using the 'Accept' header is the intended way of RESTful APIs to get different responses from the same URL.
+However, if it comes to caching the response in an web accelerator like Varnish or Cloudflare, additional challenges are added.
+Setting the `Vary` header to 'Vary: Accept' helps to a certain degree in Varnish. 
+But cache pollution may happen, because different browsers send different headers on normal HTML requests.
+Hosted services like Cloudflare just do not support the 'Vary' usage and can not be used for sites with REST calls.
+Thus a second option with different URLs is needed.
+
 
 You can try this out on the command line:
 
@@ -126,26 +142,32 @@ Here is a list of examples for all supported HTTP verbs:
 GET::
 
   $ http --auth admin:admin GET localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin GET localhost:8080/Plone/++api++/doc1
 
 POST::
 
   $ http --auth admin:admin POST localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin POST localhost:8080/Plone/++api++/doc1
 
 PUT::
 
   $ http --auth admin:admin PUT localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin PUT localhost:8080/Plone/++api++/doc1
 
 DELETE::
 
   $ http --auth admin:admin DELETE localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin DELETE localhost:8080/Plone/++api++/doc1
 
 PATCH::
 
   $ http --auth admin:admin PATCH localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin PATCH localhost:8080/Plone/++api++/doc1
 
 OPTIONS::
 
   $ http --auth admin:admin OPTIONS localhost:8080/Plone/doc1 Accept:application/json
+  $ http --auth admin:admin OPTIONS localhost:8080/Plone/++api++/doc1
 
 
 Named Services
@@ -171,6 +193,11 @@ following request::
   Host: localhost:8080
   Accept: application/json
 
+Service endpoints can also be accessed using the traverser::
+
+  GET /Plone/++api++/search HTTP/1.1
+  Host: localhost:8080
+
 
 Additional Path Segments
 ------------------------
@@ -182,12 +209,11 @@ stores all path segments in an array in `self.params`.
 .. code-block:: python
 
   from plone.rest import Service
-  from zope.interface import implements
+  from zope.interface import implementer
   from zope.publisher.interfaces import IPublishTraverse
 
+  @implementer(implementer)
   class MyService(Service):
-
-      implements(IPublishTraverse)
 
       def __init__(self, context, request):
           super(MyService, self).__init__(context, request)

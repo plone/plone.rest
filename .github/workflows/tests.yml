@@ -6,14 +6,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 2.7]
+        python-version: [3.8, 3.7, 2.7]
         plone-version: [5.2, 5.1, 4.3]
         exclude:
           - python-version: 3.7
             plone-version: 4.3
           - python-version: 3.7
             plone-version: 5.1
-
+          - python-version: 3.8
+            plone-version: 4.3
+          - python-version: 3.8
+            plone-version: 5.1
     steps:
 
       # git checkout
@@ -46,14 +49,6 @@ jobs:
         run: buildout -t 10 -c ci.cfg
         env:
           CI: true
-
-      # black
-      - name: black
-        run: if [ "${{ matrix.plone-version }}" == "5.2" ] && [ ${{ matrix.python-version }} == '3.7' ]; then pip install black && black src/ --check; fi
-
-      # code analysis
-      - name: black
-        run: bin/code-analysis
 
       # test
       - name: test

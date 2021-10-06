@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0a1 (2021-10-05)
+--------------------
+
+New features:
+
+
+- Add a traverser `++api++` as an alternative to mark a request as REST request. 
+  [jensens] (#113)
+
+
 1.6.2 (2021-02-20)
 ------------------
 
