@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from plone.rest.interfaces import IAPIRequest
-from plone.rest.interfaces import IService
 from plone.rest.events import mark_as_api_request
 from zope.component import adapter
 from zope.component import queryMultiAdapter
