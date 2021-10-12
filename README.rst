@@ -212,7 +212,7 @@ stores all path segments in an array in `self.params`.
   from zope.interface import implementer
   from zope.publisher.interfaces import IPublishTraverse
 
-  @implementer(implementer)
+  @implementer(IPublishTraverse)
   class MyService(Service):
 
       def __init__(self, context, request):
