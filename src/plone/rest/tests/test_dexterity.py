@@ -46,12 +46,25 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
     def test_dexterity_document_get_with_payload(self):
         payload = {
             "query": json.dumps(
-                {
-                    "i": "Title",
-                    "o": "plone.app.querystring.operation.string.is",
-                    "v": "Welcome to Plone",
-                }
-            )
+                [
+                    {
+                        'i': 'Title',
+                        'o': 'plone.app.querystring.operation.string.is',
+                        'v': 'Welcome to Plone',
+                    },
+                    {
+                        'i': 'path',
+                        'o': 'plone.app.querystring.operation.string.path',
+                        'v': '/news',
+                    }
+                ]
+            ),
+            "sort_on": "sortable_title",
+            "sort_order": "reverse",
+            "limit": "10",
+            "fullobjects": "False",
+            "b_start": "0",
+            "b_size": "2",
         }
         response = requests.get(
             self.document.absolute_url(),
