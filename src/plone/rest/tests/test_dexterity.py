@@ -42,6 +42,18 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(u"doc1", response.json().get("id"))
         self.assertEqual(u"GET", response.json().get("method"))
 
+    def test_dexterity_document_get_with_payload(self):
+        response = requests.get(
+            self.document.absolute_url(),
+            headers={"Accept": "application/json"},
+            params={"foo": "bar"},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u"doc1", response.json().get("id"))
+        self.assertEqual(u"GET", response.json().get("method"))
+        self.assertEqual({'foo': 'bar'}, response.json().get("body"))
+
     def test_dexterity_document_post(self):
         response = requests.post(
             self.document.absolute_url(),
