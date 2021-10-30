@@ -46,13 +46,13 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         response = requests.get(
             self.document.absolute_url(),
             headers={"Accept": "application/json"},
-            params={"foo": "bar"},
+            params={'key1': 'value1', 'key2': ['value2', 'value3']},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(200, response.status_code)
         self.assertEqual(u"doc1", response.json().get("id"))
         self.assertEqual(u"GET", response.json().get("method"))
-        self.assertEqual({'foo': 'bar'}, response.json().get("body"))
+        self.assertEqual({'key1': 'value1', 'key2': ['value2', 'value3']}, response.json().get("body"))
 
     def test_dexterity_document_post(self):
         response = requests.post(
