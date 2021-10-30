@@ -12,6 +12,7 @@ from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 
+import json
 import unittest
 import os
 import requests
@@ -43,16 +44,25 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(u"GET", response.json().get("method"))
 
     def test_dexterity_document_get_with_payload(self):
+        payload = {
+            "query": json.dumps(
+                {
+                    "i": "Title",
+                    "o": "plone.app.querystring.operation.string.is",
+                    "v": "Welcome to Plone",
+                }
+            )
+        }
         response = requests.get(
             self.document.absolute_url(),
             headers={"Accept": "application/json"},
-            params={'key1': 'value1', 'key2': ['value2', 'value3']},
+            params=payload,
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(200, response.status_code)
         self.assertEqual(u"doc1", response.json().get("id"))
         self.assertEqual(u"GET", response.json().get("method"))
-        self.assertEqual({'key1': 'value1', 'key2': ['value2', 'value3']}, response.json().get("body"))
+        self.assertEqual(payload, response.json().get("body"))
 
     def test_dexterity_document_post(self):
         response = requests.post(

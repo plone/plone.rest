@@ -12,11 +12,7 @@ class BaseService(Service):
 
 class Get(BaseService):
     def data(self):
-        return {
-            "method": "GET",
-            "id": self.context.id,
-            "body": self.request.form
-        }
+        return {"method": "GET", "id": self.context.id, "body": self.request.form}
 
 
 class Post(BaseService):
