@@ -12,7 +12,6 @@ from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 
-import json
 import unittest
 import os
 import requests
@@ -44,28 +43,30 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(u"GET", response.json().get("method"))
 
     def test_dexterity_document_get_with_payload(self):
-        payload = {
-            "query": json.dumps(
-                [
+        from urllib.parse import urlencode
+
+        payload = urlencode(
+            {
+                "query": [
                     {
-                        'i': 'Title',
-                        'o': 'plone.app.querystring.operation.string.is',
-                        'v': 'Welcome to Plone',
+                        "i": "Title",
+                        "o": "plone.app.querystring.operation.string.is",
+                        "v": "Welcome to Plone",
                     },
                     {
-                        'i': 'path',
-                        'o': 'plone.app.querystring.operation.string.path',
-                        'v': '/news',
-                    }
-                ]
-            ),
-            "sort_on": "sortable_title",
-            "sort_order": "reverse",
-            "limit": "10",
-            "fullobjects": "False",
-            "b_start": "0",
-            "b_size": "2",
-        }
+                        "i": "path",
+                        "o": "plone.app.querystring.operation.string.path",
+                        "v": "/news",
+                    },
+                ],
+                "sort_on": "sortable_title",
+                "sort_order": "reverse",
+                "limit": "10",
+                "fullobjects": "False",
+                "b_start": "0",
+                "b_size": "2",
+            }
+        )
         response = requests.get(
             self.document.absolute_url(),
             headers={"Accept": "application/json"},
@@ -75,7 +76,57 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(u"doc1", response.json().get("id"))
         self.assertEqual(u"GET", response.json().get("method"))
-        self.assertEqual(payload, response.json().get("body"))
+
+        # should be like this (query params is not a string):
+        # self.assertEqual(
+        #     {
+        #         "body": {
+        #             "b_size": "2",
+        #             "b_start": "0",
+        #             "fullobjects": "False",
+        #             "limit": "10",
+        #             "query": [
+        #                 {
+        #                     "i": "Title",
+        #                     "o": "plone.app.querystring.operation.string.is",
+        #                     "v": "Welcome to Plone"
+        #                 },
+        #                 {
+        #                     "i": "path",
+        #                     "o": "plone.app.querystring.operation.string.path",
+        #                     "v": "/news"
+        #                 }
+        #             ],
+        #             "sort_on": "sortable_title",
+        #             "sort_order": "reverse",
+        #         },
+        #         "id": "doc1",
+        #         "method": "GET",
+        #     },
+        #     response.json(),
+        # )
+
+        # actually result (query param is a string):
+        self.assertEqual(
+            {
+                "body": {
+                    "b_size": "2",
+                    "b_start": "0",
+                    "fullobjects": "False",
+                    "limit": "10",
+                    "query": "[{'i': 'Title', 'o': "
+                    "'plone.app.querystring.operation.string.is', 'v': 'Welcome "
+                    "to Plone'}, {'i': 'path', 'o': "
+                    "'plone.app.querystring.operation.string.path', 'v': "
+                    "'/news'}]",
+                    "sort_on": "sortable_title",
+                    "sort_order": "reverse",
+                },
+                "id": "doc1",
+                "method": "GET",
+            },
+            response.json(),
+        )
 
     def test_dexterity_document_post(self):
         response = requests.post(
