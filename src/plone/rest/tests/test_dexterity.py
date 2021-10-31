@@ -59,18 +59,20 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         # After this conversion you will have a Python dict with the query parameters.
 
         payload = {
-            "query": json.dumps([
-                {
-                    "i": "Title",
-                    "o": "plone.app.querystring.operation.string.is",
-                    "v": "Welcome to Plone",
-                },
-                {
-                    "i": "path",
-                    "o": "plone.app.querystring.operation.string.path",
-                    "v": "/news",
-                },
-            ]),
+            "query": json.dumps(
+                [
+                    {
+                        "i": "Title",
+                        "o": "plone.app.querystring.operation.string.is",
+                        "v": "Welcome to Plone",
+                    },
+                    {
+                        "i": "path",
+                        "o": "plone.app.querystring.operation.string.path",
+                        "v": "/news",
+                    },
+                ]
+            ),
             "sort_on": "sortable_title",
             "sort_order": "reverse",
             "limit": "10",
@@ -100,13 +102,13 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
                         {
                             "i": "Title",
                             "o": "plone.app.querystring.operation.string.is",
-                            "v": "Welcome to Plone"
+                            "v": "Welcome to Plone",
                         },
                         {
                             "i": "path",
                             "o": "plone.app.querystring.operation.string.path",
-                            "v": "/news"
-                        }
+                            "v": "/news",
+                        },
                     ],
                     "sort_on": "sortable_title",
                     "sort_order": "reverse",
