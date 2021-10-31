@@ -12,6 +12,7 @@ class BaseService(Service):
 
 class Get(BaseService):
     def data(self):
+        self.request.form['query'] = json.loads(self.request.form.get("query"))
         return {"method": "GET", "id": self.context.id, "body": self.request.form}
 
 
