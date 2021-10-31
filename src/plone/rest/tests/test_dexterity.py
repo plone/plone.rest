@@ -12,6 +12,7 @@ from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 
+import json
 import unittest
 import os
 import requests
@@ -43,7 +44,19 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(u"GET", response.json().get("method"))
 
     def test_dexterity_document_get_with_payload(self):
-        import json
+        # Encoding querystrings with arrays AND nested structures is a non-trivial use case, see for instance:
+        #
+        #     https://github.com/sindresorhus/query-string/blob/main/readme.md#nesting
+        #
+        # There is no standardized way to deal with this, and most options in the wild have certain limitations and edge cases.
+        #
+        # Therefore we call json.dumps() on the query parameter only.
+        #
+        # This means that in the endpoint code, you have to convert the 'query' parameter querystring from a string to a dict:
+        #
+        #     self.request.form['query'] = json.loads(self.request.form.get("query"))
+        #
+        # After this conversion you will have a Python dict with the query parameters.
 
         payload = {
             "query": json.dumps([
