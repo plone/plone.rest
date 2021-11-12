@@ -60,7 +60,7 @@ class TestTraversal(unittest.TestCase):
 
     def test_html_request_on_portal_root_returns_default_view(self):
         obj = self.traverse(accept="text/html")
-        self.assertEquals("listing_view", obj.__name__)
+        self.assertEquals("document_view", obj.__name__)
 
     def test_html_request_on_portal_root_returns_dynamic_view(self):
         self.portal.setLayout("summary_view")
