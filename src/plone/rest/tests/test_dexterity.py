@@ -15,6 +15,7 @@ from zope.intid.interfaces import IIntIds
 import json
 import unittest
 import os
+import urllib
 import requests
 import transaction
 
@@ -42,6 +43,65 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(u"doc1", response.json().get("id"))
         self.assertEqual(u"GET", response.json().get("method"))
+
+    def test_dexterity_document_get_with_urlencoded_params(self):
+        params = {
+            "query": [
+                {
+                    "i": "Title",
+                    "o": "plone.app.querystring.operation.string.is",
+                    "v": "Welcome to Plone",
+                },
+                {
+                    "i": "path",
+                    "o": "plone.app.querystring.operation.string.path",
+                    "v": "/news",
+                },
+            ],
+            "sort_on": "sortable_title",
+            "sort_order": "reverse",
+            "limit": "10",
+            "fullobjects": "False",
+            "b_start": "0",
+            "b_size": "2",
+        }
+        params = urllib.parse.urlencode(params, doseq=True)
+        response = requests.get(
+            self.document.absolute_url(),
+            headers={"Accept": "application/json"},
+            params=params,
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u"doc1", response.json().get("id"))
+        self.assertEqual(u"GET", response.json().get("method"))
+        self.assertEqual(
+            {
+                "body": {
+                    "b_size": "2",
+                    "b_start": "0",
+                    "fullobjects": "False",
+                    "limit": "10",
+                    "query": [
+                        {
+                            "i": "Title",
+                            "o": "plone.app.querystring.operation.string.is",
+                            "v": "Welcome to Plone",
+                        },
+                        {
+                            "i": "path",
+                            "o": "plone.app.querystring.operation.string.path",
+                            "v": "/news",
+                        },
+                    ],
+                    "sort_on": "sortable_title",
+                    "sort_order": "reverse",
+                },
+                "id": "doc1",
+                "method": "GET",
+            },
+            response.json(),
+        )
 
     def test_dexterity_document_get_with_payload(self):
         # Encoding querystrings with arrays AND nested structures is a non-trivial use case, see for instance:
