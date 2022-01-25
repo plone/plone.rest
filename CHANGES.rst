@@ -8,6 +8,20 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0a2 (2022-01-25)
+--------------------
+
+Bug fixes:
+
+
+- Fix typo in `README.rst` [jensens] (#123)
+- Use document_view as default for site root.
+  [agitator] (#126)
+- Resolve all the deprecation warnings that originate in this package's code that are
+  exposed by running the tests that do not stem from backwards compatibility we support.
+  [rpatterson] (#128)
+
+
 2.0.0a1 (2021-10-05)
 --------------------
 

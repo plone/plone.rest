@@ -1,3 +1,0 @@
-Resolve all the deprecation warnings that originate in this package's code that are
-exposed by running the tests that do not stem from backwards compatibility we support.
-[rpatterson]
