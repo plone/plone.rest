@@ -149,6 +149,7 @@ class ErrorHandling(BrowserView):
                     # New URL would match originally requested URL.
                     # Lets not cause a redirect loop.
                     return None
+
                 return new_path + "/" + "/".join(remainder)
 
             splitpoint -= 1
@@ -169,9 +170,6 @@ class ErrorHandling(BrowserView):
         if not url:
             return False
 
-        # remove ++api++ traverser to make `physicalPathFromURL` do the right job
-        url = url.replace("/++api++", "")
-
         try:
             old_path_elements = self.request.physicalPathFromURL(url)
         except ValueError:  # pragma: no cover
@@ -181,7 +179,8 @@ class ErrorHandling(BrowserView):
         if storage is None:
             return False
 
-        old_path = "/".join(old_path_elements)
+        # remove ++api++ traverser
+        old_path = "/".join(filter("++api++".__ne__, old_path_elements))
 
         # First lets try with query string in cases or content migration
 
@@ -214,6 +213,11 @@ class ErrorHandling(BrowserView):
             url_path = quote(url_path)
             url = urllib.parse.SplitResult(*(url[:2] + (url_path,) + url[3:])).geturl()
         else:
+            # reinsert ++api++ traverser
+            if "++api++" in old_path_elements:
+                new_path_elements = new_path.split("/")
+                new_path_elements.insert(old_path_elements.index("++api++"), "++api++")
+                new_path = "/".join(new_path_elements)
             url = self.request.physicalPathToURL(new_path)
 
         # some analytics programs might use this info to track

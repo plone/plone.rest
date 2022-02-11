@@ -46,8 +46,16 @@ class TestRedirects(unittest.TestCase):
             allow_redirects=False,
         )
         self.assertEqual(301, response.status_code)
-        self.assertEqual(self.portal_url + "/folder-new", response.headers["Location"])
+        self.assertEqual(self.portal_url + "/++api++/folder-new", response.headers["Location"])
         self.assertEqual(b"", response.raw.read())
+        # follow the new location
+        response = requests.get(
+            response.headers["Location"],
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("application/json", response.headers["Content-type"])
+        self.assertEqual({"id": "folder-new", "method": "GET"}, response.json())
 
     def test_post_to_moved_item_causes_308_redirect(self):
         response = requests.post(
@@ -58,6 +66,16 @@ class TestRedirects(unittest.TestCase):
         )
         self.assertEqual(308, response.status_code)
         self.assertEqual(self.portal_url + "/folder-new", response.headers["Location"])
+        self.assertEqual(b"", response.raw.read())
+
+    def test_post_to_moved_item_causes_308_redirect_with_api_traverser(self):
+        response = requests.post(
+            self.portal_url + "/++api++/folder-old",
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+            allow_redirects=False,
+        )
+        self.assertEqual(308, response.status_code)
+        self.assertEqual(self.portal_url + "/++api++/folder-new", response.headers["Location"])
         self.assertEqual(b"", response.raw.read())
 
     def test_unauthorized_request_to_item_still_redirects_first(self):
