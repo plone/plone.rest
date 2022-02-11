@@ -169,6 +169,9 @@ class ErrorHandling(BrowserView):
         if not url:
             return False
 
+        # remove ++api++ traverser to make `physicalPathFromURL` do the right job
+        url = url.replace("/++api++", "")
+
         try:
             old_path_elements = self.request.physicalPathFromURL(url)
         except ValueError:  # pragma: no cover
