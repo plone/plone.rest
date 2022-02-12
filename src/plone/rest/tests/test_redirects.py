@@ -46,7 +46,9 @@ class TestRedirects(unittest.TestCase):
             allow_redirects=False,
         )
         self.assertEqual(301, response.status_code)
-        self.assertEqual(self.portal_url + "/++api++/folder-new", response.headers["Location"])
+        self.assertEqual(
+            self.portal_url + "/++api++/folder-new", response.headers["Location"]
+        )
         self.assertEqual(b"", response.raw.read())
         # follow the new location
         response = requests.get(
@@ -75,7 +77,9 @@ class TestRedirects(unittest.TestCase):
             allow_redirects=False,
         )
         self.assertEqual(308, response.status_code)
-        self.assertEqual(self.portal_url + "/++api++/folder-new", response.headers["Location"])
+        self.assertEqual(
+            self.portal_url + "/++api++/folder-new", response.headers["Location"]
+        )
         self.assertEqual(b"", response.raw.read())
 
     def test_unauthorized_request_to_item_still_redirects_first(self):
