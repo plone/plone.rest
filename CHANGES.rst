@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0a3 (2022-02-12)
+--------------------
+
+Bug fixes:
+
+
+- ++api++ traverser should be kept on 30x redirections [mamico] (#127)
+
+
 2.0.0a2 (2022-01-25)
 --------------------
 
