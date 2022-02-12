@@ -36,7 +36,7 @@ update: ## Update Make and Buildout
 bin/buildout: bin/pip
 	bin/pip install --upgrade pip
 	bin/pip install -r requirements.txt
-	bin/pip install black || true
+	bin/pip install pip install black==$$(awk '/^black =/{print $$NF}' versions.cfg)
 	@touch -c $@
 
 bin/python bin/pip:
