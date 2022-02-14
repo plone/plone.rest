@@ -68,7 +68,7 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(301, response.status_code)
         self.assertEqual(
             self.portal_url + "/++api++/folder-new/@actions",
-            response.headers["Location"]
+            response.headers["Location"],
         )
         self.assertEqual(b"", response.raw.read())
 
