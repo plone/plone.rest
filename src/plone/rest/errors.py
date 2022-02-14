@@ -180,7 +180,12 @@ class ErrorHandling(BrowserView):
             return False
 
         # remove ++api++ traverser
-        old_path = "/".join(filter("++api++".__ne__, old_path_elements))
+        if "++api++" in old_path_elements:
+            api_traverser_pos = old_path_elements.index("++api++")
+            old_path_elements = [el for el in old_path_elements if el != "++api++"]
+        else:
+            api_traverser_pos = None
+        old_path = "/".join(old_path_elements)
 
         # First lets try with query string in cases or content migration
 
@@ -214,9 +219,9 @@ class ErrorHandling(BrowserView):
             url = urllib.parse.SplitResult(*(url[:2] + (url_path,) + url[3:])).geturl()
         else:
             # reinsert ++api++ traverser
-            if "++api++" in old_path_elements:
+            if api_traverser_pos is not None:
                 new_path_elements = new_path.split("/")
-                new_path_elements.insert(old_path_elements.index("++api++"), "++api++")
+                new_path_elements.insert(api_traverser_pos, "++api++")
                 new_path = "/".join(new_path_elements)
             url = self.request.physicalPathToURL(new_path)
 
