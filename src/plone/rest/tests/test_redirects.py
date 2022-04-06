@@ -214,6 +214,18 @@ class TestRedirects(unittest.TestCase):
         self.assertEqual(self.portal_url + "/new-item", response.headers["Location"])
         self.assertEqual(b"", response.raw.read())
 
+    def test_handles_redirects_that_are_recursive(self):
+        storage = queryUtility(IRedirectionStorage)
+        storage.add("/plone/folder-new", "/plone/folder-new/archive")
+        transaction.commit()
+        # Request should return 404
+        response = requests.get(
+            self.portal_url + "/folder-new/sub_folder/not-found",
+            headers={"Accept": "application/json"},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(404, response.status_code)
+
     def test_aborts_redirect_checks_early_for_app_root(self):
         error_view = ErrorHandling(self.portal, self.portal.REQUEST)
         self.assertIsNone(error_view.find_redirect_if_view_or_service([""], None))
