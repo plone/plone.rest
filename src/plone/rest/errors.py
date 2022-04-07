@@ -138,14 +138,13 @@ class ErrorHandling(BrowserView):
         # ['', 'Plone', 'folder', 'item', '@@view', 'param']
         #                                ^
         splitpoint = len(old_path_elements)
-
         while splitpoint > 1:
             possible_obj_path = "/".join(old_path_elements[:splitpoint])
             remainder = old_path_elements[splitpoint:]
             new_path = storage.get(possible_obj_path)
 
             if new_path:
-                if new_path == possible_obj_path:
+                if new_path.startswith(possible_obj_path):
                     # New URL would match originally requested URL.
                     # Lets not cause a redirect loop.
                     return None
