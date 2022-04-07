@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.0a5 (2022-04-07)
+--------------------
+
+Bug fixes:
+
+
+- Fix an infinite loop with redirections from parent to child [ericof] (#133)
+
+
 2.0.0a4 (2022-03-24)
 --------------------
 
