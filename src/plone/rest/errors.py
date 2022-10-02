@@ -162,7 +162,7 @@ class ErrorHandling(BrowserView):
 
         This method is based on FourOhFourView.attempt_redirect() from
         p.a.redirector. It's copied here because we want to answer redirects
-        to non-GET methods with status 308, but since this method locks the
+        to non-GET methods with status 307, but since this method locks the
         response status, we wouldn't be able to change it afterwards.
         """
         url = self._url()
@@ -228,14 +228,14 @@ class ErrorHandling(BrowserView):
         if query_string:
             url += "?" + query_string
 
-        # Answer GET requests with 301. Every other method will be answered
-        # with 308 Permanent Redirect, which instructs the client to NOT
+        # Answer GET requests with 302. Every other method will be answered
+        # with 307 Temporary Redirect, which instructs the client to NOT
         # switch the method (if the original request was a POST, it should
         # re-POST to the new URL from the Location header).
         if self.request.method.upper() == "GET":
-            status = 301
+            status = 302
         else:
-            status = 308
+            status = 307
 
         self.request.response.redirect(url, status=status, lock=1)
         return True
