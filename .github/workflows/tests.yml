@@ -8,6 +8,9 @@ jobs:
       matrix:
         python-version: [3.8, 3.7, 2.7]
         plone-version: ["6.0", 5.2]
+        exclude:
+          - python-version: 2.7
+            plone-version: 6.0
     steps:
       # git checkout
       - uses: actions/checkout@v2
