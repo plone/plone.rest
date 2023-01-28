@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-version = 3
+version = 3.8
 
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
@@ -12,7 +12,7 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-all: .installed.cfg
+all: build-plone-6.0
 
 # Add the following 'help' target to your Makefile
 # And add help text after each target name starting with '\#\#'
@@ -68,20 +68,26 @@ build-plone-5.1: py2  ## Build Plone 5.1
 .PHONY: Build Plone 5.2 with Python 2
 build-plone-5.2-py: py2  ## Build Plone 5.2 with Python 2
 	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
+	bin/pip install -r requirements-5.2.x.txt
 	bin/buildout -c plone-5.2.x.cfg
 
 .PHONY: Build Plone 5.2
 build-plone-5.2: .installed.cfg  ## Build Plone 5.2
 	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
+	bin/pip install -r requirements-5.2.x.txt
 	bin/buildout -c plone-5.2.x.cfg
 
 .PHONY: Build Plone 5.2 Performance
 build-plone-5.2-performance: .installed.cfg  ## Build Plone 5.2
 	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
+	bin/pip install -r requirements-5.2.x.txt
 	bin/buildout -c plone-5.2.x-performance.cfg
+
+build-plone-6.0:  ## Build Plone 6.0
+	python$(version) -m venv .
+	bin/pip install --upgrade pip
+	bin/pip install -r https://dist.plone.org/release/6.0.0/requirements.txt
+	bin/buildout -c plone-6.0.x.cfg
 
 .PHONY: Test
 test:  ## Test
