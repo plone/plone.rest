@@ -1,5 +1,6 @@
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 
 def read(*rnames):
@@ -47,6 +48,7 @@ setup(
     namespace_packages=["plone"],
     include_package_data=True,
     zip_safe=False,
+    python_requires=">=2.7",
     extras_require=dict(
         test=[
             "plone.app.testing[robot]>=4.2.2",
