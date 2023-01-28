@@ -231,12 +231,12 @@ class TestDispatchingRedirects(DispatchingTestCase):
 
     def test_moved_private_dx_folder_with_creds(self):
         expectations = [
-            ("/private-old", "GET", CREDS, 301),
-            ("/private-old", "POST", CREDS, 308),
-            ("/private-old", "PUT", CREDS, 308),
-            ("/private-old", "PATCH", CREDS, 308),
-            ("/private-old", "DELETE", CREDS, 308),
-            ("/private-old", "OPTIONS", CREDS, 308),
+            ("/private-old", "GET", CREDS, 302),
+            ("/private-old", "POST", CREDS, 307),
+            ("/private-old", "PUT", CREDS, 307),
+            ("/private-old", "PATCH", CREDS, 307),
+            ("/private-old", "DELETE", CREDS, 307),
+            ("/private-old", "OPTIONS", CREDS, 307),
         ]
         self.validate(expectations)
 
@@ -253,12 +253,12 @@ class TestDispatchingRedirects(DispatchingTestCase):
 
     def test_moved_private_dx_folder_without_creds(self):
         expectations = [
-            ("/private-old", "GET", NO_CREDS, 301),
-            ("/private-old", "POST", NO_CREDS, 308),
-            ("/private-old", "PUT", NO_CREDS, 308),
-            ("/private-old", "PATCH", NO_CREDS, 308),
-            ("/private-old", "DELETE", NO_CREDS, 308),
-            ("/private-old", "OPTIONS", NO_CREDS, 308),
+            ("/private-old", "GET", NO_CREDS, 302),
+            ("/private-old", "POST", NO_CREDS, 307),
+            ("/private-old", "PUT", NO_CREDS, 307),
+            ("/private-old", "PATCH", NO_CREDS, 307),
+            ("/private-old", "DELETE", NO_CREDS, 307),
+            ("/private-old", "OPTIONS", NO_CREDS, 307),
         ]
         self.validate(expectations)
 
@@ -275,12 +275,12 @@ class TestDispatchingRedirects(DispatchingTestCase):
 
     def test_moved_private_dx_folder_invalid_creds(self):
         expectations = [
-            ("/private-old", "GET", INVALID_CREDS, 301),
-            ("/private-old", "POST", INVALID_CREDS, 308),
-            ("/private-old", "PUT", INVALID_CREDS, 308),
-            ("/private-old", "PATCH", INVALID_CREDS, 308),
-            ("/private-old", "DELETE", INVALID_CREDS, 308),
-            ("/private-old", "OPTIONS", INVALID_CREDS, 308),
+            ("/private-old", "GET", INVALID_CREDS, 302),
+            ("/private-old", "POST", INVALID_CREDS, 307),
+            ("/private-old", "PUT", INVALID_CREDS, 307),
+            ("/private-old", "PATCH", INVALID_CREDS, 307),
+            ("/private-old", "DELETE", INVALID_CREDS, 307),
+            ("/private-old", "OPTIONS", INVALID_CREDS, 307),
         ]
         self.validate(expectations)
 
@@ -297,12 +297,12 @@ class TestDispatchingRedirects(DispatchingTestCase):
 
     def test_moved_public_dx_folder_with_creds(self):
         expectations = [
-            ("/public-old", "GET", CREDS, 301),
-            ("/public-old", "POST", CREDS, 308),
-            ("/public-old", "PUT", CREDS, 308),
-            ("/public-old", "PATCH", CREDS, 308),
-            ("/public-old", "DELETE", CREDS, 308),
-            ("/public-old", "OPTIONS", CREDS, 308),
+            ("/public-old", "GET", CREDS, 302),
+            ("/public-old", "POST", CREDS, 307),
+            ("/public-old", "PUT", CREDS, 307),
+            ("/public-old", "PATCH", CREDS, 307),
+            ("/public-old", "DELETE", CREDS, 307),
+            ("/public-old", "OPTIONS", CREDS, 307),
         ]
         self.validate(expectations)
 
@@ -319,12 +319,12 @@ class TestDispatchingRedirects(DispatchingTestCase):
 
     def test_moved_public_dx_folder_without_creds(self):
         expectations = [
-            ("/public-old", "GET", NO_CREDS, 301),
-            ("/public-old", "POST", NO_CREDS, 308),
-            ("/public-old", "PUT", NO_CREDS, 308),
-            ("/public-old", "PATCH", NO_CREDS, 308),
-            ("/public-old", "DELETE", NO_CREDS, 308),
-            ("/public-old", "OPTIONS", NO_CREDS, 308),
+            ("/public-old", "GET", NO_CREDS, 302),
+            ("/public-old", "POST", NO_CREDS, 307),
+            ("/public-old", "PUT", NO_CREDS, 307),
+            ("/public-old", "PATCH", NO_CREDS, 307),
+            ("/public-old", "DELETE", NO_CREDS, 307),
+            ("/public-old", "OPTIONS", NO_CREDS, 307),
         ]
         self.validate(expectations)
 
@@ -341,12 +341,12 @@ class TestDispatchingRedirects(DispatchingTestCase):
 
     def test_moved_public_dx_folder_invalid_creds(self):
         expectations = [
-            ("/public-old", "GET", INVALID_CREDS, 301),
-            ("/public-old", "POST", INVALID_CREDS, 308),
-            ("/public-old", "PUT", INVALID_CREDS, 308),
-            ("/public-old", "PATCH", INVALID_CREDS, 308),
-            ("/public-old", "DELETE", INVALID_CREDS, 308),
-            ("/public-old", "OPTIONS", INVALID_CREDS, 308),
+            ("/public-old", "GET", INVALID_CREDS, 302),
+            ("/public-old", "POST", INVALID_CREDS, 307),
+            ("/public-old", "PUT", INVALID_CREDS, 307),
+            ("/public-old", "PATCH", INVALID_CREDS, 307),
+            ("/public-old", "DELETE", INVALID_CREDS, 307),
+            ("/public-old", "OPTIONS", INVALID_CREDS, 307),
         ]
         self.validate(expectations)
 

@@ -1,0 +1,2 @@
+When redirecting from an old alias, the HTTP status of the response is changed from 301 (Moved Permanently) to 302 (Found) for GET requests and to 307 (Temporary Redirect) for other request methods because nothing prevents the URL from being reused in the future.
+[mamico]
