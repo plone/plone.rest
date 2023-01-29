@@ -312,6 +312,20 @@ Install plone.rest by adding it to your buildout::
 and then running "bin/buildout"
 
 
+Plone/Python Support
+--------------------
+
+plone.restapi currently supports Plone 6 and 5.2.
+
+plone.restapi supports Python 2.7 and 3.8 for Plone 5.2 and Python 3.8, 3.9, 3.10, and 3.11 for Plone 6.
+
+Older versions of Python and Plone most likely will continue to work with plone.rest.
+
+Though, we do not test or officially support them.
+
+Check older versions of plone.rest for official support.
+
+
 Redirects
 ---------
 
