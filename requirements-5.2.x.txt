@@ -1,5 +1,5 @@
 # Keep this file in sync with: https://dist.plone.org/release/5.2.9/requirements.txt
-setuptools==42.0.2
+setuptools==65.5.1
 zc.buildout==2.13.7
 wheel==0.37.1
 
