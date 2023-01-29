@@ -366,6 +366,14 @@ This package is maintained by Timo Stollenwerk <tisto@plone.org>.
 If you are having issues, please `let us know <https://github.com/plone/plone.rest/issues>`_.
 
 
+Credits
+-------
+
+plone.rest has been written by Timo Stollenwerk (`kitconcept GmbH <http://kitconcept.com>`_) and Ramon Navarro Bosch (`Iskra <https://iskra.cat>`_).
+
+plone.rest was added as a Plone core package with Plone 5.2 (see `<https://github.com/plone/Products.CMFPlone/issues/2177>`_).
+
+
 License
 -------
 
