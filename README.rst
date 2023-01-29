@@ -361,7 +361,7 @@ Contribute
 Support
 -------
 
-This package is maintained by Timo Stollenwerk <tisto@plone.org> and Ramon Navarro Bosch <ramon.nb@gmail.com>.
+This package is maintained by Timo Stollenwerk <tisto@plone.org>.
 
 If you are having issues, please `let us know <https://github.com/plone/plone.rest/issues>`_.
 
