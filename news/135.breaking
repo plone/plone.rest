@@ -1,3 +1,0 @@
-Change the HTTP status from 301 (Moved Permanently) to 302 (Found) for GET requests and to 307 (Temporary Redirect) for other request methods.
-This fixes problems when an existing redirect is re-used.
-[mamico]

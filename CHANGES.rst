@@ -8,6 +8,28 @@ Changelog
 
 .. towncrier release notes start
 
+3.0.0 (2023-01-29)
+------------------
+
+Breaking changes:
+
+
+- Change the HTTP status from 301 (Moved Permanently) to 302 (Found) for GET requests and to 307 (Temporary Redirect) for other request methods.
+  This fixes problems when an existing redirect is re-used.
+  [mamico] (#135)
+- Drop official support for Plone 4.3, 5.0 and 5.1 (most likely the package will continue to work though)
+  [tisto] (#140)
+
+
+New features:
+
+
+- Add official support for Plone 6
+  [tisto] (#143)
+- Add official support for Python 3.9, 3.10, and 3.11
+  [tisto] (#147)
+
+
 2.0.0 (2022-10-15)
 ------------------
 
