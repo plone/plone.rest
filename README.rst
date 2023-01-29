@@ -70,7 +70,7 @@ plone.rest allows you to register HTTP verbs for Plone content with ZCML.
 
 This is how you would register a PATCH request on Dexterity content:
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:service
     method="PATCH"
@@ -175,7 +175,7 @@ Named Services
 
 Named services can be registered by providing a 'name' attribute in the service directive:
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:service
     method="GET"
@@ -237,7 +237,7 @@ CORS
 plone.rest allows you to define CORS policies for services in ZCML. The
 following example defines a policy for all services.
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:CORSPolicy
     allow_origin="http://example.net"
@@ -253,7 +253,7 @@ specific browser layers. This allows us to define different policies for
 different content types or to override existing policies. The following example
 defines a policy for the site root.
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:CORSPolicy
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
