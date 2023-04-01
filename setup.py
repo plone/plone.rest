@@ -53,21 +53,26 @@ setup(
     extras_require=dict(
         test=[
             "plone.app.testing[robot]>=4.2.2",
-            "plone.app.robotframework",
-            "plone.dexterity",
-            "Products.CMFCore",
             "requests",
+            "BTrees",
+            "plone.app.contenttypes[test]",
+            "plone.app.layout",
+            "plone.app.redirector",
+            "plone.app.textfield",
+            "plone.namedfile",
+            "plone.testing",
+            "z3c.relationfield",
+            "zope.intid",
+            "plone.base",
         ]
     ),
     install_requires=[
         "setuptools",
         "collective.monkeypatcher",
-        "zope.component",
-        "zope.interface",
-        "zope.publisher",
-        "zope.traversing",
         "Products.CMFCore",
-        "Zope2",
+        "Zope",
+        "plone.memoize",
+        "zope.browserpage",
     ],
     entry_points="""
       # -*- Entry points: -*-
