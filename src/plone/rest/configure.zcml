@@ -26,4 +26,8 @@
       provides="zope.interface.Interface"
       />
 
+  <adapter
+      provides="Products.CMFCore.interfaces.IExplicitAcquisitionPublishingAllowed"
+      factory=".explicitacquisition.rest_allowed" />
+
 </configure>
