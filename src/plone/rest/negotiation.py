@@ -11,7 +11,7 @@ def parse_accept_header(accept):
     for media_range in accept.split(","):
         media_type = media_range.split(";")[0].strip()
         if "/" in media_type:
-            type_, subtype = media_type.split("/")
+            type_, subtype = media_type.split("/", 1)
             media_types.append((type_, subtype))
     return media_types
 
