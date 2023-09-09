@@ -57,7 +57,9 @@ class TestAcceptHeaderParser(unittest.TestCase):
         self.assertEqual([], parse_accept_header("invalid"))
 
     def test_parse_mimetype_with_extra_slash(self):
-        self.assertEqual([("application", "x/y")], parse_accept_header("application/x/y"))
+        self.assertEqual(
+            [("application", "x/y")], parse_accept_header("application/x/y")
+        )
 
 
 class TestServiceRegistry(unittest.TestCase):
