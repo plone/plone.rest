@@ -10,6 +10,8 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+from zExceptions import NotFound
+from zExceptions import Redirect
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.publisher.interfaces.browser import IBrowserView
@@ -105,6 +107,34 @@ class TestTraversal(unittest.TestCase):
         alsoProvides(folder, INavigationRoot)
         obj = self.traverse(path="/plone/folder1/search", accept="text/html")
         self.assertFalse(isinstance(obj, Service), "Got a service")
+
+    def test_html_request_via_api_returns_service(self):
+        obj = self.traverse(path="/plone/++api++", accept="text/html")
+        self.assertTrue(isinstance(obj, Service), "Not a service")
+
+    def test_html_request_via_double_apis_raises_redirect(self):
+        portal_url = self.portal.absolute_url()
+        with self.assertRaises(Redirect) as exc:
+            self.traverse(path="/plone/++api++/++api++", accept="text/html")
+        self.assertEqual(
+            exc.exception.headers["Location"],
+            "{}/++api++".format(portal_url),
+        )
+
+    def test_html_request_via_multiple_apis_raises_redirect(self):
+        portal_url = self.portal.absolute_url()
+        with self.assertRaises(Redirect) as exc:
+            self.traverse(
+                path="/plone/++api++/++api++/++api++/search", accept="text/html"
+            )
+        self.assertEqual(
+            exc.exception.headers["Location"],
+            "{}/++api++/search".format(portal_url),
+        )
+
+    def test_html_request_via_multiple_bad_apis_raises_not_found(self):
+        with self.assertRaises(NotFound):
+            self.traverse(path="/plone/++api++/search/++api++", accept="text/html")
 
     def test_virtual_hosting(self):
         app = self.layer["app"]
