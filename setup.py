@@ -31,7 +31,7 @@ setup(
         "License :: OSI Approved :: GNU General Public License (GPL)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -49,7 +49,7 @@ setup(
     namespace_packages=["plone"],
     include_package_data=True,
     zip_safe=False,
-    python_requires=">=2.7",
+    python_requires=">=3.8",
     extras_require=dict(
         test=[
             "plone.app.testing[robot]>=4.2.2",
