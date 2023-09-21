@@ -5,6 +5,7 @@ from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import IService
 from plone.rest.events import mark_as_api_request
+from zExceptions import Redirect
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
@@ -64,6 +65,18 @@ class MarkAsRESTTraverser(object):
         self.request = request
 
     def traverse(self, name_ignored, subpath_ignored):
+        name = "/++api++"
+        url = self.request.ACTUAL_URL
+        if url.count(name) > 1:
+            # Redirect to proper url.
+            while name + name in url:
+                url = url.replace(name + name, name)
+            if url.count(name) > 1:
+                # Something like: .../++api++/something/++api++
+                # Return nothing, so a NotFound is raised.
+                return
+            # Raise a redirect exception to stop execution of the current request.
+            raise Redirect(url)
         mark_as_api_request(self.request, "application/json")
         return self.context
 
