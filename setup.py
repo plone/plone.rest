@@ -54,7 +54,7 @@ setup(
             "plone.app.testing[robot]>=4.2.2",
             "plone.app.robotframework",
             "plone.dexterity",
-            "Products.CMFCore",
+            "Products.CMFCore>=3.1",
             "requests",
         ]
     ),
@@ -65,7 +65,7 @@ setup(
         "zope.interface",
         "zope.publisher",
         "zope.traversing",
-        "Products.CMFCore",
+        "Products.CMFCore>=3.1",
         "Zope2",
         "six",
     ],
