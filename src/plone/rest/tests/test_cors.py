@@ -1,21 +1,19 @@
-# -*- coding: utf-8 -*-
-from ZPublisher.pubevents import PubStart
-from plone.app.testing import popGlobalRegistry
-from plone.app.testing import pushGlobalRegistry
-from plone.rest.cors import CORSPolicy
-from plone.rest.interfaces import ICORSPolicy
-from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+import unittest
+
+from plone.app.testing import popGlobalRegistry, pushGlobalRegistry
 from zExceptions import Unauthorized
 from zope.component import provideAdapter
 from zope.event import notify
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from ZPublisher.pubevents import PubStart
 
-import unittest
+from plone.rest.cors import CORSPolicy
+from plone.rest.interfaces import ICORSPolicy
+from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 
 
 class TestCORSPolicy(unittest.TestCase):
-
     layer = PLONE_REST_INTEGRATION_TESTING
 
     def setUp(self):
@@ -195,7 +193,6 @@ class TestCORSPolicy(unittest.TestCase):
 
 
 class TestCORS(unittest.TestCase):
-
     layer = PLONE_REST_INTEGRATION_TESTING
 
     def setUp(self):
@@ -231,7 +228,7 @@ class TestCORS(unittest.TestCase):
 
     def test_preflight_request_without_cors_policy_doesnt_render_service(self):
         # "Unregister" the current CORS policy
-        class NoCORSPolicy(object):
+        class NoCORSPolicy:
             def __new__(cls, context, request):
                 return None
 

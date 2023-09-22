@@ -271,7 +271,7 @@ allow_origin
 allow_methods
   A comma separated list of HTTP method names that are allowed by this CORS
   policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT". If not specified, all
-  methods for which there's a service registerd are allowed.
+  methods for which there's a service registered are allowed.
 
 allow_credentials
   Indicates whether the resource supports user credentials in the request.

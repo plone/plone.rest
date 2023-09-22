@@ -4,15 +4,15 @@ try:
     from plone.app.redirector.interfaces import IRedirectionStorage
 except ImportError:
     IRedirectionStorage = None
+from urllib.parse import quote, unquote
+
 from plone.memoize.instance import memoize
-from plone.rest.interfaces import IAPIRequest
-from plone.rest.interfaces import ICORSPolicy
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
 from six.moves import urllib
-from six.moves.urllib.parse import quote
-from six.moves.urllib.parse import unquote
 from zExceptions import NotFound
+
+from plone.rest.interfaces import IAPIRequest, ICORSPolicy
 
 try:
     from ZPublisher.HTTPRequest import WSGIRequest
@@ -20,15 +20,13 @@ try:
     HAS_WSGI = True
 except ImportError:
     HAS_WSGI = False
-from zope.component import adapter
-from zope.component import queryMultiAdapter
-from zope.component import queryUtility
-from zope.component.hooks import getSite
-
 import json
-import six
 import sys
 import traceback
+
+import six
+from zope.component import adapter, queryMultiAdapter, queryUtility
+from zope.component.hooks import getSite
 
 
 @adapter(Exception, IAPIRequest)
@@ -61,7 +59,7 @@ class ErrorHandling(BrowserView):
         if six.PY2:
             name = name.decode("utf-8")
             message = message.decode("utf-8")
-        result = {u"type": name, u"message": message}
+        result = {"type": name, "message": message}
 
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
         if policy is not None:
@@ -77,10 +75,10 @@ class ErrorHandling(BrowserView):
             # NotFound exceptions need special handling because their
             # exception message gets turned into HTML by ZPublisher
             url = self.request.getURL()
-            result[u"message"] = u"Resource not found: %s" % url
+            result["message"] = "Resource not found: %s" % url
 
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
-            result[u"traceback"] = self.render_traceback(exception)
+            result["traceback"] = self.render_traceback(exception)
 
         return result
 
@@ -101,8 +99,8 @@ class ErrorHandling(BrowserView):
                 pass
             else:
                 return (
-                    u"ERROR: Another exception happened before we could "
-                    u"render the traceback."
+                    "ERROR: Another exception happened before we could "
+                    "render the traceback."
                 )
 
         raw = "\n".join(traceback.format_tb(exc_traceback))
@@ -192,7 +190,7 @@ class ErrorHandling(BrowserView):
 
         query_string = self.request.QUERY_STRING
         if query_string:
-            new_path = storage.get("%s?%s" % (old_path, query_string))
+            new_path = storage.get(f"{old_path}?{query_string}")
             # if we matched on the query_string we don't want to include it
             # in redirect
             if new_path:

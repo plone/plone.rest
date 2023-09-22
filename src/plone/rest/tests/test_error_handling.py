@@ -1,19 +1,20 @@
-# -*- coding: utf-8 -*-
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
-from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
-
 import json
+import unittest
+
 import requests
 import transaction
-import unittest
+from plone.app.testing import (
+    SITE_OWNER_NAME,
+    SITE_OWNER_PASSWORD,
+    TEST_USER_ID,
+    TEST_USER_PASSWORD,
+    setRoles,
+)
+
+from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
 
 
 class TestErrorHandling(unittest.TestCase):
-
     layer = PLONE_REST_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -83,7 +84,7 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual("HTTPError", response.json()["type"])
 
         self.assertEqual(
-            {u"type": u"HTTPError", u"message": u"HTTP Error 500: InternalServerError"},
+            {"type": "HTTPError", "message": "HTTP Error 500: InternalServerError"},
             response.json(),
         )
 
@@ -94,7 +95,7 @@ class TestErrorHandling(unittest.TestCase):
             headers={"Accept": "application/json"},
             auth=(TEST_USER_ID, TEST_USER_PASSWORD),
         )
-        self.assertNotIn(u"traceback", response.json())
+        self.assertNotIn("traceback", response.json())
 
         # Manager user
         response = requests.get(
@@ -102,10 +103,10 @@ class TestErrorHandling(unittest.TestCase):
             headers={"Accept": "application/json"},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
-        self.assertIn(u"traceback", response.json())
+        self.assertIn("traceback", response.json())
 
-        traceback = response.json()[u"traceback"]
+        traceback = response.json()["traceback"]
         self.assertIsInstance(traceback, list)
-        self.assertRegexpMatches(
+        self.assertRegex(
             traceback[0], r'^File "[^"]*", line \d*, in (publish|transaction_pubevents)'
         )

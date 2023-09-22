@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-from plone.rest import Service
-
 import json
+
+from plone.rest import Service
 
 
 class BaseService(Service):
