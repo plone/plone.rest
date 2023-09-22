@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0 (2023-09-22)
+------------------
+
+Breaking changes:
+
+
+- Drop support for Python 2.7, 3.6, and 3.7 @tisto (#141)
+
+
 3.0.1 (2023-09-21)
 ------------------
 
