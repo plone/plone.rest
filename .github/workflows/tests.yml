@@ -1,8 +1,8 @@
-name: plone.rest CI
+name: Tests
 on: [push]
 jobs:
   build:
-    runs-on: "ubuntu-20.04" # needed to keep Python 2.7
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
