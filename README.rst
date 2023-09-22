@@ -1,6 +1,6 @@
-.. image:: https://github.com/plone/plone.rest/workflows/plone.rest%20CI/badge.svg
+.. image:: https://github.com/plone/plone.rest/actions/workflows/tests.yml/badge.svg
    :alt: Github Actions Status
-   :target: https://github.com/plone/plone.rest/actions?query=workflow%3A%22plone.rest+CI%22
+   :target: https://github.com/plone/plone.rest/actions/workflows/tests.yml
 
 .. image:: https://img.shields.io/coveralls/github/plone/plone.rest.svg
    :alt: Coveralls github
