@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+3.0.1 (2023-09-21)
+------------------
+
+Bug fixes:
+
+
+- When ``++api++`` is in the url multiple times, redirect to the proper url.
+  When the url is badly formed, for example ``++api++/something/++api++``, give a 404 NotFound.
+  Fixes a denial of service.
+  See `security advisory <https://github.com/plone/plone.rest/security/advisories/GHSA-h6rp-mprm-xgcq>`_.
+  [maurits] (#1)
+
+
 3.0.0 (2023-01-29)
 ------------------
 
