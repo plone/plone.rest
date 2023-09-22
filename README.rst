@@ -315,16 +315,11 @@ and then running "bin/buildout"
 Plone/Python Support
 --------------------
 
-plone.restapi currently supports Plone 6 and 5.2.
+plone.rest 4.x.x supports Plone 5.2 and 6.x on Python 3.8 and newer.
 
-plone.restapi supports Python 2.7 and 3.8 for Plone 5.2 and Python 3.8, 3.9, 3.10, and 3.11 for Plone 6.
+plone.rest 3.x.x supports Plone 5.2 on Python 2.7 and 3.6 to 3.8 and Plone 6.0 on Python 3.8 to 3.11.
 
-Older versions of Python and Plone most likely will continue to work with plone.rest.
-
-Though, we do not test or officially support them.
-
-Check older versions of plone.rest for official support.
-
+If you need to use Plone 4.3, 5.0, or 5.1 on Python 2.7, check out plone.rest 2.x.x or 1.x.x.
 
 Redirects
 ---------
