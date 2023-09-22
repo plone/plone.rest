@@ -319,7 +319,7 @@ plone.rest 4.x.x supports Plone 5.2 and 6.x on Python 3.8 and newer.
 
 plone.rest 3.x.x supports Plone 5.2 and 6.0 on Python 2.7 (Plone 5.2 only) and on Python 3.7 to 3.11.
 
-If you need to use Plone 4.3, 5.0, and 5.1 on Python 2.7, checkout out plone.rest 2.x.x and 1.x.x.
+If you need to use Plone 4.3, 5.0, or 5.1 on Python 2.7, check out plone.rest 2.x.x or 1.x.x.
 
 Redirects
 ---------
