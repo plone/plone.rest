@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Service registry
 # A mapping of method -> type name -> subtype name -> service id
 _services = {}
@@ -42,7 +40,7 @@ def register_service(method, media_type):
     """Register a service for the given request method and media type and
     return it's service id.
     """
-    service_id = u"{}_{}_{}_".format(method, media_type[0], media_type[1])
+    service_id = f"{method}_{media_type[0]}_{media_type[1]}_"
     types = _services.setdefault(method, {})
     subtypes = types.setdefault(media_type[0], {})
     subtypes[media_type[1]] = service_id

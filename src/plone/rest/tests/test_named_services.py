@@ -1,17 +1,18 @@
-# -*- coding: utf-8 -*-
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
-from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
-
 import unittest
+
 import requests
 import transaction
+from plone.app.testing import (
+    SITE_OWNER_NAME,
+    SITE_OWNER_PASSWORD,
+    TEST_USER_ID,
+    setRoles,
+)
+
+from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
 
 
 class TestNamedServiceEndpoints(unittest.TestCase):
-
     layer = PLONE_REST_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -31,7 +32,7 @@ class TestNamedServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual({u"service": u"named get"}, response.json())
+        self.assertEqual({"service": "named get"}, response.json())
 
     def test_dexterity_named_post(self):
         response = requests.post(
@@ -40,7 +41,7 @@ class TestNamedServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual({u"service": u"named post"}, response.json())
+        self.assertEqual({"service": "named post"}, response.json())
 
     def test_dexterity_named_put(self):
         response = requests.put(
@@ -49,7 +50,7 @@ class TestNamedServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual({u"service": u"named put"}, response.json())
+        self.assertEqual({"service": "named put"}, response.json())
 
     def test_dexterity_named_patch(self):
         response = requests.patch(
@@ -58,7 +59,7 @@ class TestNamedServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual({u"service": u"named patch"}, response.json())
+        self.assertEqual({"service": "named patch"}, response.json())
 
     def test_dexterity_named_delete(self):
         response = requests.delete(
@@ -67,7 +68,7 @@ class TestNamedServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual({u"service": u"named delete"}, response.json())
+        self.assertEqual({"service": "named delete"}, response.json())
 
     def test_dexterity_named_options(self):
         response = requests.options(
@@ -76,4 +77,4 @@ class TestNamedServiceEndpoints(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual({u"service": u"named options"}, response.json())
+        self.assertEqual({"service": "named options"}, response.json())

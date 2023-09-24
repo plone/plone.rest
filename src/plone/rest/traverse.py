@@ -1,24 +1,21 @@
-# -*- coding: utf-8 -*-
-from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.interfaces import IContentish, ISiteRoot
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
-from ZPublisher.BaseRequest import DefaultPublishTraverse
-from plone.rest.interfaces import IAPIRequest
-from plone.rest.interfaces import IService
-from plone.rest.events import mark_as_api_request
 from zExceptions import Redirect
-from zope.component import adapter
-from zope.component import queryMultiAdapter
+from zope.component import adapter, queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.traversing.interfaces import ITraversable
-from Products.CMFCore.interfaces import IContentish
+from ZPublisher.BaseRequest import DefaultPublishTraverse
+
+from plone.rest.events import mark_as_api_request
+from plone.rest.interfaces import IAPIRequest, IService
 
 
 @adapter(ISiteRoot, IAPIRequest)
 class RESTTraverse(DefaultPublishTraverse):
     def publishTraverse(self, request, name):
         try:
-            obj = super(RESTTraverse, self).publishTraverse(request, name)
+            obj = super().publishTraverse(request, name)
             if not IContentish.providedBy(obj) and not IService.providedBy(obj):
                 if isinstance(obj, VirtualHostMonster):
                     return obj
@@ -54,7 +51,7 @@ class RESTTraverse(DefaultPublishTraverse):
 
 
 @implementer(ITraversable)
-class MarkAsRESTTraverser(object):
+class MarkAsRESTTraverser:
     """
     Traversal adapter for the ``++api++`` namespace.
     It marks the request as API request.
@@ -82,7 +79,7 @@ class MarkAsRESTTraverser(object):
 
 
 @implementer(IBrowserPublisher)
-class RESTWrapper(object):
+class RESTWrapper:
     """A wrapper for objects traversed during a REST request."""
 
     def __init__(self, context, request):
