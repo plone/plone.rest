@@ -1,10 +1,8 @@
-import unittest
+from plone.rest.negotiation import lookup_service_id
+from plone.rest.negotiation import parse_accept_header
+from plone.rest.negotiation import register_service
 
-from plone.rest.negotiation import (
-    lookup_service_id,
-    parse_accept_header,
-    register_service,
-)
+import unittest
 
 
 class TestAcceptHeaderParser(unittest.TestCase):

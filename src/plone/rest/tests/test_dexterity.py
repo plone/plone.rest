@@ -1,22 +1,20 @@
-import os
-import unittest
 from datetime import datetime
-
-import requests
-import transaction
-from plone.app.testing import (
-    SITE_OWNER_NAME,
-    SITE_OWNER_PASSWORD,
-    TEST_USER_ID,
-    setRoles,
-)
+from plone.app.testing import setRoles
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
 from plone.app.textfield.value import RichTextValue
-from plone.namedfile.file import NamedBlobFile, NamedBlobImage
+from plone.namedfile.file import NamedBlobFile
+from plone.namedfile.file import NamedBlobImage
+from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
 from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 
-from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
+import os
+import requests
+import transaction
+import unittest
 
 
 class TestDexterityServiceEndpoints(unittest.TestCase):

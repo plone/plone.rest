@@ -1,17 +1,21 @@
 from AccessControl.class_init import InitializeClass
-from AccessControl.security import getSecurityInfo, protectClass
+from AccessControl.security import getSecurityInfo
+from AccessControl.security import protectClass
+from plone.rest.cors import CORSPolicy
+from plone.rest.cors import register_method_for_preflight
+from plone.rest.interfaces import ICORSPolicy
+from plone.rest.negotiation import parse_accept_header
+from plone.rest.negotiation import register_service
 from Products.Five.browser import BrowserView
 from zope.browserpage.metaconfigure import _handle_for
 from zope.component.zcml import handler
-from zope.configuration.fields import GlobalInterface, GlobalObject
+from zope.configuration.fields import GlobalInterface
+from zope.configuration.fields import GlobalObject
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.schema import Bool, TextLine
+from zope.schema import Bool
+from zope.schema import TextLine
 from zope.security.zcml import Permission
-
-from plone.rest.cors import CORSPolicy, register_method_for_preflight
-from plone.rest.interfaces import ICORSPolicy
-from plone.rest.negotiation import parse_accept_header, register_service
 
 
 class IService(Interface):

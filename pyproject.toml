@@ -23,3 +23,9 @@ showcontent = true
 directory = "internal"
 name = "Internal:"
 showcontent = true
+
+[tool.isort]
+profile = "plone"
+
+[tool.black]
+target-version = ["py38"]

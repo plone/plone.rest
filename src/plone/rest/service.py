@@ -1,7 +1,7 @@
+from plone.rest.interfaces import ICORSPolicy
+from plone.rest.interfaces import IService
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
-
-from plone.rest.interfaces import ICORSPolicy, IService
 
 
 @implementer(IService)

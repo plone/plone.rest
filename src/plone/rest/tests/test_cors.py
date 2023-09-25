@@ -1,6 +1,8 @@
-import unittest
-
-from plone.app.testing import popGlobalRegistry, pushGlobalRegistry
+from plone.app.testing import popGlobalRegistry
+from plone.app.testing import pushGlobalRegistry
+from plone.rest.cors import CORSPolicy
+from plone.rest.interfaces import ICORSPolicy
+from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from zExceptions import Unauthorized
 from zope.component import provideAdapter
 from zope.event import notify
@@ -8,9 +10,7 @@ from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from ZPublisher.pubevents import PubStart
 
-from plone.rest.cors import CORSPolicy
-from plone.rest.interfaces import ICORSPolicy
-from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+import unittest
 
 
 class TestCORSPolicy(unittest.TestCase):

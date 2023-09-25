@@ -1,8 +1,7 @@
-from zope.interface import alsoProvides
-
 from plone.rest.cors import lookup_preflight_service_id
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.negotiation import lookup_service_id
+from zope.interface import alsoProvides
 
 
 def mark_as_api_request(request, accept):

@@ -1,19 +1,16 @@
-import unittest
+from BTrees.OOBTree import OOSet
+from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.app.testing import setRoles
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
+from plone.rest.errors import ErrorHandling
+from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
+from zope.component import queryUtility
 
 import requests
 import transaction
-from BTrees.OOBTree import OOSet
-from plone.app.redirector.interfaces import IRedirectionStorage
-from plone.app.testing import (
-    SITE_OWNER_NAME,
-    SITE_OWNER_PASSWORD,
-    TEST_USER_ID,
-    setRoles,
-)
-from zope.component import queryUtility
-
-from plone.rest.errors import ErrorHandling
-from plone.rest.testing import PLONE_REST_FUNCTIONAL_TESTING
+import unittest
 
 
 class TestRedirects(unittest.TestCase):

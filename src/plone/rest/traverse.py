@@ -1,14 +1,16 @@
-from Products.CMFCore.interfaces import IContentish, ISiteRoot
+from plone.rest.events import mark_as_api_request
+from plone.rest.interfaces import IAPIRequest
+from plone.rest.interfaces import IService
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from zExceptions import Redirect
-from zope.component import adapter, queryMultiAdapter
+from zope.component import adapter
+from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.traversing.interfaces import ITraversable
 from ZPublisher.BaseRequest import DefaultPublishTraverse
-
-from plone.rest.events import mark_as_api_request
-from plone.rest.interfaces import IAPIRequest, IService
 
 
 @adapter(ISiteRoot, IAPIRequest)

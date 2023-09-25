@@ -1,18 +1,20 @@
 from AccessControl import getSecurityManager
 
+
 try:
     from plone.app.redirector.interfaces import IRedirectionStorage
 except ImportError:
     IRedirectionStorage = None
-from urllib.parse import quote, unquote
-
 from plone.memoize.instance import memoize
+from plone.rest.interfaces import IAPIRequest
+from plone.rest.interfaces import ICORSPolicy
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
 from six.moves import urllib
+from urllib.parse import quote
+from urllib.parse import unquote
 from zExceptions import NotFound
 
-from plone.rest.interfaces import IAPIRequest, ICORSPolicy
 
 try:
     from ZPublisher.HTTPRequest import WSGIRequest
@@ -20,13 +22,15 @@ try:
     HAS_WSGI = True
 except ImportError:
     HAS_WSGI = False
+from zope.component import adapter
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
+from zope.component.hooks import getSite
+
 import json
+import six
 import sys
 import traceback
-
-import six
-from zope.component import adapter, queryMultiAdapter, queryUtility
-from zope.component.hooks import getSite
 
 
 @adapter(Exception, IAPIRequest)

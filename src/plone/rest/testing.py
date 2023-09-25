@@ -1,9 +1,10 @@
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
-from plone.app.testing import FunctionalTesting, IntegrationTesting, PloneSandboxLayer
+from plone.app.testing import FunctionalTesting
+from plone.app.testing import IntegrationTesting
+from plone.app.testing import PloneSandboxLayer
+from plone.rest.service import Service
 from plone.testing import z2
 from zope.configuration import xmlconfig
-
-from plone.rest.service import Service
 
 
 class PloneRestLayer(PloneSandboxLayer):

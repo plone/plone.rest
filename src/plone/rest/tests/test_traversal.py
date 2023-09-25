@@ -1,23 +1,21 @@
-import unittest
 from base64 import b64encode
-
 from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.app.testing import (
-    SITE_OWNER_NAME,
-    SITE_OWNER_PASSWORD,
-    TEST_USER_ID,
-    setRoles,
-)
+from plone.app.testing import setRoles
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
+from plone.rest.service import Service
+from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
-from zExceptions import NotFound, Redirect
+from zExceptions import NotFound
+from zExceptions import Redirect
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.publisher.interfaces.browser import IBrowserView
 from ZPublisher import BeforeTraverse
 from ZPublisher.pubevents import PubStart
 
-from plone.rest.service import Service
-from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+import unittest
 
 
 class TestTraversal(unittest.TestCase):

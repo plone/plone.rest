@@ -1,6 +1,6 @@
-import json
-
 from plone.rest import Service
+
+import json
 
 
 class BaseService(Service):

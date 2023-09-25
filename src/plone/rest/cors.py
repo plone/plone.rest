@@ -1,6 +1,6 @@
+from plone.rest.interfaces import ICORSPolicy
 from zope.interface import implementer
 
-from plone.rest.interfaces import ICORSPolicy
 
 # CORS preflight service registry
 # A mapping of method -> service_id
