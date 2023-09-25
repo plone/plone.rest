@@ -79,7 +79,7 @@ class TestServiceRegistry(unittest.TestCase):
     def test_service_id_for_multiple_media_types_is_none(self):
         register_service("GET", "application/json")
         self.assertEqual(
-            None, lookup_service_id("GET", "application/json,application/javascipt")
+            None, lookup_service_id("GET", "application/json,application/javascript")
         )
 
     def test_service_id_for_invalid_media_type_is_none(self):

@@ -46,7 +46,7 @@ class RESTTraverse(DefaultPublishTraverse):
 
     def browserDefault(self, request):
         # Called when we have reached the end of the path
-        # In our case this means an unamed service
+        # In our case this means an unnamed service
         return self.context, (request._rest_service_id,)
 
 
@@ -96,7 +96,7 @@ class RESTWrapper:
         # Delegate key access to the wrapped object
         return self.context[name]
 
-    # MultiHook requries this to be a class attribute
+    # MultiHook requires this to be a class attribute
     def __before_publishing_traverse__(self, arg1, arg2=None):
         bpth = getattr(self.context, "__before_publishing_traverse__", False)
         if bpth:
@@ -132,5 +132,5 @@ class RESTWrapper:
 
     def browserDefault(self, request):
         # Called when we have reached the end of the path
-        # In our case this means an unamed service
+        # In our case this means an unnamed service
         return self.context, (request._rest_service_id,)
