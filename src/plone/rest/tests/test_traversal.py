@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
-from ZPublisher import BeforeTraverse
-from ZPublisher.pubevents import PubStart
 from base64 import b64encode
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.testing import setRoles
@@ -10,17 +6,19 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from zExceptions import NotFound
 from zExceptions import Redirect
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.publisher.interfaces.browser import IBrowserView
+from ZPublisher import BeforeTraverse
+from ZPublisher.pubevents import PubStart
 
 import unittest
 
 
 class TestTraversal(unittest.TestCase):
-
     layer = PLONE_REST_INTEGRATION_TESTING
 
     def setUp(self):
@@ -34,7 +32,7 @@ class TestTraversal(unittest.TestCase):
         request.environ["PATH_TRANSLATED"] = path
         request.environ["HTTP_ACCEPT"] = accept
         request.environ["REQUEST_METHOD"] = method
-        auth = "%s:%s" % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        auth = f"{SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}"
         b64auth = b64encode(auth.encode("utf8"))
         request._auth = "Basic %s" % b64auth.decode("utf8")
         notify(PubStart(request))

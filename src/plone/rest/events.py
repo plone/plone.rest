@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.rest.cors import lookup_preflight_service_id
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.negotiation import lookup_service_id

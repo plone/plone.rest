@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
@@ -17,7 +16,6 @@ NO_CREDS = ()
 
 
 class DispatchingTestCase(unittest.TestCase):
-
     layer = PLONE_REST_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -54,7 +52,7 @@ class DispatchingTestCase(unittest.TestCase):
 
         if failures:
             msg = ""
-            for (request_args, expected_status, actual_status) in failures:
+            for request_args, expected_status, actual_status in failures:
                 msg += (
                     "\n"
                     "Request:  %s\n"
@@ -137,7 +135,7 @@ class TestDispatchingNonExistentResource(DispatchingTestCase):
 
 class TestDispatchingDexterity(DispatchingTestCase):
     def setUp(self):
-        super(TestDispatchingDexterity, self).setUp()
+        super().setUp()
         self.portal.invokeFactory("Folder", id="private")
 
         self.portal.invokeFactory("Folder", id="public")
@@ -216,7 +214,7 @@ class TestDispatchingDexterity(DispatchingTestCase):
 
 class TestDispatchingRedirects(DispatchingTestCase):
     def setUp(self):
-        super(TestDispatchingRedirects, self).setUp()
+        super().setUp()
 
         self.portal.invokeFactory("Folder", id="private-old")
         self.portal.manage_renameObject("private-old", "private-new")

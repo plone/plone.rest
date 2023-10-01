@@ -245,7 +245,7 @@ Bugfixes:
   [buchi]
 
 - Fallback to regular views during traversal to ensure compatibility with
-  views beeing called with a specific Accept header.
+  views being called with a specific Accept header.
   [buchi]
 
 
@@ -295,7 +295,7 @@ Bugfixes:
 
 - Refactor traversal of REST requests by using a traversal adapter on the site
   root instead of a traversal adapter for each REST service. This prevents
-  REST services from being overriden by other traversal adapters.
+  REST services from being overridden by other traversal adapters.
   [buchi]
 
 

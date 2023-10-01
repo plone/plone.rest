@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from BTrees.OOBTree import OOSet
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.app.testing import setRoles
@@ -15,7 +14,6 @@ import unittest
 
 
 class TestRedirects(unittest.TestCase):
-
     layer = PLONE_REST_FUNCTIONAL_TESTING
 
     def setUp(self):
