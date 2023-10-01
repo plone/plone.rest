@@ -118,7 +118,7 @@ class TestTraversal(unittest.TestCase):
             self.traverse(path="/plone/++api++/++api++", accept="text/html")
         self.assertEqual(
             exc.exception.headers["Location"],
-            f"{portal_url}/++api++",
+            "{}/++api++".format(portal_url),
         )
 
     def test_html_request_via_multiple_apis_raises_redirect(self):
@@ -129,7 +129,7 @@ class TestTraversal(unittest.TestCase):
             )
         self.assertEqual(
             exc.exception.headers["Location"],
-            f"{portal_url}/++api++/search",
+            "{}/++api++/search".format(portal_url),
         )
 
     def test_html_request_via_multiple_bad_apis_raises_not_found(self):

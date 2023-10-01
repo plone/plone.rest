@@ -69,8 +69,8 @@ class MarkAsRESTTraverser(object):
         url = self.request.ACTUAL_URL
         if url.count(name) > 1:
             # Redirect to proper url.
-            while f"{name}{name}" in url:
-                url = url.replace(f"{name}{name}", name)
+            while name + name in url:
+                url = url.replace(name + name, name)
             if url.count(name) > 1:
                 # Something like: .../++api++/something/++api++
                 # Return nothing, so a NotFound is raised.
