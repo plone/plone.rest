@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.0.2 (2023-10-02)
+------------------
+
+Bug fixes:
+
+
+- Fix compatibility with Python 2.7. @davisagli (#162)
+
+
 3.0.1 (2023-09-21)
 ------------------
 
