@@ -13,7 +13,16 @@ from ZPublisher.pubevents import PubAfterTraversal, PubStart
 
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 
+try:
+    from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
+except ImportError:
+    IShouldAllowAcquiredItemPublication = None
 
+
+@unittest.skipIf(
+    IShouldAllowAcquiredItemPublication is None,
+    "Older Plone versions don't have CMFCore>=3.2",
+)
 class TestExplicitAcquisition(unittest.TestCase):
     layer = PLONE_REST_INTEGRATION_TESTING
 
