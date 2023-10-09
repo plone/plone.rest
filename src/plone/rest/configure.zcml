@@ -27,7 +27,7 @@
       />
 
   <adapter
-      provides="Products.CMFCore.interfaces.IShouldAllowAcquiredItemPublication"
+      provides="plone.rest.interfaces.IShouldAllowAcquiredItemPublication"
       factory=".explicitacquisition.rest_allowed" />
 
 </configure>

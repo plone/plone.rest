@@ -20,3 +20,11 @@ class ICORSPolicy(Interface):
 
     def process_preflight_request():
         """Process a preflight request"""
+
+
+try:
+    from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
+except ImportError:
+
+    class IShouldAllowAcquiredItemPublication(Interface):
+        pass
