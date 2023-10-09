@@ -1,17 +1,16 @@
-import unittest
 from base64 import b64encode
-
-from plone.app.testing import (
-    SITE_OWNER_NAME,
-    SITE_OWNER_PASSWORD,
-    TEST_USER_ID,
-    setRoles,
-)
+from plone.app.testing import setRoles
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
+from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from zExceptions import NotFound
 from zope.event import notify
-from ZPublisher.pubevents import PubAfterTraversal, PubStart
+from ZPublisher.pubevents import PubAfterTraversal
+from ZPublisher.pubevents import PubStart
 
-from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+import unittest
+
 
 try:
     from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
@@ -38,7 +37,7 @@ class TestExplicitAcquisition(unittest.TestCase):
         request.environ["PATH_TRANSLATED"] = path
         request.environ["HTTP_ACCEPT"] = accept
         request.environ["REQUEST_METHOD"] = method
-        auth = "%s:%s" % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        auth = "{}:{}".format(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
         b64auth = b64encode(auth.encode("utf8"))
         request._auth = "Basic %s" % b64auth.decode("utf8")
         notify(PubStart(request))
