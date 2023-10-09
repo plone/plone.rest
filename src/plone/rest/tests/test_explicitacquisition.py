@@ -37,7 +37,7 @@ class TestExplicitAcquisition(unittest.TestCase):
         request.environ["PATH_TRANSLATED"] = path
         request.environ["HTTP_ACCEPT"] = accept
         request.environ["REQUEST_METHOD"] = method
-        auth = "{}:{}".format(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        auth = f"{SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}"
         b64auth = b64encode(auth.encode("utf8"))
         request._auth = "Basic %s" % b64auth.decode("utf8")
         notify(PubStart(request))
