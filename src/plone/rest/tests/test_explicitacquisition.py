@@ -4,7 +4,6 @@ from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
-from Products.CMFPlone import __version__
 from zExceptions import NotFound
 from zope.event import notify
 from ZPublisher.pubevents import PubAfterTraversal
