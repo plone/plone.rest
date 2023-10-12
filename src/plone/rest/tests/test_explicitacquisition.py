@@ -13,17 +13,16 @@ from ZPublisher.pubevents import PubStart
 import unittest
 
 try:
-    from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
-    import Products.CMFCore.explicitacquisition
+    from Products.CMFCore.explicitacquisition import SKIP_PTA
 except ImportError:
-    IShouldAllowAcquiredItemPublication = None
+    SKIP_PTA = None
 
 
-@unittest.skipIf(
-    IShouldAllowAcquiredItemPublication is None,
+@unittest.skipUnless(
+    SKIP_PTA is None,
     "Older Plone versions don't have CMFCore>=3.2",
 )
-class TestExplicitAcquisitionSkipped(unittest.TestCase):
+class TestExplicitAcquisitionUnavailable(unittest.TestCase):
     layer = PLONE_REST_INTEGRATION_TESTING
 
     def setUp(self):
@@ -44,9 +43,6 @@ class TestExplicitAcquisitionSkipped(unittest.TestCase):
         notify(PubStart(request))
         return request.traverse(path)
 
-    def test_is_skipped(self):
-        self.assertTrue(Products.CMFCore.explicitacquisition.SKIP_PTA)
-
     def test_portal_root(self):
         self.traverse("/plone")
         notify(PubAfterTraversal(self.request))
@@ -60,11 +56,11 @@ class TestExplicitAcquisitionSkipped(unittest.TestCase):
         notify(PubAfterTraversal(self.request))
 
 
-@unittest.skipIf(
-    __version__ < "7",
-    "Plone >= 7 enables this check",
+@unittest.skipUnless(
+    SKIP_PTA is not None,
+    "We have Products.CMFPlone >= 3.2",
 )
-class TestExplicitAcquisitionEnabled(unittest.TestCase):
+class TestExplicitAcquisitionAvailable(unittest.TestCase):
     layer = PLONE_REST_INTEGRATION_TESTING
 
     def setUp(self):
@@ -85,18 +81,34 @@ class TestExplicitAcquisitionEnabled(unittest.TestCase):
         notify(PubStart(request))
         return request.traverse(path)
 
-    def test_is_not_skipped(self):
-        self.assertFalse(Products.CMFCore.explicitacquisition.SKIP_PTA)
-
     def test_portal_root(self):
+        import Products.CMFCore.explicitacquisition
+
         self.traverse("/plone")
+        Products.CMFCore.explicitacquisition.SKIP_PTA = True
+        notify(PubAfterTraversal(self.request))
+
+        Products.CMFCore.explicitacquisition.SKIP_PTA = False
         notify(PubAfterTraversal(self.request))
 
     def test_portal_foo(self):
+        import Products.CMFCore.explicitacquisition
+
         self.traverse("/plone/foo")
+        Products.CMFCore.explicitacquisition.SKIP_PTA = True
+        notify(PubAfterTraversal(self.request))
+
+        Products.CMFCore.explicitacquisition.SKIP_PTA = False
         notify(PubAfterTraversal(self.request))
 
     def test_portal_foo_acquired(self):
+        import Products.CMFCore.explicitacquisition
+
         self.traverse("/plone/foo/foo")
+
+        Products.CMFCore.explicitacquisition.SKIP_PTA = True
+        notify(PubAfterTraversal(self.request))
+
+        Products.CMFCore.explicitacquisition.SKIP_PTA = False
         with self.assertRaises(NotFound):
             notify(PubAfterTraversal(self.request))
