@@ -1,7 +1,6 @@
-from setuptools import find_packages
-from setuptools import setup
-
 import os
+
+from setuptools import find_packages, setup
 
 
 def read(*rnames):
@@ -36,6 +35,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3 :: Only",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
