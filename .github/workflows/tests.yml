@@ -40,13 +40,11 @@ jobs:
       - run: pip install virtualenv
       - run: pip install wheel
       - name: pip install
-        run: pip install -r requirements-${{ matrix.plone-version }}.x.txt
-      - name: choose Plone version
-        run: sed -ie "s#plone-x.x.x.cfg#plone-${{ matrix.plone-version }}.x.cfg#" ci.cfg
+        run: pip install -r requirements-${{ matrix.plone-version }}.txt -r requirements-docs.txt
 
       # buildout
       - name: buildout
-        run: buildout -t 10 -c ci.cfg
+        run: buildout -t 10 -c plone-${{ matrix.plone-version }}.x.cfg
         env:
           CI: true
 
