@@ -86,7 +86,7 @@ build-plone-5.2-performance: .installed.cfg  ## Build Plone 5.2
 build-plone-6.0:  ## Build Plone 6.0
 	python$(version) -m venv .
 	bin/pip install --upgrade pip
-	bin/pip install -r requirements-6.0.x.txt
+	bin/pip install -r requirements-6.0.txt
 	bin/pip install pip install black==$$(awk '/^black =/{print $$NF}' versions.cfg)
 	bin/buildout -c plone-6.0.x.cfg
 
