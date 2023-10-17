@@ -12,6 +12,7 @@ from ZPublisher.pubevents import PubStart
 import unittest
 
 try:
+    # noqa: F401
     from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
 
     HAS_CMFCORE_32 = True
