@@ -7,15 +7,15 @@
    :target: https://coveralls.io/github/plone/plone.restapi
 
 .. image:: https://img.shields.io/pypi/status/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
+    :target: https://pypi.org/project/plone.rest/
     :alt: Egg Status
 
 .. image:: https://img.shields.io/pypi/v/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
+    :target: https://pypi.org/project/plone.rest/
     :alt: Latest Version
 
 .. image:: https://img.shields.io/pypi/l/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
+    :target: https://pypi.org/project/plone.rest/
     :alt: License
 
 
@@ -350,7 +350,7 @@ Contribute
 
 - Issue Tracker: https://github.com/plone/plone.rest/issues
 - Source Code: https://github.com/plone/plone.rest
-- Documentation: https://pypi.python.org/pypi/plone.rest
+- Documentation: https://pypi.org/project/plone.rest/
 
 
 Support
