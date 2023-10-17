@@ -12,9 +12,9 @@ from ZPublisher.pubevents import PubStart
 import unittest
 
 try:
-    from Products.CMFCore.interfaces import (
-        IShouldAllowAcquiredItemPublication,
-    )  # noqa: F401
+    from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
+
+    IShouldAllowAcquiredItemPublication  # flake8
 
     HAS_CMFCORE_32 = True
 except ImportError:
