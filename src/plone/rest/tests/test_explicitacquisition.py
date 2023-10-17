@@ -12,13 +12,15 @@ from ZPublisher.pubevents import PubStart
 import unittest
 
 try:
-    from Products.CMFCore.explicitacquisition import SKIP_PTA
+    from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
+
+    HAS_CMFCORE_32 = True
 except ImportError:
-    SKIP_PTA = None
+    HAS_CMFCORE_32 = False
 
 
 @unittest.skipUnless(
-    SKIP_PTA is None,
+    not HAS_CMFCORE_32,
     "Older Plone versions don't have CMFCore>=3.2",
 )
 class TestExplicitAcquisitionUnavailable(unittest.TestCase):
@@ -56,8 +58,8 @@ class TestExplicitAcquisitionUnavailable(unittest.TestCase):
 
 
 @unittest.skipUnless(
-    SKIP_PTA is not None,
-    "We have Products.CMFPlone >= 3.2",
+    HAS_CMFCORE_32,
+    "We have Products.CMFCore >= 3.2",
 )
 class TestExplicitAcquisitionAvailable(unittest.TestCase):
     layer = PLONE_REST_INTEGRATION_TESTING
