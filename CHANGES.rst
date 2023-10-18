@@ -8,6 +8,21 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.0 (2023-10-18)
+------------------
+
+New features:
+
+
+- Add support for Python 3.12. @tisto (#167)
+
+
+Bug fixes:
+
+
+- Make REST endpoints check for acquired items. @jaroel (#166)
+
+
 4.0.0 (2023-09-22)
 ------------------
 
