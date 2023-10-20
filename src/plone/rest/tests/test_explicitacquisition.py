@@ -68,10 +68,18 @@ class TestExplicitAcquisitionAvailable(unittest.TestCase):
     layer = PLONE_REST_INTEGRATION_TESTING
 
     def setUp(self):
+        import Products.CMFCore.explicitacquisition
+
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         self.portal.invokeFactory("Document", id="foo")
+        self.PREVIOUS_SKIP_PTA = Products.CMFCore.explicitacquisition.SKIP_PTA
+
+    def tearDown(self):
+        import Products.CMFCore.explicitacquisition
+
+        Products.CMFCore.explicitacquisition.SKIP_PTA = self.PREVIOUS_SKIP_PTA
 
     def traverse(self, path="/plone", accept="application/json", method="GET"):
         request = self.layer["request"]

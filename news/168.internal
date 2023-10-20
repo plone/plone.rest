@@ -1,0 +1,1 @@
+Fix test leakage, enabling the publication check when it shouldn't be active. @jaroel
