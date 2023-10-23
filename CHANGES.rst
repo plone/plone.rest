@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.1 (2023-10-23)
+------------------
+
+Internal:
+
+
+- Fix test leakage, enabling the publication check when it shouldn't be active. @jaroel (#168)
+
+
 4.1.0 (2023-10-18)
 ------------------
 
