@@ -1,4 +1,4 @@
-name: plone.rest CI
+name: Tests
 on: [push]
 jobs:
   build:
@@ -6,27 +6,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.7, 2.7]
-        plone-version: [5.2, 5.1, 4.3]
+        python-version: ["3.12", "3.11", "3.10", "3.9", "3.8"]
+        plone-version: ["6.0", "5.2"]
         exclude:
-          - python-version: 3.7
-            plone-version: 4.3
-          - python-version: 3.7
-            plone-version: 5.1
-          - python-version: 3.8
-            plone-version: 4.3
-          - python-version: 3.8
-            plone-version: 5.1
+          - python-version: 3.12
+            plone-version: 5.2
+          - python-version: 3.11
+            plone-version: 5.2
+          - python-version: 3.10
+            plone-version: 5.2
+          - python-version: 3.9
+            plone-version: 5.2
     steps:
-
       # git checkout
       - uses: actions/checkout@v2
 
       # python setup
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: "pip"
 
       # python cache
       - uses: actions/cache@v1
@@ -40,13 +40,11 @@ jobs:
       - run: pip install virtualenv
       - run: pip install wheel
       - name: pip install
-        run: pip install -r requirements.txt
-      - name: choose Plone version
-        run: sed -ie "s#plone-x.x.x.cfg#plone-${{ matrix.plone-version }}.x.cfg#" ci.cfg
+        run: pip install -r requirements-${{ matrix.plone-version }}.txt
 
       # buildout
       - name: buildout
-        run: buildout -t 10 -c ci.cfg
+        run: buildout -t 10 -c plone-${{ matrix.plone-version }}.x.cfg
         env:
           CI: true
 

@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
-from plone.rest.interfaces import IAPIRequest
 from plone.rest.events import mark_as_api_request
+from plone.rest.interfaces import IAPIRequest
+# from plone.rest.interfaces import IService
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import ISiteRoot
+# from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
+from zExceptions import Redirect
 from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
-from ZPublisher.BaseRequest import DefaultPublishTraverse
 from zope.traversing.interfaces import ITraversable
-from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.interfaces import ISiteRoot
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 
 class RESTPublishTraverse(object):
@@ -31,7 +34,7 @@ class RESTPublishTraverse(object):
 
     def browserDefault(self, request):
         # Called when we have reached the end of the path
-        # In our case this means an unamed service
+        # In our case this means an unnamed service
         return self.context, (request._rest_service_id,)
 
 
@@ -41,7 +44,7 @@ class RESTTraverse(RESTPublishTraverse, DefaultPublishTraverse):
 
 
 @implementer(ITraversable)
-class MarkAsRESTTraverser(object):
+class MarkAsRESTTraverser:
     """
     Traversal adapter for the ``++api++`` namespace.
     It marks the request as API request.
@@ -52,6 +55,18 @@ class MarkAsRESTTraverser(object):
         self.request = request
 
     def traverse(self, name_ignored, subpath_ignored):
+        name = "/++api++"
+        url = self.request.ACTUAL_URL
+        if url.count(name) > 1:
+            # Redirect to proper url.
+            while f"{name}{name}" in url:
+                url = url.replace(f"{name}{name}", name)
+            if url.count(name) > 1:
+                # Something like: .../++api++/something/++api++
+                # Return nothing, so a NotFound is raised.
+                return
+            # Raise a redirect exception to stop execution of the current request.
+            raise Redirect(url)
         mark_as_api_request(self.request, "application/json")
         return self.context
 
@@ -74,7 +89,7 @@ class RESTWrapper(RESTPublishTraverse):
         # Delegate key access to the wrapped object
         return self.context[name]
 
-    # MultiHook requries this to be a class attribute
+    # MultiHook requires this to be a class attribute
     def __before_publishing_traverse__(self, arg1, arg2=None):
         bpth = getattr(self.context, "__before_publishing_traverse__", False)
         if bpth:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from BTrees.OOBTree import OOSet
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.app.testing import setRoles
@@ -15,7 +14,6 @@ import unittest
 
 
 class TestRedirects(unittest.TestCase):
-
     layer = PLONE_REST_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -28,26 +26,71 @@ class TestRedirects(unittest.TestCase):
         self.portal.manage_renameObject("folder-old", "folder-new")
         transaction.commit()
 
-    def test_get_to_moved_item_causes_301_redirect(self):
+    def test_get_to_moved_item_causes_302_redirect(self):
         response = requests.get(
             self.portal_url + "/folder-old",
             headers={"Accept": "application/json"},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(self.portal_url + "/folder-new", response.headers["Location"])
         self.assertEqual(b"", response.raw.read())
 
-    def test_post_to_moved_item_causes_308_redirect(self):
+    def test_get_to_moved_item_causes_302_redirect_with_api_traverser(self):
+        response = requests.get(
+            self.portal_url + "/++api++/folder-old",
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+            allow_redirects=False,
+        )
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(
+            self.portal_url + "/++api++/folder-new", response.headers["Location"]
+        )
+        self.assertEqual(b"", response.raw.read())
+        # follow the new location
+        response = requests.get(
+            response.headers["Location"],
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("application/json", response.headers["Content-type"])
+        self.assertEqual({"id": "folder-new", "method": "GET"}, response.json())
+
+    def test_get_to_moved_item_causes_302_redirect_with_rest_view(self):
+        response = requests.get(
+            self.portal_url + "/++api++/folder-old/@actions",
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+            allow_redirects=False,
+        )
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(
+            self.portal_url + "/++api++/folder-new/@actions",
+            response.headers["Location"],
+        )
+        self.assertEqual(b"", response.raw.read())
+
+    def test_post_to_moved_item_causes_307_redirect(self):
         response = requests.post(
             self.portal_url + "/folder-old",
             headers={"Accept": "application/json"},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(308, response.status_code)
+        self.assertEqual(307, response.status_code)
         self.assertEqual(self.portal_url + "/folder-new", response.headers["Location"])
+        self.assertEqual(b"", response.raw.read())
+
+    def test_post_to_moved_item_causes_307_redirect_with_api_traverser(self):
+        response = requests.post(
+            self.portal_url + "/++api++/folder-old",
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+            allow_redirects=False,
+        )
+        self.assertEqual(307, response.status_code)
+        self.assertEqual(
+            self.portal_url + "/++api++/folder-new", response.headers["Location"]
+        )
         self.assertEqual(b"", response.raw.read())
 
     def test_unauthorized_request_to_item_still_redirects_first(self):
@@ -60,7 +103,7 @@ class TestRedirects(unittest.TestCase):
 
         # A request to the old URL of an item where the user doesn't have
         # necessary permissions will still result in a redirect
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(self.portal_url + "/folder-new", response.headers["Location"])
         self.assertEqual(b"", response.raw.read())
 
@@ -80,20 +123,20 @@ class TestRedirects(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(
             self.portal_url + "/folder-new?key=value", response.headers["Location"]
         )
         self.assertEqual(b"", response.raw.read())
 
-    def test_named_service_on_moved_item_causes_301_redirect(self):
+    def test_named_service_on_moved_item_causes_302_redirect(self):
         response = requests.get(
             self.portal_url + "/folder-old/namedservice",
             headers={"Accept": "application/json"},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(
             self.portal_url + "/folder-new/namedservice", response.headers["Location"]
         )
@@ -106,7 +149,7 @@ class TestRedirects(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(
             self.portal_url + "/folder-new/namedservice/param",
             response.headers["Location"],
@@ -120,7 +163,7 @@ class TestRedirects(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(
             self.portal_url + "/folder-new/@@some-view", response.headers["Location"]
         )
@@ -133,7 +176,7 @@ class TestRedirects(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(
             self.portal_url + "/folder-new/@@some-view/param?k=v",
             response.headers["Location"],
@@ -165,9 +208,21 @@ class TestRedirects(unittest.TestCase):
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
             allow_redirects=False,
         )
-        self.assertEqual(301, response.status_code)
+        self.assertEqual(302, response.status_code)
         self.assertEqual(self.portal_url + "/new-item", response.headers["Location"])
         self.assertEqual(b"", response.raw.read())
+
+    def test_handles_redirects_that_are_recursive(self):
+        storage = queryUtility(IRedirectionStorage)
+        storage.add("/plone/folder-new", "/plone/folder-new/archive")
+        transaction.commit()
+        # Request should return 404
+        response = requests.get(
+            self.portal_url + "/folder-new/sub_folder/not-found",
+            headers={"Accept": "application/json"},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(404, response.status_code)
 
     def test_aborts_redirect_checks_early_for_app_root(self):
         error_view = ErrorHandling(self.portal, self.portal.REQUEST)
@@ -176,4 +231,4 @@ class TestRedirects(unittest.TestCase):
     def test_gracefully_deals_with_missing_request_url(self):
         error_view = ErrorHandling(self.portal, self.portal.REQUEST)
         self.portal.REQUEST["ACTUAL_URL"] = None
-        self.assertEquals(False, error_view.attempt_redirect())
+        self.assertEqual(False, error_view.attempt_redirect())

@@ -1,16 +1,13 @@
-# -*- coding: utf-8 -*-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.rest.service import Service
 from plone.testing import z2
-
 from zope.configuration import xmlconfig
 
 
 class PloneRestLayer(PloneSandboxLayer):
-
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
@@ -31,7 +28,7 @@ PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
 
 class InternalServerErrorService(Service):
     def __call__(self):
-        from six.moves.urllib.error import HTTPError
+        from urllib.error import HTTPError
 
         raise HTTPError(
             "http://nohost/plone/500-internal-server-error",

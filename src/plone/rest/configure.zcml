@@ -26,4 +26,8 @@
       provides="zope.interface.Interface"
       />
 
+  <adapter
+      provides="plone.rest.interfaces.IShouldAllowAcquiredItemPublication"
+      factory=".explicitacquisition.rest_allowed" />
+
 </configure>
