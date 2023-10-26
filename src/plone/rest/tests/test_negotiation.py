@@ -56,6 +56,11 @@ class TestAcceptHeaderParser(unittest.TestCase):
     def test_parse_invalid_accept_header(self):
         self.assertEqual([], parse_accept_header("invalid"))
 
+    def test_parse_mimetype_with_extra_slash(self):
+        self.assertEqual(
+            [("application", "x/y")], parse_accept_header("application/x/y")
+        )
+
 
 class TestServiceRegistry(unittest.TestCase):
     def test_register_media_type(self):
