@@ -134,16 +134,29 @@ class TestTraversal(unittest.TestCase):
         with self.assertRaises(NotFound):
             self.traverse(path="/plone/++api++/search/++api++", accept="text/html")
 
-    # def test_virtual_hosting(self):
-    #     app = self.layer["app"]
-    #     vhm = VirtualHostMonster()
-    #     vhm.id = "virtual_hosting"
-    #     vhm.addToContainer(app)
-    #     obj = self.traverse(
-    #         path="/VirtualHostBase/http/localhost:8080/plone/VirtualHostRoot/"
-    #     )  # noqa
-    #     self.assertTrue(isinstance(obj, Service), "Not a service")
-    #     del app["virtual_hosting"]
+    def test_html_request_via_double_apis_raises_redirect(self):
+        portal_url = self.portal.absolute_url()
+        with self.assertRaises(Redirect) as exc:
+            self.traverse(path="/plone/++api++/++api++", accept="text/html")
+        self.assertEqual(
+            exc.exception.headers["Location"],
+            f"{portal_url}/++api++",
+        )
+
+    def test_html_request_via_multiple_apis_raises_redirect(self):
+        portal_url = self.portal.absolute_url()
+        with self.assertRaises(Redirect) as exc:
+            self.traverse(
+                path="/plone/++api++/++api++/++api++/search", accept="text/html"
+            )
+        self.assertEqual(
+            exc.exception.headers["Location"],
+            f"{portal_url}/++api++/search",
+        )
+
+    def test_html_request_via_multiple_bad_apis_raises_not_found(self):
+        with self.assertRaises(NotFound):
+            self.traverse(path="/plone/++api++/search/++api++", accept="text/html")
 
     def test_json_request_to_regular_view_returns_view(self):
         obj = self.traverse("/plone/folder_contents")
