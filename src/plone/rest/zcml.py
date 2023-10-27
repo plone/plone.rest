@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 from AccessControl.class_init import InitializeClass
 from AccessControl.security import getSecurityInfo
 from AccessControl.security import protectClass
-from Products.Five.browser import BrowserView
 from plone.rest.cors import CORSPolicy
 from plone.rest.cors import register_method_for_preflight
 from plone.rest.interfaces import ICORSPolicy
 from plone.rest.negotiation import parse_accept_header
 from plone.rest.negotiation import register_service
+from Products.Five.browser import BrowserView
 from zope.browserpage.metaconfigure import _handle_for
 from zope.component.zcml import handler
 from zope.configuration.fields import GlobalInterface
@@ -23,48 +22,48 @@ class IService(Interface):
     """ """
 
     method = TextLine(
-        title=u"The name of the view that should be the default. "
-        + u"[get|post|put|delete]",
-        description=u"""
+        title="The name of the view that should be the default. "
+        + "[get|post|put|delete]",
+        description="""
         This name refers to view that should be the view used by
         default (if no view name is supplied explicitly).""",
     )
 
     accept = TextLine(
-        title=u"Acceptable media types",
-        description=u"""Specifies the media type used for content negotiation.
+        title="Acceptable media types",
+        description="""Specifies the media type used for content negotiation.
         The service is limited to the given media type and only called if the
         request contains an "Accept" header with the given media type. Multiple
         media types can be given by separating them with a comma.""",
-        default=u"application/json",
+        default="application/json",
     )
 
     for_ = GlobalObject(
-        title=u"The interface this view is the default for.",
-        description=u"""Specifies the interface for which the view is
+        title="The interface this view is the default for.",
+        description="""Specifies the interface for which the view is
         registered. All objects implementing this interface can make use of
         this view. If this attribute is not specified, the view is available
         for all objects.""",
     )
 
     factory = GlobalObject(
-        title=u"The factory for this service",
-        description=u"The factory is usually subclass of the Service class.",
+        title="The factory for this service",
+        description="The factory is usually subclass of the Service class.",
     )
 
     name = TextLine(
-        title=u"The name of the service.",
-        description=u"""When no name is defined, the service is available at
+        title="The name of the service.",
+        description="""When no name is defined, the service is available at
         the object's absolute URL. When defining a name, the service is
         available at the object's absolute URL appended with a slash and the
         service name.""",
         required=False,
-        default=u"",
+        default="",
     )
 
     layer = GlobalInterface(
-        title=u"The browser layer for which this service is registered.",
-        description=u"""Useful for overriding existing services or for making
+        title="The browser layer for which this service is registered.",
+        description="""Useful for overriding existing services or for making
                         services available only if a specific add-on has been
                         installed.""",
         required=False,
@@ -72,8 +71,8 @@ class IService(Interface):
     )
 
     permission = Permission(
-        title=u"Permission",
-        description=u"The permission needed to access the service.",
+        title="Permission",
+        description="The permission needed to access the service.",
         required=True,
     )
 
@@ -86,9 +85,8 @@ def serviceDirective(
     for_,
     permission,
     layer=IDefaultBrowserLayer,
-    name=u"",
+    name="",
 ):
-
     _handle_for(_context, for_)
 
     media_types = parse_accept_header(accept)
@@ -137,16 +135,16 @@ class ICORSPolicyDirective(Interface):
     """Directive for defining CORS policies"""
 
     for_ = GlobalObject(
-        title=u"The interface this CORS policy is for.",
-        description=u"""Specifies the interface for which the CORS policy is
+        title="The interface this CORS policy is for.",
+        description="""Specifies the interface for which the CORS policy is
         registered. If this attribute is not specified, the CORS policy applies
         to all objects.""",
         required=False,
     )
 
     layer = GlobalInterface(
-        title=u"The browser layer for which this CORS policy is registered.",
-        description=u"""Useful for overriding existing policies or for making
+        title="The browser layer for which this CORS policy is registered.",
+        description="""Useful for overriding existing policies or for making
                         them available only if a specific add-on has been
                         installed.""",
         required=False,
@@ -154,45 +152,45 @@ class ICORSPolicyDirective(Interface):
     )
 
     allow_origin = TextLine(
-        title=u"Origins",
-        description=u"""Origins that are allowed access to the resource. Either
+        title="Origins",
+        description="""Origins that are allowed access to the resource. Either
         a comma separated list of origins, e.g. "http://example.net,
         http://mydomain.com" or "*".""",
     )
 
     allow_methods = TextLine(
-        title=u"Methods",
-        description=u"""A comma separated list of HTTP method names that are
+        title="Methods",
+        description="""A comma separated list of HTTP method names that are
         allowed by this CORS policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT".
         """,
         required=False,
     )
 
     allow_headers = TextLine(
-        title=u"Headers",
-        description=u"""A comma separated list of request headers allowed to be
+        title="Headers",
+        description="""A comma separated list of request headers allowed to be
         sent by the client, e.g. "X-My-Header".""",
         required=False,
     )
 
     expose_headers = TextLine(
-        title=u"Exposed Headers",
-        description=u"""A comma separated list of response headers clients can
+        title="Exposed Headers",
+        description="""A comma separated list of response headers clients can
         access, e.g. "Content-Length,X-My-Header".""",
         required=False,
     )
 
     allow_credentials = Bool(
-        title=u"Support Credentials",
-        description=u"""Indicates whether the resource supports user
+        title="Support Credentials",
+        description="""Indicates whether the resource supports user
         credentials in the request.""",
         required=True,
         default=False,
     )
 
     max_age = TextLine(
-        title=u"Max Age",
-        description=u"""Indicates how long the results of a preflight request
+        title="Max Age",
+        description="""Indicates how long the results of a preflight request
         can be cached.""",
         required=False,
     )
@@ -209,7 +207,6 @@ def cors_policy_directive(
     for_=Interface,
     layer=IDefaultBrowserLayer,
 ):
-
     _handle_for(_context, for_)
 
     # Create a new policy class and store the CORS policy configuration in
@@ -240,7 +237,7 @@ def cors_policy_directive(
             new_class,
             (for_, layer),
             ICORSPolicy,
-            u"",
+            "",
             _context.info,
         ),
     )

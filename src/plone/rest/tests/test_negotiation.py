@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.rest.negotiation import lookup_service_id
 from plone.rest.negotiation import parse_accept_header
 from plone.rest.negotiation import register_service
@@ -57,28 +56,33 @@ class TestAcceptHeaderParser(unittest.TestCase):
     def test_parse_invalid_accept_header(self):
         self.assertEqual([], parse_accept_header("invalid"))
 
+    def test_parse_mimetype_with_extra_slash(self):
+        self.assertEqual(
+            [("application", "x/y")], parse_accept_header("application/x/y")
+        )
+
 
 class TestServiceRegistry(unittest.TestCase):
     def test_register_media_type(self):
         self.assertEqual(
-            u"GET_application_json_", register_service("GET", ("application", "json"))
+            "GET_application_json_", register_service("GET", ("application", "json"))
         )
         self.assertEqual(
-            u"GET_application_json_", lookup_service_id("GET", "application/json")
+            "GET_application_json_", lookup_service_id("GET", "application/json")
         )
 
     def test_register_wildcard_subtype(self):
-        self.assertEqual(u"PATCH_text_*_", register_service("PATCH", ("text", "*")))
-        self.assertEqual(u"PATCH_text_*_", lookup_service_id("PATCH", "text/xml"))
+        self.assertEqual("PATCH_text_*_", register_service("PATCH", ("text", "*")))
+        self.assertEqual("PATCH_text_*_", lookup_service_id("PATCH", "text/xml"))
 
     def test_register_wilcard_type(self):
-        self.assertEqual(u"PATCH_*_*_", register_service("PATCH", ("*", "*")))
-        self.assertEqual(u"PATCH_*_*_", lookup_service_id("PATCH", "foo/bar"))
+        self.assertEqual("PATCH_*_*_", register_service("PATCH", ("*", "*")))
+        self.assertEqual("PATCH_*_*_", lookup_service_id("PATCH", "foo/bar"))
 
     def test_service_id_for_multiple_media_types_is_none(self):
         register_service("GET", "application/json")
         self.assertEqual(
-            None, lookup_service_id("GET", "application/json,application/javascipt")
+            None, lookup_service_id("GET", "application/json,application/javascript")
         )
 
     def test_service_id_for_invalid_media_type_is_none(self):

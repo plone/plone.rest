@@ -1,21 +1,21 @@
-.. image:: https://github.com/plone/plone.rest/workflows/plone.rest%20CI/badge.svg
+.. image:: https://github.com/plone/plone.rest/actions/workflows/tests.yml/badge.svg
    :alt: Github Actions Status
-   :target: https://github.com/plone/plone.rest/actions?query=workflow%3A%22plone.rest+CI%22
+   :target: https://github.com/plone/plone.rest/actions/workflows/tests.yml
 
 .. image:: https://img.shields.io/coveralls/github/plone/plone.rest.svg
    :alt: Coveralls github
    :target: https://coveralls.io/github/plone/plone.restapi
 
 .. image:: https://img.shields.io/pypi/status/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
+    :target: https://pypi.org/project/plone.rest/
     :alt: Egg Status
 
 .. image:: https://img.shields.io/pypi/v/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
+    :target: https://pypi.org/project/plone.rest/
     :alt: Latest Version
 
 .. image:: https://img.shields.io/pypi/l/plone.rest.svg
-    :target: https://pypi.python.org/pypi/plone.rest/
+    :target: https://pypi.org/project/plone.rest/
     :alt: License
 
 
@@ -33,7 +33,7 @@ It is a software architectural principle to create loosely coupled web APIs.
 
 plone.rest provides the basic infrastructure that allows us to build RESTful endpoints in Plone.
 
-The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases. 
+The reason for separating this infrastructure into a separate package from the 'main' full `Plone REST API <https://github.com/plone/plone.restapi>`_ is so you can create alternative endpoints tailored to specific usecases.
 A number of these specific endpoints are already in active use.
 
 
@@ -70,7 +70,7 @@ plone.rest allows you to register HTTP verbs for Plone content with ZCML.
 
 This is how you would register a PATCH request on Dexterity content:
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:service
     method="PATCH"
@@ -120,10 +120,10 @@ The server then will respond with '200 OK'::
     "message": "PATCH: Hello World!"
   }
 
-Why two methods? 
+Why two methods?
 Using the 'Accept' header is the intended way of RESTful APIs to get different responses from the same URL.
 However, if it comes to caching the response in an web accelerator like Varnish or Cloudflare, additional challenges are added.
-Setting the `Vary` header to 'Vary: Accept' helps to a certain degree in Varnish. 
+Setting the `Vary` header to 'Vary: Accept' helps to a certain degree in Varnish.
 But cache pollution may happen, because different browsers send different headers on normal HTML requests.
 Hosted services like Cloudflare just do not support the 'Vary' usage and can not be used for sites with REST calls.
 Thus a second option with different URLs is needed.
@@ -175,7 +175,7 @@ Named Services
 
 Named services can be registered by providing a 'name' attribute in the service directive:
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:service
     method="GET"
@@ -212,7 +212,7 @@ stores all path segments in an array in `self.params`.
   from zope.interface import implementer
   from zope.publisher.interfaces import IPublishTraverse
 
-  @implementer(implementer)
+  @implementer(IPublishTraverse)
   class MyService(Service):
 
       def __init__(self, context, request):
@@ -237,7 +237,7 @@ CORS
 plone.rest allows you to define CORS policies for services in ZCML. The
 following example defines a policy for all services.
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:CORSPolicy
     allow_origin="http://example.net"
@@ -253,7 +253,7 @@ specific browser layers. This allows us to define different policies for
 different content types or to override existing policies. The following example
 defines a policy for the site root.
 
-.. code-block:: xml
+.. code-block:: XML
 
   <plone:CORSPolicy
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -271,7 +271,7 @@ allow_origin
 allow_methods
   A comma separated list of HTTP method names that are allowed by this CORS
   policy, e.g. "DELETE,GET,OPTIONS,PATCH,POST,PUT". If not specified, all
-  methods for which there's a service registerd are allowed.
+  methods for which there's a service registered are allowed.
 
 allow_credentials
   Indicates whether the resource supports user credentials in the request.
@@ -312,6 +312,15 @@ Install plone.rest by adding it to your buildout::
 and then running "bin/buildout"
 
 
+Plone/Python Support
+--------------------
+
+plone.rest 4.x.x supports Plone 5.2 and 6.x on Python 3.8 and newer.
+
+plone.rest 3.x.x supports Plone 5.2 on Python 2.7 and 3.6 to 3.8 and Plone 6.0 on Python 3.8 to 3.11.
+
+If you need to use Plone 4.3, 5.0, or 5.1 on Python 2.7, check out plone.rest 2.x.x or 1.x.x.
+
 Redirects
 ---------
 
@@ -319,16 +328,16 @@ plone.rest will handle redirects created by ``plone.app.redirector`` pretty
 much the same way as regular Plone.
 
 If a redirect exists for a given URL, a ``GET`` request will be answered with
-``301``, and the new location for the resource is indicated in the ``Location``
+``302``, and the new location for the resource is indicated in the ``Location``
 header::
 
-  HTTP/1.1 301 Moved Permanently
+  HTTP/1.1 302 Moved Temporarily
 
   Content-Type: application/json
   Location: http://localhost:8080/Plone/my-folder-new-location
 
 Any other request method than GET (``POST``, ``PATCH``, ...) will be answered
-with ``308 Permanent Redirect``. This status code instructs the client that
+with ``307 Temporary Redirect``. This status code instructs the client that
 it should NOT switch the method, but retry (if desired) the request with the
 *same* method at the new location.
 
@@ -341,15 +350,23 @@ Contribute
 
 - Issue Tracker: https://github.com/plone/plone.rest/issues
 - Source Code: https://github.com/plone/plone.rest
-- Documentation: https://pypi.python.org/pypi/plone.rest
+- Documentation: https://pypi.org/project/plone.rest/
 
 
 Support
 -------
 
-This package is maintained by Timo Stollenwerk <tisto@plone.org> and Ramon Navarro Bosch <ramon.nb@gmail.com>.
+This package is maintained by Timo Stollenwerk <tisto@plone.org>.
 
 If you are having issues, please `let us know <https://github.com/plone/plone.rest/issues>`_.
+
+
+Credits
+-------
+
+plone.rest has been written by Timo Stollenwerk (`kitconcept GmbH <http://kitconcept.com>`_) and Ramon Navarro Bosch (`Iskra <https://iskra.cat>`_).
+
+plone.rest was added as a Plone core package with Plone 5.2 (see `<https://github.com/plone/Products.CMFPlone/issues/2177>`_).
 
 
 License

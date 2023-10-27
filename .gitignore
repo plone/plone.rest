@@ -17,6 +17,7 @@
 /.Python
 /include
 /lib
+/lib64
 /.mr.developer.cfg
 *.mo
 local/
