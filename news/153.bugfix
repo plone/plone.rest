@@ -1,1 +1,0 @@
-Fix parsing mimetypes in Accept header with an extra slash. @djay

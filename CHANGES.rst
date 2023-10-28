@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.2 (2023-10-28)
+------------------
+
+Bug fixes:
+
+
+- Fix parsing mimetypes in Accept header with an extra slash. @djay (#153)
+
+
 4.1.1 (2023-10-23)
 ------------------
 
