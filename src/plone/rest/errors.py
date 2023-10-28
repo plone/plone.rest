@@ -1,20 +1,27 @@
 from AccessControl import getSecurityManager
+from plone.memoize.instance import memoize
+from plone.rest.interfaces import IAPIRequest
+from plone.rest.interfaces import ICORSPolicy
+from Products.CMFCore.permissions import ManagePortal
+from Products.Five.browser import BrowserView
+from urllib.parse import quote
+from urllib.parse import unquote
+from zExceptions import NotFound
+from zope.component import adapter
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
+from zope.component.hooks import getSite
+
+import json
+import sys
+import traceback
+import urllib
 
 
 try:
     from plone.app.redirector.interfaces import IRedirectionStorage
 except ImportError:
     IRedirectionStorage = None
-from plone.memoize.instance import memoize
-from plone.rest.interfaces import IAPIRequest
-from plone.rest.interfaces import ICORSPolicy
-from Products.CMFCore.permissions import ManagePortal
-from Products.Five.browser import BrowserView
-from six.moves import urllib
-from urllib.parse import quote
-from urllib.parse import unquote
-from zExceptions import NotFound
-
 
 try:
     from ZPublisher.HTTPRequest import WSGIRequest
@@ -22,15 +29,6 @@ try:
     HAS_WSGI = True
 except ImportError:
     HAS_WSGI = False
-from zope.component import adapter
-from zope.component import queryMultiAdapter
-from zope.component import queryUtility
-from zope.component.hooks import getSite
-
-import json
-import six
-import sys
-import traceback
 
 
 @adapter(Exception, IAPIRequest)
@@ -60,9 +58,6 @@ class ErrorHandling(BrowserView):
     def render_exception(self, exception):
         name = type(exception).__name__
         message = str(exception)
-        if six.PY2:
-            name = name.decode("utf-8")
-            message = message.decode("utf-8")
         result = {"type": name, "message": message}
 
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)

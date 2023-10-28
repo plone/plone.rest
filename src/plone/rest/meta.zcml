@@ -1,18 +1,19 @@
 <configure
     xmlns="http://namespaces.zope.org/meta"
-    i18n_domain="plone.rest">
+    i18n_domain="plone.rest"
+    >
   <directives namespace="http://namespaces.plone.org/plone">
     <directive
         name="service"
-        schema=".zcml.IService"
         handler=".zcml.serviceDirective"
+        schema=".zcml.IService"
         />
 
     <directive
-    	name="CORSPolicy"
-    	schema=".zcml.ICORSPolicyDirective"
-    	handler=".zcml.cors_policy_directive"
-      />
+        name="CORSPolicy"
+        handler=".zcml.cors_policy_directive"
+        schema=".zcml.ICORSPolicyDirective"
+        />
 
   </directives>
 </configure>
