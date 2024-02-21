@@ -1,0 +1,1 @@
+Returns ``message`` as an object instead of a string, when a ``BadRequest`` occurs. This makes it possible for the error message to reach the client as an object, avoiding the need for string-to-object conversions. @wesleybl

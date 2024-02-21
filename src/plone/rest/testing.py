@@ -37,3 +37,12 @@ class InternalServerErrorService(Service):
             {},
             None,
         )
+
+
+class BadRequestService(Service):
+    def __call__(self):
+        from zExceptions import BadRequest
+
+        errors = [{"error": "ValidationError", "message": "message error"}]
+
+        raise BadRequest(errors)

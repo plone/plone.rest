@@ -167,4 +167,12 @@
       expose_headers="X-My-Header"
       />
 
+  <plone:service
+      method="GET"
+      factory=".testing.BadRequestService"
+      for="*"
+      permission="zope2.View"
+      name="bad-request-error"
+      />
+
 </configure>

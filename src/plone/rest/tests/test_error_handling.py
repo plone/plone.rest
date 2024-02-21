@@ -107,3 +107,14 @@ class TestErrorHandling(unittest.TestCase):
         self.assertRegex(
             traceback[0], r'^File "[^"]*", line \d*, in (publish|transaction_pubevents)'
         )
+
+    def test_bad_request_error_message(self):
+        response = requests.get(
+            f"{self.portal_url}/bad-request-error",
+            headers={"Accept": "application/json"},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(
+            response.json()["message"],
+            [{"error": "ValidationError", "message": "message error"}],
+        )

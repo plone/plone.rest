@@ -6,6 +6,7 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
 from urllib.parse import quote
 from urllib.parse import unquote
+from zExceptions import BadRequest
 from zExceptions import NotFound
 from zope.component import adapter
 from zope.component import queryMultiAdapter
@@ -57,7 +58,10 @@ class ErrorHandling(BrowserView):
 
     def render_exception(self, exception):
         name = type(exception).__name__
-        message = str(exception)
+        if isinstance(exception, BadRequest):
+            message = exception.args[0]
+        else:
+            message = str(exception)
         result = {"type": name, "message": message}
 
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
