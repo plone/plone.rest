@@ -1,0 +1,1 @@
+Update Plone to 6.0.9 and 5.2.14 in buildout. Also removes buildout of unsupported Plone versions. @wesleybl
