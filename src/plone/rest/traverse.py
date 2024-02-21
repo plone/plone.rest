@@ -1,9 +1,8 @@
+# -*- coding: utf-8 -*-
 from plone.rest.events import mark_as_api_request
 from plone.rest.interfaces import IAPIRequest
-from plone.rest.interfaces import IService
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster
 from zExceptions import Redirect
 from zope.component import adapter
 from zope.component import queryMultiAdapter
@@ -13,43 +12,33 @@ from zope.traversing.interfaces import ITraversable
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 
-@adapter(ISiteRoot, IAPIRequest)
-class RESTTraverse(DefaultPublishTraverse):
+class RESTPublishTraverse(object):
     def publishTraverse(self, request, name):
-        try:
-            obj = super().publishTraverse(request, name)
-            if not IContentish.providedBy(obj) and not IService.providedBy(obj):
-                if isinstance(obj, VirtualHostMonster):
-                    return obj
-                else:
-                    raise KeyError
-        except KeyError:
-            # No object, maybe a named rest service
-            service = queryMultiAdapter(
-                (self.context, request), name=request._rest_service_id + name
-            )
-            if service is None:
-                # No service, fallback to regular view
-                view = queryMultiAdapter((self.context, request), name=name)
-                if view is not None:
-                    return view
-                raise
+        service = queryMultiAdapter(
+            (self.context, request), name=request._rest_service_id + name
+        )
+        if service is not None:
             return service
 
-        if name.startswith(request._rest_service_id):
-            return obj
+        adapter = DefaultPublishTraverse(self.context, request)
+        obj = adapter.publishTraverse(request, name)
 
-        # Do not handle view namespace
-        if "@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]:
-            return obj
+        if IContentish.providedBy(obj) and not (
+            "@@" in request["PATH_INFO"] or "++view++" in request["PATH_INFO"]
+        ):
+            return RESTWrapper(obj, request)
 
-        # Wrap object to ensure we handle further traversal
-        return RESTWrapper(obj, request)
+        return obj
 
     def browserDefault(self, request):
         # Called when we have reached the end of the path
         # In our case this means an unnamed service
         return self.context, (request._rest_service_id,)
+
+
+@adapter(ISiteRoot, IAPIRequest)
+class RESTTraverse(RESTPublishTraverse, DefaultPublishTraverse):
+    """traversal object during REST requests."""
 
 
 @implementer(ITraversable)
@@ -81,7 +70,7 @@ class MarkAsRESTTraverser:
 
 
 @implementer(IBrowserPublisher)
-class RESTWrapper:
+class RESTWrapper(RESTPublishTraverse):
     """A wrapper for objects traversed during a REST request."""
 
     def __init__(self, context, request):
@@ -105,34 +94,3 @@ class RESTWrapper:
             if not self._bpth_called:
                 self._bpth_called = True
                 bpth(arg1, arg2)
-
-    def publishTraverse(self, request, name):
-        # Try to get an object using default traversal
-        adapter = DefaultPublishTraverse(self.context, request)
-        try:
-            obj = adapter.publishTraverse(request, name)
-            if not IContentish.providedBy(obj) and not IService.providedBy(obj):
-                raise KeyError
-
-        # If there's no object with the given name, we get a KeyError.
-        # In a non-folderish context a key lookup results in an AttributeError.
-        except (KeyError, AttributeError):
-            # No object, maybe a named rest service
-            service = queryMultiAdapter(
-                (self.context, request), name=request._rest_service_id + name
-            )
-            if service is None:
-                # No service, fallback to regular view
-                view = queryMultiAdapter((self.context, request), name=name)
-                if view is not None:
-                    return view
-                raise
-            return service
-        else:
-            # Wrap object to ensure we handle further traversal
-            return RESTWrapper(obj, request)
-
-    def browserDefault(self, request):
-        # Called when we have reached the end of the path
-        # In our case this means an unnamed service
-        return self.context, (request._rest_service_id,)

@@ -134,17 +134,6 @@ class TestTraversal(unittest.TestCase):
         with self.assertRaises(NotFound):
             self.traverse(path="/plone/++api++/search/++api++", accept="text/html")
 
-    def test_virtual_hosting(self):
-        app = self.layer["app"]
-        vhm = VirtualHostMonster()
-        vhm.id = "virtual_hosting"
-        vhm.addToContainer(app)
-        obj = self.traverse(
-            path="/VirtualHostBase/http/localhost:8080/plone/VirtualHostRoot/"
-        )  # noqa
-        self.assertTrue(isinstance(obj, Service), "Not a service")
-        del app["virtual_hosting"]
-
     def test_json_request_to_regular_view_returns_view(self):
         obj = self.traverse("/plone/folder_contents")
         self.assertTrue(IBrowserView.providedBy(obj), "IBrowserView expected")
@@ -160,3 +149,30 @@ class TestTraversal(unittest.TestCase):
         self.portal[self.portal.invokeFactory("Folder", id="folder1")]
         obj = self.traverse("/plone/folder1/@@folder_contents")
         self.assertTrue(IBrowserView.providedBy(obj), "IBrowserView expected")
+
+    def setup_vhm(self):
+        app = self.layer["app"]
+        vhm = VirtualHostMonster()
+        vhm.id = "virtual_hosting"
+        vhm.addToContainer(app)
+
+    def teardown_vhm(self):
+        del self.layer["app"]["virtual_hosting"]
+
+    def test_virtual_hosting(self):
+        self.setup_vhm()
+        obj = self.traverse(
+            path="/VirtualHostBase/http/localhost:8080/plone/VirtualHostRoot/"
+        )  # noqa
+        self.assertTrue(isinstance(obj, Service), "Not a service")
+        self.teardown_vhm()
+
+    def test_virtual_hosting_on_navroot_folder(self):
+        self.setup_vhm()
+        folder = self.portal[self.portal.invokeFactory("Folder", id="folder1")]
+        alsoProvides(folder, INavigationRoot)
+        obj = self.traverse(
+            path="/VirtualHostBase/http/localhost:8080/plone/folder1/VirtualHostRoot/"
+        )  # noqa
+        self.assertTrue(isinstance(obj, Service), "Not a service")
+        self.teardown_vhm()
