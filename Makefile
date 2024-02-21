@@ -37,24 +37,6 @@ py2:
 	bin/pip install --upgrade pip
 	bin/pip install -r requirements.txt
 
-.PHONY: Build Plone 4.3
-build-plone-4.3: py2 ## Build Plone 4.3
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-4.3.x.cfg
-
-.PHONY: Build Plone 5.0
-build-plone-5.0: py2 ## Build Plone 5.0
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.0.x.cfg
-
-.PHONY: Build Plone 5.1
-build-plone-5.1: py2  ## Build Plone 5.1
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.1.x.cfg
-
 .PHONY: Build Plone 5.2 with Python 2
 build-plone-5.2-py: py2  ## Build Plone 5.2 with Python 2
 	bin/pip install --upgrade pip
