@@ -31,6 +31,41 @@ try:
 except ImportError:
     HAS_WSGI = False
 
+BASE_TYPES = (str, float, int)
+
+
+def convert_to_serializable(item):
+    if isinstance(item, dict):
+        new_dict = {}
+        for key, value in item.items():
+            if not isinstance(key, BASE_TYPES):
+                new_key = repr(key)
+            else:
+                new_key = key
+            if not isinstance(value, BASE_TYPES):
+                new_value = repr(value)
+            else:
+                new_value = value
+            new_dict[new_key] = new_value
+        return new_dict
+    return repr(item)
+
+
+def extract_error_message(exception):
+    """If the exception is a BadRequest and the message is a list,
+    return the message with list. If the list elements are dictionaries,
+    convert non-serializable keys and values to string.
+    If it is not a BadRequest, returns the exception as a string.
+    """
+    # If exception is a BadRequest
+    if isinstance(exception, BadRequest):
+        message = exception.args[0]
+        # And de message is a list
+        if isinstance(message, list):
+            # Convert list items to serializable objects.
+            return [convert_to_serializable(item) for item in message]
+    return str(exception)
+
 
 @adapter(Exception, IAPIRequest)
 class ErrorHandling(BrowserView):
@@ -58,10 +93,7 @@ class ErrorHandling(BrowserView):
 
     def render_exception(self, exception):
         name = type(exception).__name__
-        if isinstance(exception, BadRequest):
-            message = exception.args[0]
-        else:
-            message = str(exception)
+        message = extract_error_message(exception)
         result = {"type": name, "message": message}
 
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)

@@ -46,3 +46,12 @@ class BadRequestService(Service):
         errors = [{"error": "ValidationError", "message": "message error"}]
 
         raise BadRequest(errors)
+
+
+class BadRequestNoSerializableService(Service):
+    def __call__(self):
+        from zExceptions import BadRequest
+
+        errors = [{"error": Exception("error"), "message": "message error"}]
+
+        raise BadRequest(errors)

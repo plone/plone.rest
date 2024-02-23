@@ -175,4 +175,12 @@
       name="bad-request-error"
       />
 
+  <plone:service
+      method="GET"
+      factory=".testing.BadRequestNoSerializableService"
+      for="*"
+      permission="zope2.View"
+      name="bad-request-no-serializable"
+      />
+
 </configure>

@@ -118,3 +118,14 @@ class TestErrorHandling(unittest.TestCase):
             response.json()["message"],
             [{"error": "ValidationError", "message": "message error"}],
         )
+
+    def test_bad_request_no_serializable_message(self):
+        response = requests.get(
+            f"{self.portal_url}/bad-request-no-serializable",
+            headers={"Accept": "application/json"},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(
+            response.json()["message"],
+            [{"error": "Exception('error')", "message": "message error"}],
+        )
