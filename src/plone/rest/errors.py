@@ -1,18 +1,27 @@
 from AccessControl import getSecurityManager
-
-try:
-    from plone.app.redirector.interfaces import IRedirectionStorage
-except ImportError:
-    IRedirectionStorage = None
 from plone.memoize.instance import memoize
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import ICORSPolicy
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
-from six.moves import urllib
-from six.moves.urllib.parse import quote
-from six.moves.urllib.parse import unquote
+from urllib.parse import quote
+from urllib.parse import unquote
 from zExceptions import NotFound
+from zope.component import adapter
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
+from zope.component.hooks import getSite
+
+import json
+import sys
+import traceback
+import urllib
+
+
+try:
+    from plone.app.redirector.interfaces import IRedirectionStorage
+except ImportError:
+    IRedirectionStorage = None
 
 try:
     from ZPublisher.HTTPRequest import WSGIRequest
@@ -20,15 +29,6 @@ try:
     HAS_WSGI = True
 except ImportError:
     HAS_WSGI = False
-from zope.component import adapter
-from zope.component import queryMultiAdapter
-from zope.component import queryUtility
-from zope.component.hooks import getSite
-
-import json
-import six
-import sys
-import traceback
 
 
 @adapter(Exception, IAPIRequest)
@@ -58,10 +58,7 @@ class ErrorHandling(BrowserView):
     def render_exception(self, exception):
         name = type(exception).__name__
         message = str(exception)
-        if six.PY2:
-            name = name.decode("utf-8")
-            message = message.decode("utf-8")
-        result = {u"type": name, u"message": message}
+        result = {"type": name, "message": message}
 
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
         if policy is not None:
@@ -77,10 +74,10 @@ class ErrorHandling(BrowserView):
             # NotFound exceptions need special handling because their
             # exception message gets turned into HTML by ZPublisher
             url = self.request.getURL()
-            result[u"message"] = u"Resource not found: %s" % url
+            result["message"] = "Resource not found: %s" % url
 
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
-            result[u"traceback"] = self.render_traceback(exception)
+            result["traceback"] = self.render_traceback(exception)
 
         return result
 
@@ -101,8 +98,8 @@ class ErrorHandling(BrowserView):
                 pass
             else:
                 return (
-                    u"ERROR: Another exception happened before we could "
-                    u"render the traceback."
+                    "ERROR: Another exception happened before we could "
+                    "render the traceback."
                 )
 
         raw = "\n".join(traceback.format_tb(exc_traceback))
@@ -138,17 +135,17 @@ class ErrorHandling(BrowserView):
         # ['', 'Plone', 'folder', 'item', '@@view', 'param']
         #                                ^
         splitpoint = len(old_path_elements)
-
         while splitpoint > 1:
             possible_obj_path = "/".join(old_path_elements[:splitpoint])
             remainder = old_path_elements[splitpoint:]
             new_path = storage.get(possible_obj_path)
 
             if new_path:
-                if new_path == possible_obj_path:
+                if new_path.startswith(possible_obj_path):
                     # New URL would match originally requested URL.
                     # Lets not cause a redirect loop.
                     return None
+
                 return new_path + "/" + "/".join(remainder)
 
             splitpoint -= 1
@@ -162,7 +159,7 @@ class ErrorHandling(BrowserView):
 
         This method is based on FourOhFourView.attempt_redirect() from
         p.a.redirector. It's copied here because we want to answer redirects
-        to non-GET methods with status 308, but since this method locks the
+        to non-GET methods with status 307, but since this method locks the
         response status, we wouldn't be able to change it afterwards.
         """
         url = self._url()
@@ -178,6 +175,12 @@ class ErrorHandling(BrowserView):
         if storage is None:
             return False
 
+        # remove ++api++ traverser
+        if "++api++" in old_path_elements:
+            api_traverser_pos = old_path_elements.index("++api++")
+            old_path_elements = [el for el in old_path_elements if el != "++api++"]
+        else:
+            api_traverser_pos = None
         old_path = "/".join(old_path_elements)
 
         # First lets try with query string in cases or content migration
@@ -186,7 +189,7 @@ class ErrorHandling(BrowserView):
 
         query_string = self.request.QUERY_STRING
         if query_string:
-            new_path = storage.get("%s?%s" % (old_path, query_string))
+            new_path = storage.get(f"{old_path}?{query_string}")
             # if we matched on the query_string we don't want to include it
             # in redirect
             if new_path:
@@ -211,20 +214,25 @@ class ErrorHandling(BrowserView):
             url_path = quote(url_path)
             url = urllib.parse.SplitResult(*(url[:2] + (url_path,) + url[3:])).geturl()
         else:
+            # reinsert ++api++ traverser
+            if api_traverser_pos is not None:
+                new_path_elements = new_path.split("/")
+                new_path_elements.insert(api_traverser_pos, "++api++")
+                new_path = "/".join(new_path_elements)
             url = self.request.physicalPathToURL(new_path)
 
         # some analytics programs might use this info to track
         if query_string:
             url += "?" + query_string
 
-        # Answer GET requests with 301. Every other method will be answered
-        # with 308 Permanent Redirect, which instructs the client to NOT
+        # Answer GET requests with 302. Every other method will be answered
+        # with 307 Temporary Redirect, which instructs the client to NOT
         # switch the method (if the original request was a POST, it should
         # re-POST to the new URL from the Location header).
         if self.request.method.upper() == "GET":
-            status = 301
+            status = 302
         else:
-            status = 308
+            status = 307
 
         self.request.response.redirect(url, status=status, lock=1)
         return True

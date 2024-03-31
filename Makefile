@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-version = 3
+version = 3.9
 
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
@@ -12,7 +12,7 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-all: .installed.cfg
+all: build-plone-6.0
 
 # Add the following 'help' target to your Makefile
 # And add help text after each target name starting with '\#\#'
@@ -20,23 +20,13 @@ all: .installed.cfg
 help: ## This help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: Update Makefile and Buildout
-update: ## Update Make and Buildout
-	wget -O Makefile https://raw.githubusercontent.com/kitconcept/buildout/master/Makefile
-	wget -O requirements.txt https://raw.githubusercontent.com/kitconcept/buildout/master/requirements.txt
-	wget -O plone-4.3.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-4.3.x.cfg
-	wget -O plone-5.1.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.1.x.cfg
-	wget -O plone-5.2.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.2.x.cfg
-	wget -O ci.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/ci.cfg
-	wget -O versions.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/versions.cfg
-
 .installed.cfg: bin/buildout *.cfg
 	bin/buildout
 
 bin/buildout: bin/pip
 	bin/pip install --upgrade pip
 	bin/pip install -r requirements.txt
-	bin/pip install black || true
+	bin/pip install pip install black==$$(awk '/^black =/{print $$NF}' versions.cfg)
 	@touch -c $@
 
 bin/python bin/pip:
@@ -46,24 +36,6 @@ py2:
 	virtualenv --python=python2 .
 	bin/pip install --upgrade pip
 	bin/pip install -r requirements.txt
-
-.PHONY: Build Plone 4.3
-build-plone-4.3: py2 ## Build Plone 4.3
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-4.3.x.cfg
-
-.PHONY: Build Plone 5.0
-build-plone-5.0: py2 ## Build Plone 5.0
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.0.x.cfg
-
-.PHONY: Build Plone 5.1
-build-plone-5.1: py2  ## Build Plone 5.1
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.1.x.cfg
 
 .PHONY: Build Plone 5.2 with Python 2
 build-plone-5.2-py: py2  ## Build Plone 5.2 with Python 2
@@ -82,6 +54,13 @@ build-plone-5.2-performance: .installed.cfg  ## Build Plone 5.2
 	bin/pip install --upgrade pip
 	bin/pip install -r requirements.txt
 	bin/buildout -c plone-5.2.x-performance.cfg
+
+build-plone-6.0:  ## Build Plone 6.0
+	python$(version) -m venv .
+	bin/pip install --upgrade pip
+	bin/pip install -r requirements-6.0.txt
+	bin/pip install pip install black==$$(awk '/^black =/{print $$NF}' versions.cfg)
+	bin/buildout -c plone-6.0.x.cfg
 
 .PHONY: Test
 test:  ## Test

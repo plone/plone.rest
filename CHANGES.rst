@@ -8,6 +8,143 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.3 (2024-01-26)
+------------------
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (93e1ab65)
+
+
+4.1.2 (2023-10-28)
+------------------
+
+Bug fixes:
+
+
+- Fix parsing mimetypes in Accept header with an extra slash. @djay (#153)
+
+
+4.1.1 (2023-10-23)
+------------------
+
+Internal:
+
+
+- Fix test leakage, enabling the publication check when it shouldn't be active. @jaroel (#168)
+
+
+4.1.0 (2023-10-18)
+------------------
+
+New features:
+
+
+- Add support for Python 3.12. @tisto (#167)
+
+
+Bug fixes:
+
+
+- Make REST endpoints check for acquired items. @jaroel (#166)
+
+
+4.0.0 (2023-09-22)
+------------------
+
+Breaking changes:
+
+
+- Drop support for Python 2.7, 3.6, and 3.7 @tisto (#141)
+
+
+3.0.1 (2023-09-21)
+------------------
+
+Bug fixes:
+
+
+- When ``++api++`` is in the url multiple times, redirect to the proper url.
+  When the url is badly formed, for example ``++api++/something/++api++``, give a 404 NotFound.
+  Fixes a denial of service.
+  See `security advisory <https://github.com/plone/plone.rest/security/advisories/GHSA-h6rp-mprm-xgcq>`_.
+  [maurits] (#1)
+
+
+3.0.0 (2023-01-29)
+------------------
+
+Breaking changes:
+
+
+- Change the HTTP status from 301 (Moved Permanently) to 302 (Found) for GET requests and to 307 (Temporary Redirect) for other request methods.
+  This fixes problems when an existing redirect is re-used.
+  [mamico] (#135)
+- Drop official support for Plone 4.3, 5.0 and 5.1 (most likely the package will continue to work though)
+  [tisto] (#140)
+
+
+New features:
+
+
+- Add official support for Plone 6
+  [tisto] (#143)
+- Add official support for Python 3.9, 3.10, and 3.11
+  [tisto] (#147)
+
+
+2.0.0 (2022-10-15)
+------------------
+
+Bug fixes:
+
+
+- Re-release 2.0.0a6 as 2.0.0 [tisto] (#136)
+
+
+2.0.0a5 (2022-04-07)
+--------------------
+
+Bug fixes:
+
+
+- Fix an infinite loop with redirections from parent to child [ericof] (#133)
+
+
+2.0.0a4 (2022-03-24)
+--------------------
+
+Bug fixes:
+
+
+- ++api++ traverser should be kept on 30x redirections [mamico] (#132)
+
+
+2.0.0a3 (2022-02-12)
+--------------------
+
+Bug fixes:
+
+
+- ++api++ traverser should be kept on 30x redirections [mamico] (#127)
+
+
+2.0.0a2 (2022-01-25)
+--------------------
+
+Bug fixes:
+
+
+- Fix typo in `README.rst` [jensens] (#123)
+- Use document_view as default for site root.
+  [agitator] (#126)
+- Resolve all the deprecation warnings that originate in this package's code that are
+  exposed by running the tests that do not stem from backwards compatibility we support.
+  [rpatterson] (#128)
+
+
 2.0.0a1 (2021-10-05)
 --------------------
 
@@ -151,7 +288,7 @@ Bugfixes:
   [buchi]
 
 - Fallback to regular views during traversal to ensure compatibility with
-  views beeing called with a specific Accept header.
+  views being called with a specific Accept header.
   [buchi]
 
 
@@ -201,7 +338,7 @@ Bugfixes:
 
 - Refactor traversal of REST requests by using a traversal adapter on the site
   root instead of a traversal adapter for each REST service. This prevents
-  REST services from being overriden by other traversal adapters.
+  REST services from being overridden by other traversal adapters.
   [buchi]
 
 

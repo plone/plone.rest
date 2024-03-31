@@ -1,0 +1,17 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+# See the inline comments on how to expand/tweak this configuration file
+[meta]
+template = "default"
+commit-id = "68cda6e4"
+
+[github]
+jobs = [
+    "qa",
+    "dependencies",
+    "release_ready",
+    "circular",
+    ]
+
+[pyproject]
+dependencies_ignores = "['plone.app.redirector']"

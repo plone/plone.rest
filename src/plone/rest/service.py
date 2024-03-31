@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.rest.interfaces import ICORSPolicy
 from plone.rest.interfaces import IService
 from zope.component import queryMultiAdapter
@@ -6,7 +5,7 @@ from zope.interface import implementer
 
 
 @implementer(IService)
-class Service(object):
+class Service:
     def __call__(self):
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
         if policy is not None:
@@ -29,4 +28,4 @@ class Service(object):
         # include credentials
         if name == "__roles__" and self.request._rest_cors_preflight:
             return ["Anonymous"]
-        return super(Service, self).__getattribute__(name)
+        return super().__getattribute__(name)

@@ -1,23 +1,21 @@
-# -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
-from ZPublisher.pubevents import PubStart
 from base64 import b64encode
+from plone.app.testing import login
+from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import login
-from plone.app.testing import setRoles
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
+from Products.CMFCore.utils import getToolByName
 from zExceptions import Unauthorized
 from zope.event import notify
+from ZPublisher.pubevents import PubStart
 
 import unittest
 
 
 class TestPermissions(unittest.TestCase):
-
     layer = PLONE_REST_INTEGRATION_TESTING
 
     def setUp(self):
@@ -36,7 +34,7 @@ class TestPermissions(unittest.TestCase):
         request.environ["PATH_TRANSLATED"] = path
         request.environ["HTTP_ACCEPT"] = accept
         request.environ["REQUEST_METHOD"] = method
-        auth = "%s:%s" % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        auth = f"{TEST_USER_NAME}:{TEST_USER_PASSWORD}"
         b64auth = b64encode(auth.encode("utf8"))
         request._auth = "Basic %s" % b64auth.decode("utf8")
         notify(PubStart(request))
