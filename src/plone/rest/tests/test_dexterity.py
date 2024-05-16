@@ -11,7 +11,9 @@ from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 
+import json
 import os
+import urllib
 import requests
 import transaction
 import unittest
@@ -39,6 +41,141 @@ class TestDexterityServiceEndpoints(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual("doc1", response.json().get("id"))
         self.assertEqual("GET", response.json().get("method"))
+
+    def test_dexterity_document_get_with_urlencoded_params(self):
+        params = {
+            "query": [
+                {
+                    "i": "Title",
+                    "o": "plone.app.querystring.operation.string.is",
+                    "v": "Welcome to Plone",
+                },
+                {
+                    "i": "path",
+                    "o": "plone.app.querystring.operation.string.path",
+                    "v": "/news",
+                },
+            ],
+            "sort_on": "sortable_title",
+            "sort_order": "reverse",
+            "limit": "10",
+            "fullobjects": "False",
+            "b_start": "0",
+            "b_size": "2",
+        }
+        params = urllib.parse.urlencode(params, doseq=True)
+        response = requests.get(
+            self.document.absolute_url(),
+            headers={"Accept": "application/json"},
+            params=params,
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u"doc1", response.json().get("id"))
+        self.assertEqual(u"GET", response.json().get("method"))
+        self.assertEqual(
+            {
+                "body": {
+                    "b_size": "2",
+                    "b_start": "0",
+                    "fullobjects": "False",
+                    "limit": "10",
+                    "query": [
+                        {
+                            "i": "Title",
+                            "o": "plone.app.querystring.operation.string.is",
+                            "v": "Welcome to Plone",
+                        },
+                        {
+                            "i": "path",
+                            "o": "plone.app.querystring.operation.string.path",
+                            "v": "/news",
+                        },
+                    ],
+                    "sort_on": "sortable_title",
+                    "sort_order": "reverse",
+                },
+                "id": "doc1",
+                "method": "GET",
+            },
+            response.json(),
+        )
+
+    def test_dexterity_document_get_with_payload(self):
+        # Encoding querystrings with arrays AND nested structures is a non-trivial use case, see for instance:
+        #
+        #     https://github.com/sindresorhus/query-string/blob/main/readme.md#nesting
+        #
+        # There is no standardized way to deal with this, and most options in the wild have certain limitations and edge cases.
+        #
+        # Therefore we call json.dumps() on the query parameter only.
+        #
+        # This means that in the endpoint code, you have to convert the 'query' parameter querystring from a string to a dict:
+        #
+        #     self.request.form['query'] = json.loads(self.request.form.get("query"))
+        #
+        # After this conversion you will have a Python dict with the query parameters.
+
+        payload = {
+            "query": json.dumps(
+                [
+                    {
+                        "i": "Title",
+                        "o": "plone.app.querystring.operation.string.is",
+                        "v": "Welcome to Plone",
+                    },
+                    {
+                        "i": "path",
+                        "o": "plone.app.querystring.operation.string.path",
+                        "v": "/news",
+                    },
+                ]
+            ),
+            "sort_on": "sortable_title",
+            "sort_order": "reverse",
+            "limit": "10",
+            "fullobjects": "False",
+            "b_start": "0",
+            "b_size": "2",
+        }
+
+        response = requests.get(
+            self.document.absolute_url(),
+            headers={"Accept": "application/json"},
+            params=payload,
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(u"doc1", response.json().get("id"))
+        self.assertEqual(u"GET", response.json().get("method"))
+
+        self.assertEqual(
+            {
+                "body": {
+                    "b_size": "2",
+                    "b_start": "0",
+                    "fullobjects": "False",
+                    "limit": "10",
+                    "query": [
+                        {
+                            "i": "Title",
+                            "o": "plone.app.querystring.operation.string.is",
+                            "v": "Welcome to Plone",
+                        },
+                        {
+                            "i": "path",
+                            "o": "plone.app.querystring.operation.string.path",
+                            "v": "/news",
+                        },
+                    ],
+                    "sort_on": "sortable_title",
+                    "sort_order": "reverse",
+                },
+                "id": "doc1",
+                "method": "GET",
+            },
+            response.json(),
+        )
 
     def test_dexterity_document_post(self):
         response = requests.post(
