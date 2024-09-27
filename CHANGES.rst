@@ -17,6 +17,10 @@ Internal:
 - Update configuration files.
   [plone devs] (93e1ab65)
 
+New features:
+
+- Add possibily to configure caching operations for RestAPI endpoints. @folix-01
+
 
 4.1.2 (2023-10-28)
 ------------------
