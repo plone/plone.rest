@@ -3,7 +3,7 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.rest.service import Service
-from plone.testing import z2
+from plone.testing import zope
 from zope.configuration import xmlconfig
 
 
@@ -22,7 +22,8 @@ PLONE_REST_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_REST_FIXTURE,), name="PloneRestLayer:Integration"
 )
 PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PLONE_REST_FIXTURE, z2.ZSERVER_FIXTURE), name="PloneRestLayer:Functional"
+    bases=(PLONE_REST_FIXTURE, zope.WSGI_SERVER_FIXTURE),
+    name="PloneRestLayer:Functional",
 )
 
 

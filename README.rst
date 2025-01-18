@@ -180,7 +180,7 @@ Named services can be registered by providing a 'name' attribute in the service 
   <plone:service
     method="GET"
     accept="application/json"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    for="plone.base.interfaces.IPloneSiteRoot"
     factory=".service.Search"
     name="search"
     permission="zope2.View"
@@ -256,7 +256,7 @@ defines a policy for the site root.
 .. code-block:: XML
 
   <plone:CORSPolicy
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    for="plone.base.interfaces.IPloneSiteRoot"
     layer="myproduct.interfaces.IMyBrowserLayer"
     allow_origin="*"
     allow_methods="GET"

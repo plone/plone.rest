@@ -14,4 +14,4 @@ jobs = [
     ]
 
 [pyproject]
-dependencies_ignores = "['plone.app.redirector']"
+dependencies_ignores = "['plone.app.layout', 'plone.app.redirector', 'plone.base', 'Products.CMFPlone']"
