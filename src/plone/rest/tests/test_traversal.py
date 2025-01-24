@@ -3,7 +3,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
-from plone.rest.bbb import INavigationRoot
+from plone.base.interfaces import INavigationRoot
 from plone.rest.service import Service
 from plone.rest.testing import PLONE_REST_INTEGRATION_TESTING
 from Products.SiteAccess.VirtualHostMonster import VirtualHostMonster

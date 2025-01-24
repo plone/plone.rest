@@ -14,14 +14,4 @@
       preserveOriginal="true"
       />
 
-  <monkey:patch
-      original="status_codes"
-      replacement=".patches.PERMANENT_REDIRECT"
-      module="ZPublisher.HTTPResponse"
-      handler=".patches.patch_zpublisher_status_codes"
-      description="Teach ZPublisher about status 308"
-      ignoreOriginal="True"
-      preconditions="Zope2-=4.0a1"
-      />
-
 </configure>

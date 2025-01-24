@@ -54,42 +54,42 @@
   <plone:service
       method="GET"
       factory=".demo.Get"
-      for="plone.rest.bbb.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       permission="zope2.View"
       />
 
   <plone:service
       method="POST"
       factory=".demo.Post"
-      for="plone.rest.bbb.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       permission="cmf.AddPortalContent"
       />
 
   <plone:service
       method="PUT"
       factory=".demo.Put"
-      for="plone.rest.bbb.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       permission="cmf.ModifyPortalContent"
       />
 
   <plone:service
       method="DELETE"
       factory=".demo.Delete"
-      for="plone.rest.bbb.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       permission="zope2.DeleteObjects"
       />
 
   <plone:service
       method="PATCH"
       factory=".demo.Patch"
-      for="plone.rest.bbb.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       permission="cmf.ModifyPortalContent"
       />
 
   <plone:service
       method="OPTIONS"
       factory=".demo.Options"
-      for="plone.rest.bbb.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       permission="zope2.View"
       />
 

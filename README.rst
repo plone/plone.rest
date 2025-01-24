@@ -315,6 +315,8 @@ and then running "bin/buildout"
 Plone/Python Support
 --------------------
 
+plone.rest 5.x.x supports Plone 6.x on Python 3.9 and newer.
+
 plone.rest 4.x.x supports Plone 5.2 and 6.x on Python 3.8 and newer.
 
 plone.rest 3.x.x supports Plone 5.2 on Python 2.7 and 3.6 to 3.8 and Plone 6.0 on Python 3.8 to 3.11.
