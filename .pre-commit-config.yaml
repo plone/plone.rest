@@ -66,7 +66,7 @@ repos:
     hooks:
     -   id: pyroma
 -   repo: https://github.com/mgedmin/check-python-versions
-    rev: "0.22.0"
+    rev: "0.22.1"
     hooks:
     -   id: check-python-versions
         args: ['--only', 'setup.py,pyproject.toml']
