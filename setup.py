@@ -8,7 +8,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 
-version = "4.1.4.dev0"
+version = "5.0.0.dev0"
 
 long_description = read("README.rst") + "\n\n" + read("CHANGES.rst") + "\n\n"
 
@@ -24,11 +24,11 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
-        "Framework :: Plone :: 5.2",
         "Framework :: Plone :: 6.0",
+        "Framework :: Plone :: 6.1",
         "Framework :: Plone :: Core",
         "Framework :: Zope2",
-        "Framework :: Zope :: 4",
+        "Framework :: Zope :: 5",
         "License :: OSI Approved :: GNU General Public License (GPL)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
@@ -37,6 +37,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3 :: Only",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
@@ -57,14 +58,12 @@ setup(
             "requests",
             "BTrees",
             "plone.app.contenttypes[test]",
-            "plone.app.layout",
             "plone.app.redirector",
             "plone.app.textfield",
             "plone.namedfile",
             "plone.testing",
             "z3c.relationfield",
             "zope.intid",
-            "plone.base",
         ]
     ),
     install_requires=[

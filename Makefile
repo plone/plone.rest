@@ -32,29 +32,6 @@ bin/buildout: bin/pip
 bin/python bin/pip:
 	python$(version) -m venv . || virtualenv --python=python$(version) .
 
-py2:
-	virtualenv --python=python2 .
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-
-.PHONY: Build Plone 5.2 with Python 2
-build-plone-5.2-py: py2  ## Build Plone 5.2 with Python 2
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.2.x.cfg
-
-.PHONY: Build Plone 5.2
-build-plone-5.2: .installed.cfg  ## Build Plone 5.2
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.2.x.cfg
-
-.PHONY: Build Plone 5.2 Performance
-build-plone-5.2-performance: .installed.cfg  ## Build Plone 5.2
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.2.x-performance.cfg
-
 build-plone-6.0:  ## Build Plone 6.0
 	python$(version) -m venv .
 	bin/pip install --upgrade pip
