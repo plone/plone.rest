@@ -1,1 +1,0 @@
-Update Plone to 6.0.14 and 6.1.0b2 for testing. Also removes buildout of unsupported Plone versions. @wesleybl, @davisagli

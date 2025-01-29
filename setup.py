@@ -8,7 +8,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 
-version = "5.0.0.dev0"
+version = "5.0.0"
 
 long_description = read("README.rst") + "\n\n" + read("CHANGES.rst") + "\n\n"
 

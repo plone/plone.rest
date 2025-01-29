@@ -8,6 +8,27 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0 (2025-01-29)
+------------------
+
+Breaking changes:
+
+
+- Drop support for Plone 5.2 and Python 3.8. @davisagli (#4090)
+
+
+Bug fixes:
+
+
+- Fix DeprecationWarnings. [maurits] (#4090)
+
+
+Internal:
+
+
+- Update Plone to 6.0.14 and 6.1.0b2 for testing. Also removes buildout of unsupported Plone versions. @wesleybl, @davisagli (#178)
+
+
 4.1.3 (2024-01-26)
 ------------------
 
