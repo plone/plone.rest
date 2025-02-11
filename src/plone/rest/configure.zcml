@@ -33,4 +33,10 @@
       provides="plone.rest.interfaces.IShouldAllowAcquiredItemPublication"
       />
 
+  <adapter
+      factory=".caching.RestContentItemLookup"
+      for="plone.rest.interfaces.IService
+           *"
+      />
+
 </configure>
