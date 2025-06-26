@@ -33,4 +33,8 @@
       provides="plone.rest.interfaces.IShouldAllowAcquiredItemPublication"
       />
 
+  <subscriber
+    handler=".relative_url.after_traversal_hook"
+    />
+
 </configure>
