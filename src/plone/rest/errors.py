@@ -78,21 +78,21 @@ class ErrorHandling(BrowserView):
             url = self.request.getURL()
             result["message"] = "Resource not found: %s" % url
 
-        result["parent"] = self._get_closest_visible_parent_url()
+        result["context"] = self._get_closest_visible_context_url()
 
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
             result["traceback"] = self.render_traceback(exception)
 
         return result
 
-    def _get_closest_visible_parent_url(self):
+    def _get_closest_visible_context_url(self):
         sm = getSecurityManager()
         obj = self.request["PARENTS"][0]
         if isinstance(obj, RESTWrapper):
             obj = obj.context
-        for parent in aq_inner(obj).aq_chain:
-            if sm.checkPermission("View", parent):
-                return parent.absolute_url()
+        for context in aq_inner(obj).aq_chain:
+            if sm.checkPermission("View", context):
+                return context.absolute_url()
 
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()

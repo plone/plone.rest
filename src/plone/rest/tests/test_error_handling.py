@@ -46,7 +46,30 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(
             "Resource not found: %s" % response.url, response.json()["message"]
         )
-        self.assertEqual(self.portal_url, response.json()["parent"])
+        self.assertEqual(self.portal_url, response.json()["context"])
+
+    def test_404_visible_parent(self):
+        self.portal.portal_workflow.doActionFor(self.folder, "publish")
+        transaction.commit()
+
+        response = requests.get(
+            self.portal_url + "/folder1/non-existing-resource",
+            headers={"Accept": "application/json"},
+            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response.headers.get("Content-Type"),
+            "application/json",
+            "When sending a GET request with Accept: application/json "
+            + "the server should respond with sending back application/json.",
+        )
+        self.assertTrue(json.loads(response.content))
+        self.assertEqual("NotFound", response.json()["type"])
+        self.assertEqual(
+            "Resource not found: %s" % response.url, response.json()["message"]
+        )
+        self.assertEqual(self.folder.absolute_url(), response.json()["context"])
 
     def test_401_unauthorized(self):
         response = requests.get(
@@ -64,7 +87,7 @@ class TestErrorHandling(unittest.TestCase):
         )
         self.assertTrue(json.loads(response.content))
         self.assertEqual("Unauthorized", response.json()["type"])
-        self.assertEqual(self.portal_url, response.json()["parent"])
+        self.assertEqual(self.portal_url, response.json()["context"])
 
     def test_500_internal_server_error(self):
         response = requests.get(
@@ -86,7 +109,7 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(
             "HTTP Error 500: InternalServerError", response.json()["message"]
         )
-        self.assertEqual(self.portal_url, response.json()["parent"])
+        self.assertEqual(self.portal_url, response.json()["context"])
 
     def test_500_traceback_only_for_manager_users(self):
         # Normal user
