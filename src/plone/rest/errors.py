@@ -4,7 +4,7 @@ from plone.memoize.instance import memoize
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import ICORSPolicy
 from plone.rest.traverse import RESTWrapper
-from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
 from urllib.parse import quote
@@ -92,7 +92,7 @@ class ErrorHandling(BrowserView):
         for parent in self.request["PARENTS"]:
             if isinstance(parent, RESTWrapper):
                 obj = parent.context
-            elif IContentish.providedBy(parent):
+            elif IDynamicType.providedBy(parent):
                 obj = parent
             if obj is not None:
                 break
