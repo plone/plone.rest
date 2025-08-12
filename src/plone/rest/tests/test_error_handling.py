@@ -83,7 +83,9 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual("HTTPError", response.json()["type"])
 
         self.assertEqual("HTTPError", response.json()["type"])
-        self.assertEqual("HTTP Error 500: InternalServerError", response.json()["message"])
+        self.assertEqual(
+            "HTTP Error 500: InternalServerError", response.json()["message"]
+        )
         self.assertEqual(self.portal_url, response.json()["parent"])
 
     def test_500_traceback_only_for_manager_users(self):
