@@ -46,6 +46,7 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(
             "Resource not found: %s" % response.url, response.json()["message"]
         )
+        self.assertEqual(self.portal_url, response.json()["parent"])
 
     def test_401_unauthorized(self):
         response = requests.get(
@@ -63,6 +64,7 @@ class TestErrorHandling(unittest.TestCase):
         )
         self.assertTrue(json.loads(response.content))
         self.assertEqual("Unauthorized", response.json()["type"])
+        self.assertEqual(self.portal_url, response.json()["parent"])
 
     def test_500_internal_server_error(self):
         response = requests.get(
@@ -80,10 +82,9 @@ class TestErrorHandling(unittest.TestCase):
         self.assertTrue(json.loads(response.content))
         self.assertEqual("HTTPError", response.json()["type"])
 
-        self.assertEqual(
-            {"type": "HTTPError", "message": "HTTP Error 500: InternalServerError"},
-            response.json(),
-        )
+        self.assertEqual("HTTPError", response.json()["type"])
+        self.assertEqual("HTTP Error 500: InternalServerError", response.json()["message"])
+        self.assertEqual(self.portal_url, response.json()["parent"])
 
     def test_500_traceback_only_for_manager_users(self):
         # Normal user
