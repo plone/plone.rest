@@ -1,7 +1,10 @@
 from AccessControl import getSecurityManager
+from Acquisition import aq_inner
 from plone.memoize.instance import memoize
 from plone.rest.interfaces import IAPIRequest
 from plone.rest.interfaces import ICORSPolicy
+from plone.rest.traverse import RESTWrapper
+from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.permissions import ManagePortal
 from Products.Five.browser import BrowserView
 from urllib.parse import quote
@@ -76,10 +79,28 @@ class ErrorHandling(BrowserView):
             url = self.request.getURL()
             result["message"] = "Resource not found: %s" % url
 
+        result["context"] = self._get_closest_visible_context_url()
+
         if getSecurityManager().checkPermission(ManagePortal, getSite()):
             result["traceback"] = self.render_traceback(exception)
 
         return result
+
+    def _get_closest_visible_context_url(self):
+        sm = getSecurityManager()
+        obj = None
+        for parent in self.request["PARENTS"]:
+            if isinstance(parent, RESTWrapper):
+                obj = parent.context
+            elif IDynamicType.providedBy(parent):
+                obj = parent
+            if obj is not None:
+                break
+        if obj is None:
+            return
+        for context in aq_inner(obj).aq_chain:
+            if sm.checkPermission("View", context):
+                return context.absolute_url()
 
     def render_traceback(self, exception):
         _, exc_obj, exc_traceback = sys.exc_info()
