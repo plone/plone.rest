@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.1.0 (2025-08-14)
+------------------
+
+New features:
+
+
+- Add a `context` URL to exception responses.
+  This can be used by a client to retrieve contextual data that may be needed to display the exception.
+  @davisagli (#186)
+
+
 5.0.0 (2025-01-29)
 ------------------
 
