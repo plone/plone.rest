@@ -112,7 +112,7 @@ Breaking changes:
 
 
 - Change the HTTP status from 301 (Moved Permanently) to 302 (Found) for GET requests and to 307 (Temporary Redirect) for other request methods.
-  This fixes problems when an existing redirect is re-used.
+  This fixes problems when an existing redirect is reused.
   [mamico] (#135)
 - Drop official support for Plone 4.3, 5.0 and 5.1 (most likely the package will continue to work though)
   [tisto] (#140)
