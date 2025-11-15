@@ -26,15 +26,25 @@ class DispatchingTestCase(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
     def validate(self, expectations, follow_redirects=False):
+        self._validate(expectations, follow_redirects, traverser="accept_header")
+        self._validate(expectations, follow_redirects, traverser="path")
+
+    def _validate(self, expectations, follow_redirects=False, traverser="path"):
         failures = []
         for expectation in expectations:
             path, method, creds, expected_status = expectation
-            url = self.portal_url + path
+
+            if traverser == "accept_header":
+                headers = {"Accept": "application/json"}
+                url = f"{self.portal_url}{path}"
+            elif traverser == "path":
+                headers = {}
+                url = f"{self.portal_url}/++api++{path}"
 
             response = requests.request(
                 method,
                 url,
-                headers={"Accept": "application/json"},
+                headers=headers,
                 auth=creds,
                 allow_redirects=follow_redirects,
             )
