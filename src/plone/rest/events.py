@@ -28,7 +28,9 @@ def mark_as_api_request(request, accept):
 
 def subscriber_mark_as_api_request(event):
     """Subscriber to mark a request as IAPIRequest (see mark_as_api_request)"""
-    if event.request.environ.get("PATH_INFO") and "++api++" in event.request.environ["PATH_INFO"].split("/"):
+    if event.request.environ.get("PATH_INFO") and "++api++" in event.request.environ[
+        "PATH_INFO"
+    ].split("/"):
         mark_as_api_request(
             event.request,
             "application/json",
