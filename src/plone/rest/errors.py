@@ -62,11 +62,12 @@ class ErrorHandling(BrowserView):
 
     def render_exception(self, exception):
         name = type(exception).__name__
-        msg = exception.args[0]
-        if isinstance(msg, Message):
-            message = translate(msg, context=self.request)
-        else:
-            message = str(msg)
+        try:
+            message = exception.args[0]
+        except IndexError:
+            message = str(exception)
+        if isinstance(message, Message):
+            message = translate(message, context=self.request)
         result = {"type": name, "message": message}
 
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
