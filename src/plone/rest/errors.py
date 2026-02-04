@@ -14,8 +14,8 @@ from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.component.hooks import getSite
-from zope.i18n import Message
 from zope.i18n import translate
+from zope.i18nmessageid import Message
 
 import json
 import sys
