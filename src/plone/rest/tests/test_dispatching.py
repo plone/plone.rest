@@ -9,7 +9,6 @@ import requests
 import transaction
 import unittest
 
-
 CREDS = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
 INVALID_CREDS = ("invalid", "password")
 NO_CREDS = ()

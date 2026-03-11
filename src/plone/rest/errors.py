@@ -20,7 +20,6 @@ import sys
 import traceback
 import urllib
 
-
 try:
     from plone.app.redirector.interfaces import IRedirectionStorage
 except ImportError:
