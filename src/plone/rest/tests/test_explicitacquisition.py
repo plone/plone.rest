@@ -11,7 +11,6 @@ from ZPublisher.pubevents import PubStart
 
 import unittest
 
-
 try:
     from Products.CMFCore.interfaces import IShouldAllowAcquiredItemPublication
 
