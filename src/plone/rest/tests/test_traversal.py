@@ -141,7 +141,19 @@ class TestTraversal(unittest.TestCase):
         vhm.addToContainer(app)
         obj = self.traverse(
             path="/VirtualHostBase/http/localhost:8080/plone/VirtualHostRoot/"
-        )  # noqa
+        )
+        self.assertTrue(isinstance(obj, Service), "Not a service")
+        del app["virtual_hosting"]
+
+    def test_virtual_hosting_subpath(self):
+        app = self.layer["app"]
+        vhm = VirtualHostMonster()
+        vhm.id = "virtual_hosting"
+        vhm.addToContainer(app)
+        self.portal.invokeFactory("Document", id="doc1")
+        obj = self.traverse(
+            path="/VirtualHostBase/http/localhost:8080/plone/doc1/VirtualHostRoot"
+        )
         self.assertTrue(isinstance(obj, Service), "Not a service")
         del app["virtual_hosting"]
 
