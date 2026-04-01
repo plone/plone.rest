@@ -112,7 +112,10 @@ class RESTWrapper:
         try:
             obj = adapter.publishTraverse(request, name)
             if not IContentish.providedBy(obj) and not IService.providedBy(obj):
-                raise KeyError
+                if isinstance(obj, VirtualHostMonster):
+                    return obj
+                else:
+                    raise KeyError
 
         # If there's no object with the given name, we get a KeyError.
         # In a non-folderish context a key lookup results in an AttributeError.
