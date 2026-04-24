@@ -1,0 +1,1 @@
+Translate exception message if it is an instance of zope.i18nmessageid.Message. @davisagli
