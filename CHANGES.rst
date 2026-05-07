@@ -8,6 +8,22 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0 (2026-05-07)
+------------------
+
+Bug fixes:
+
+
+- Fix traversal with virtual hosting with a subsite as the VirtualHostRoot. @davisagli (#99)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
 6.0.0a1 (2025-11-26)
 --------------------
 
