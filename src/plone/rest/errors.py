@@ -14,6 +14,8 @@ from zope.component import adapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.component.hooks import getSite
+from zope.i18n import translate
+from zope.i18nmessageid import Message
 
 import json
 import sys
@@ -59,7 +61,12 @@ class ErrorHandling(BrowserView):
 
     def render_exception(self, exception):
         name = type(exception).__name__
-        message = str(exception)
+        try:
+            message = exception.args[0]
+        except IndexError:
+            message = str(exception)
+        if isinstance(message, Message):
+            message = translate(message, context=self.request)
         result = {"type": name, "message": message}
 
         policy = queryMultiAdapter((self.context, self.request), ICORSPolicy)
