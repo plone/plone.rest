@@ -103,12 +103,8 @@ class TestErrorHandling(unittest.TestCase):
             + "the server should respond with sending back application/json.",
         )
         self.assertTrue(json.loads(response.content))
-        self.assertEqual("HTTPError", response.json()["type"])
-
-        self.assertEqual("HTTPError", response.json()["type"])
-        self.assertEqual(
-            "HTTP Error 500: InternalServerError", response.json()["message"]
-        )
+        self.assertEqual("Exception", response.json()["type"])
+        self.assertEqual("Error", response.json()["message"])
         self.assertEqual(self.portal_url, response.json()["context"])
 
     def test_500_traceback_only_for_manager_users(self):
@@ -133,3 +129,21 @@ class TestErrorHandling(unittest.TestCase):
         self.assertRegex(
             traceback[0], r'^File "[^"]*", line \d*, in (publish|transaction_pubevents)'
         )
+
+    def test_500_message_translated(self):
+        registry = self.portal.portal_registry
+        registry["plone.available_languages"] = ["de", "en"]
+        registry["plone.default_language"] = "de"
+        transaction.commit()
+
+        response = requests.get(
+            self.portal_url + "/500-internal-server-error",
+            headers={"Accept": "application/json"},
+        )
+
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(
+            response.headers.get("Content-Type"),
+            "application/json",
+        )
+        self.assertEqual(response.json()["message"], "Fehler")
