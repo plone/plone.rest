@@ -76,7 +76,8 @@ class MarkAsRESTTraverser:
                 return
             # Raise a redirect exception to stop execution of the current request.
             raise Redirect(url)
-        mark_as_api_request(self.request, "application/json")
+        if not IAPIRequest.providedBy(self.request):
+            mark_as_api_request(self.request, "application/json")
         return self.context
 
 
