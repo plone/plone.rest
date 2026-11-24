@@ -5,6 +5,7 @@ from plone.app.testing import PloneSandboxLayer
 from plone.rest.service import Service
 from plone.testing import zope
 from zope.configuration import xmlconfig
+from zope.i18nmessageid import Message
 
 
 class PloneRestLayer(PloneSandboxLayer):
@@ -29,12 +30,4 @@ PLONE_REST_FUNCTIONAL_TESTING = FunctionalTesting(
 
 class InternalServerErrorService(Service):
     def __call__(self):
-        from urllib.error import HTTPError
-
-        raise HTTPError(
-            "http://nohost/plone/500-internal-server-error",
-            500,
-            "InternalServerError",
-            {},
-            None,
-        )
+        raise Exception(Message("Error", domain="plone"))
